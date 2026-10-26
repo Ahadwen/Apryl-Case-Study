@@ -78,6 +78,18 @@ html, body {
 .is-full .stage { display: none; }
 .slide.is-prototype { padding: 0; }
 .proto-frame { flex: 1; width: 100%; border: 0; background: var(--bg); }
+.proto-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 16px;
+}
+.proto-bar .eyebrow { margin: 0; font-size: 13px; }
+.proto-title { font-weight: 600; }
+.proto-key { margin-left: auto; color: var(--muted); font-size: 14px; }
 
 /* Previous / next: large buttons on the left and right edges */
 .nav-btn {
