@@ -11,7 +11,7 @@ export default {
     el.innerHTML = `
       <div class="proto-bar">
         <span class="eyebrow">05 · Prototype</span>
-        <span class="proto-title">Document upload: OCR and masking on the device, then AI extraction</span>
+        <span class="proto-title">Data extraction, information checklist gates submission</span>
         <span class="proto-key">Left: what the member sees · Right: behind the scenes</span>
       </div>
       <iframe class="proto-frame" src="prototype/" title="Document upload prototype"></iframe>
