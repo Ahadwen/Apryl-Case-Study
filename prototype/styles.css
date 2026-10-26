@@ -79,6 +79,13 @@ button { font: inherit; color: inherit; }
 .bs-step > div { min-width: 0; }
 .bs-step p { margin: 2px 0 0; }
 .bs-step pre { margin-top: 6px; }
+.xcheck { width: 100%; border-collapse: collapse; font-size: 13px; }
+.xcheck th { text-align: left; font-weight: 600; color: var(--muted); padding: 4px 6px; border-bottom: 1px solid var(--line); }
+.xcheck td { padding: 6px; border-bottom: 1px solid var(--fill); vertical-align: top; overflow-wrap: anywhere; }
+.verdict { font-weight: 600; white-space: nowrap; }
+.verdict.ok { color: var(--ok); }
+.verdict.similar { color: #3b4a5e; }
+.verdict.bad { color: var(--warn); }
 .bs-n { width: 22px; height: 22px; border-radius: 50%; background: #3b4a5e; color: #fff; font-size: 12px; font-weight: 600; display: grid; place-items: center; }
 
 .card, .doc {

@@ -5,6 +5,7 @@ import { FIELDS, DOCUMENT_EXAMPLES, formatValue, formatDate } from './fields.js'
 import { readDocument } from './ocr.js';
 import { anonymise } from './identifiers.js';
 import { extractFields } from './extract.js';
+import { compareValues } from './compare.js';
 
 const SAMPLES = [
   { file: 'clinic-invoice.pdf', label: 'Clinic invoice (PDF)', type: 'application/pdf' },
@@ -56,7 +57,7 @@ function resolve(field) {
     const value = docValue(doc, field);
     if (value === undefined) continue;
     if (!found) found = { value, source: 'document', docId: doc.id };
-    else if (!field.varies && norm(value) !== norm(found.value)) conflicts.push({ value, doc });
+    else if (!field.varies && compareValues(field, value, found.value) === 'different') conflicts.push({ value, doc });
   }
   return found && { ...found, conflicts };
 }
@@ -191,6 +192,36 @@ function docCard(doc) {
   return `<div class="doc">${head}${target}${body}</div>`;
 }
 
+const VERDICTS = {
+  same: ['ok', '✓ Same'],
+  similar: ['similar', '≈ Similar'],
+  different: ['bad', '✗ Differs'],
+  expected: ['muted', 'Differs (expected)'],
+};
+
+// Every detail that appears on more than one document, compared across them.
+function crossCheck() {
+  const done = state.docs.filter((d) => d.status === 'done');
+  if (done.length < 2) return '';
+  const rows = [];
+  for (const field of FIELDS) {
+    const seen = done.map((doc) => ({ doc, value: docValue(doc, field) })).filter((x) => x.value !== undefined);
+    if (seen.length < 2) continue;
+    const results = seen.slice(1).map((x) => compareValues(field, seen[0].value, x.value));
+    let verdict = results.includes('different') ? 'different' : results.includes('similar') ? 'similar' : 'same';
+    if (verdict === 'different' && field.varies) verdict = 'expected';
+    const [cls, text] = VERDICTS[verdict];
+    rows.push(`<tr><td>${esc(field.label)}</td>
+      <td>${seen.map((x) => `<div><span class="muted">${esc(x.doc.name)}:</span> ${esc(formatValue(field, x.value))}</div>`).join('')}</td>
+      <td><span class="verdict ${cls}">${text}</span></td></tr>`);
+  }
+  return `<div class="bs-doc">
+    <div class="bs-name">Cross-document check</div>
+    <p class="small">Details that appear on more than one document are compared, ignoring formatting. A real difference is flagged to the patient and recorded on the claim for the reviewer; "expected" means documents legitimately differ, e.g. pharmacy vs clinic.</p>
+    ${rows.length ? `<table class="xcheck"><tr><th>Detail</th><th>Values</th><th>Result</th></tr>${rows.join('')}</table>` : '<p class="small muted">No detail appears on more than one document yet.</p>'}
+  </div>`;
+}
+
 // The prototype's explainer, beside the patient's screen: what happens to each document.
 function backstage() {
   const docs = state.docs.filter((d) => d.status !== 'queued');
@@ -219,6 +250,7 @@ function backstage() {
       <div class="bs-head"><h2>Behind the scenes</h2><span class="bs-badge">Not shown to the patient</span></div>
       <p class="small">GDPR data minimisation: documents are read on the patient's device, their name, date of birth and other identifiers are removed there, and only the anonymised text is sent for analysis. Name and date of birth are filled in from the patient's own account, never from the model.</p>
       ${cards || '<p class="small muted">Upload a document (or a sample) to see what happens to it.</p>'}
+      ${crossCheck()}
     </aside>`;
 }
 
@@ -371,6 +403,7 @@ function submit() {
     const doc = docById(r.docId);
     details[f.key] = { value: r.value, source: r.source, document: doc?.name ?? null };
     if (r.source === 'manual') flags.push(`${f.label} entered manually; patient says it's shown on ${doc?.name}`);
+    for (const c of r.conflicts) flags.push(`${f.label}: ${c.doc.name} says ${formatValue(f, c.value)}; patient confirmed ${formatValue(f, r.value)}`);
   }
   state.submitted = {
     submitted_at: new Date().toISOString(),
