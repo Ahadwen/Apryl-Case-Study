@@ -20,6 +20,7 @@ const state = {
   overrides: {},     // key -> { value, source: 'manual' | 'document', docId }
   confirmed: {},     // key -> signature of the value that was confirmed
   sheet: null,       // { key } or { profile: true }
+  preview: null,     // index into SAMPLES while a sample is shown full size
   submitted: null,
 };
 
@@ -268,7 +269,7 @@ function backstage() {
         <p class="small">Upload your own documents on the left, or use a sample (all details invented):</p>
         <div class="samples">${SAMPLES.map((smp, i) => `
           <div class="sample">
-            <a href="samples/${smp.file}" target="_blank" rel="noopener" title="View full size"><img src="samples/${smp.preview}" alt="${esc(smp.label)} sample"></a>
+            <button class="thumb" data-action="preview" data-i="${i}" title="View full size"><img src="samples/${smp.preview}" alt="${esc(smp.label)} sample"></button>
             <div class="small"><strong>${esc(smp.label)}</strong> · ${smp.kind}</div>
             <button class="btn sm" data-action="sample" data-i="${i}">Use this sample</button>
           </div>`).join('')}
@@ -321,6 +322,20 @@ function detailsPanel() {
       <ul class="fields">${FIELDS.map(fieldRow).join('')}</ul>
       <button class="btn primary block" data-action="submit" ${ready ? '' : 'disabled'}>${ready ? 'Submit claim' : state.docs.length ? parts.join(' · ') : 'Add your documents to start'}</button>
     </section>`;
+}
+
+// A sample shown full size over the page, closed with the X, Escape or a click outside it.
+function lightbox() {
+  if (state.preview == null) return '';
+  const smp = SAMPLES[state.preview];
+  return `<div class="scrim lightbox" data-action="close-preview">
+    <figure>
+      <button class="x" data-action="close-preview" aria-label="Close">×</button>
+      <img src="samples/${smp.preview}" alt="${esc(smp.label)} sample">
+      <figcaption><span><strong>${esc(smp.label)}</strong> · ${smp.kind} (sample, details invented)</span>
+        <button class="btn sm primary" data-action="sample" data-i="${state.preview}">Use this sample</button></figcaption>
+    </figure>
+  </div>`;
 }
 
 function sheet() {
@@ -393,7 +408,7 @@ function render() {
   const profile = `<span class="profile">Signed in as <strong>${esc(state.profile.name)}</strong></span>`;
 
   if (state.submitted) {
-    app.innerHTML = `<main class="layout"><div class="patient"><header class="top"><h1>Claim reimbursement</h1>${profile}</header>${submittedView()}</div>${backstage()}</main>`;
+    app.innerHTML = `<main class="layout"><div class="patient"><header class="top"><h1>Claim reimbursement</h1>${profile}</header>${submittedView()}</div>${backstage()}</main>${lightbox()}`;
     return;
   }
 
@@ -416,7 +431,7 @@ function render() {
       </div>
       ${backstage()}
     </main>
-    ${sheet()}`;
+    ${sheet()}${lightbox()}`;
 }
 
 // ---------- Actions ----------
@@ -458,7 +473,12 @@ app.addEventListener('click', (e) => {
   const doc = id && docById(Number(id));
   switch (action) {
     case 'upload': return upload();
-    case 'sample': return loadSample(SAMPLES[Number(el.dataset.i)]);
+    case 'sample': state.preview = null; render(); return loadSample(SAMPLES[Number(el.dataset.i)]);
+    case 'preview': state.preview = Number(el.dataset.i); return render();
+    case 'close-preview':
+      // The backdrop carries this action too; ignore clicks that land on the image or caption.
+      if (el.classList.contains('lightbox') && e.target !== el) return;
+      state.preview = null; return render();
     case 'remove-doc': return removeDoc(Number(id));
     case 'analyse': return analyse(doc);
     case 'confirm': state.confirmed[key] = signature(resolve(field)); return render();
@@ -490,6 +510,10 @@ app.addEventListener('submit', (e) => {
   state.confirmed[field.key] = signature(resolve(field));
   state.sheet = null;
   render();
+});
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && state.preview != null) { state.preview = null; render(); }
 });
 
 app.addEventListener('change', (e) => {

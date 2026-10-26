@@ -66,7 +66,7 @@ const label = `<!doctype html><html><head><style>
   const page = await browser.newPage();
   await page.setContent(invoice);
   await page.pdf({ path: out('clinic-invoice.pdf'), format: 'A4', printBackground: true });
-  await page.setViewportSize({ width: 794, height: 1123 });
+  await page.setViewportSize({ width: 794, height: 640 }); // the content, not the empty rest of the A4 page
   await page.screenshot({ path: out('clinic-invoice-preview.png') });
   await page.setViewportSize({ width: 900, height: 640 });
   await page.setContent(label);
