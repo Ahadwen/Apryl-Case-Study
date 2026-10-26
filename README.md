@@ -1,13 +1,15 @@
 # Apryl Case Study
 
-Slide deck for the Apryl case study, built with [reveal.js](https://revealjs.com) and hosted on GitHub Pages.
+Case study presentation as a browser-based JavaScript app. Plain ES modules with no build step and no dependencies, so GitHub Pages serves the repo as-is.
 
-## Editing
+## Structure
 
-- reveal.js 5.1.0 is vendored in `vendor/reveal/` (no CDN needed when presenting)
-- Slide content: `slides.md` (`---` = new slide, `--` = vertical sub-slide, `Note:` = speaker notes)
-- Styling: `assets/theme.css`
-- Present: open the Pages URL, press `S` for speaker view, `F` for fullscreen, `Esc` for overview.
+- `index.html`: app shell
+- `src/app.js`: slide engine (1280×720 stage scaled to fit, keyboard and button navigation, deep links via `#slide-id`)
+- `src/slides/`: one module per slide, ordered in `src/slides/index.js`. Each exports `{ id, title, className?, render(el) }`; `render` builds DOM and may return a cleanup function, so a slide can be a fully interactive prototype.
+- `src/styles.css`: design tokens and layout
+
+Keys: `→` / `Space` next, `←` previous, `Home` / `End`, `f` fullscreen. Navigation keys are ignored while focus is inside an input or any element marked `data-capture-keys`.
 
 ## Local preview
 
@@ -15,8 +17,8 @@ Slide deck for the Apryl case study, built with [reveal.js](https://revealjs.com
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-(`slides.md` is fetched at runtime, so opening `index.html` straight from disk won't work.)
+ES modules don't load from `file://`, so open it through a server.
 
 ## Hosting
 
-`.github/workflows/pages.yml` deploys on every push to `main` (and, for now, the working branch `claude/peaceful-einstein-obqdri`). One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
+GitHub Pages, **Settings → Pages → Source: Deploy from a branch**, branch `claude/peaceful-einstein-obqdri` (later `main`), folder `/ (root)`.
