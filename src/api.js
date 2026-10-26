@@ -1,5 +1,7 @@
-// Minimal Messages API client for prototype slides. Calls go through the apryl-claude-proxy Edge
-// Function, which holds the Anthropic key, so no key is ever in the page.
+// Minimal Messages API client for prototype slides. Calls go through the Reonic prototype's
+// claude-proxy Edge Function (same Supabase project), which holds the Anthropic key, so no key is
+// ever in the page. Usage counts toward that proxy's daily limit in reonic_api_usage. The proxy only
+// accepts https://ahadwen.github.io, so these calls don't work from a local server.
 
 import { CLAUDE_PROXY_URL, SUPABASE_ANON_KEY } from './config.js';
 

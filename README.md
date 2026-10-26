@@ -22,3 +22,10 @@ ES modules don't load from `file://`, so open it through a server.
 ## Hosting
 
 GitHub Pages, **Settings → Pages → Source: Deploy from a branch**, branch `claude/peaceful-einstein-obqdri` (later `main`), folder `/ (root)`.
+
+## Supabase
+
+Shares project `vefbvrgnobfapzosivag` with the Reonic prototype; Apryl's own objects are prefixed `apryl_`.
+
+- **Visit counter:** `supabase/migrations/0001_apryl_visits.sql` creates `apryl_visits` (per-day totals) and `apryl_visit_log` (time + browser time zone, no IP). The page calls `apryl_count_visit` on load (`src/visits.js`); localhost isn't counted. Apply it once in the Supabase SQL editor.
+- **Claude:** `src/api.js` calls Reonic's existing `claude-proxy` Edge Function, so usage shares its daily limit in `reonic_api_usage`. It only accepts the `ahadwen.github.io` origin, so Claude calls fail on a local server.

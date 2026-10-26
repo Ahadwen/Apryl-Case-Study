@@ -6,4 +6,4 @@ export const SUPABASE_URL = `https://${SUPABASE_PROJECT_REF}.supabase.co`;
 export const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZmJ2cmdub2JmYXB6b3NpdmFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4ODYzMzMsImV4cCI6MjA5NDQ2MjMzM30.oc213yAZjzYKOM-Bqg7aJUZae6T9Ax3MuoRQBIEz-gQ";
 
-export const CLAUDE_PROXY_URL = `${SUPABASE_URL}/functions/v1/apryl-claude-proxy`;
+export const CLAUDE_PROXY_URL = `${SUPABASE_URL}/functions/v1/claude-proxy`;
