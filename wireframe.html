@@ -51,6 +51,17 @@
     .opt { border: 1.5px solid var(--line); border-radius: 8px; padding: 10px; }
     .opt strong { display: block; }
     .input { border: 1.5px solid var(--ink); border-radius: 6px; padding: 6px 10px; }
+    li.confirm { grid-template-columns: 120px 1fr; padding-bottom: 8px; border-bottom: 1px solid var(--fill); }
+    li.confirm .acts, li.confirm .hint { grid-column: 2; }
+    .acts { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+    .acts .b { border: 1.5px solid var(--ink); border-radius: 5px; padding: 2px 10px; font-weight: 600; white-space: nowrap; }
+    .acts .b.primary { background: var(--ink); color: #fff; }
+    .acts .b.active { outline: 2px solid #b45309; outline-offset: 1px; }
+    .acts .ok { color: #2f855a; font-weight: 600; }
+    .acts .link { color: var(--muted); text-decoration: underline; }
+    .hint { font-size: 12px; color: var(--muted); }
+    .count { font-size: 13px; }
+    .btn.disabled { border-color: var(--line); color: var(--muted); }
     .questions { margin-top: 28px; max-width: 80ch; }
     .questions h2 { margin-bottom: 8px; }
     .questions li + li { margin-top: 6px; }
@@ -58,7 +69,7 @@
 </head>
 <body>
   <h1>Document upload: wireframe</h1>
-  <p class="intro">Five states of one page. Identifiers are found and removed in the browser; only the anonymised text goes to Claude, which returns a fixed JSON shape that fills in the rest of the list. The patient then confirms each detail, or fixes it by re-uploading a clearer photo or typing it in (typed values are flagged on the claim).</p>
+  <p class="intro">Five states of one page. Identifiers are found and removed in the browser; only the anonymised text goes to Claude, which returns a fixed JSON shape that fills in the rest of the list. The patient then confirms or edits each detail, fixing it by re-uploading a clearer photo or typing it in (typed values are flagged on the claim).</p>
 
   <div class="legend">
     <span style="--c: var(--ok)">Filled in the browser (identifiers)</span>
@@ -141,20 +152,31 @@ Total paid                   £4,250.00</div>
 
     <!-- 4 -->
     <section class="frame">
-      <div class="step">4 · Confirm</div>
-      <h2>Is this right?</h2>
-      <p class="note">Filled from both documents. Confirm each line, or mark it wrong.</p>
+      <div class="step">4 · Confirm or edit</div>
+      <h2>Check each detail</h2>
+      <div class="count"><strong>7 of 8 details found</strong> · 3 confirmed</div>
+      <div class="bar"><i style="width: 87%"></i></div>
       <ul class="fields">
-        <li class="row3"><span class="k">Name</span><span class="v local">Jane Smith</span><span class="act"><b class="yes">✓</b></span></li>
-        <li class="row3"><span class="k">Date of birth</span><span class="v local">03/02/1990</span><span class="act"><b class="yes">✓</b></span></li>
-        <li class="row3"><span class="k">Clinic / provider</span><span class="v ai">London Fertility Centre</span><span class="act"><b class="yes">✓</b></span></li>
-        <li class="row3"><span class="k">Treatment</span><span class="v ai">IVF – egg collection</span><span class="act"><b class="yes">✓</b></span></li>
-        <li class="row3"><span class="k">Treatment date</span><span class="v ai">12/08/2026</span><span class="act"><b class="no">✗ Wrong</b></span></li>
-        <li class="row3"><span class="k">Medication</span><span class="v ai">Gonal-f 900 IU × 2</span><span class="act"><b class="yes">✓</b></span></li>
-        <li class="row3"><span class="k">Amount paid</span><span class="v ai">£4,250.00</span><span class="act"><b class="yes">✓</b></span></li>
-        <li class="row3"><span class="k">Invoice no.</span><span class="v miss">Not found</span><span class="act"><b class="no">Add</b></span></li>
+        <li class="confirm done"><span class="k">Name</span><span class="v local">Jane Smith</span>
+          <span class="acts"><span class="ok">✓ Confirmed</span><span class="link">Edit</span></span></li>
+        <li class="confirm done"><span class="k">Date of birth</span><span class="v local">03/02/1990</span>
+          <span class="acts"><span class="ok">✓ Confirmed</span><span class="link">Edit</span></span></li>
+        <li class="confirm done"><span class="k">Clinic / provider</span><span class="v ai">London Fertility Centre</span>
+          <span class="acts"><span class="ok">✓ Confirmed</span><span class="link">Edit</span></span></li>
+        <li class="confirm todo"><span class="k">Treatment</span><span class="v ai">IVF – egg collection</span>
+          <span class="acts"><span class="b primary">Confirm</span><span class="b">Edit</span></span></li>
+        <li class="confirm editing"><span class="k">Treatment date</span><span class="v ai">12/08/2026</span>
+          <span class="acts"><span class="b primary">Confirm</span><span class="b active">Edit</span></span></li>
+        <li class="confirm todo"><span class="k">Medication</span><span class="v ai">Gonal-f 900 IU × 2</span>
+          <span class="acts"><span class="b primary">Confirm</span><span class="b">Edit</span></span></li>
+        <li class="confirm todo"><span class="k">Amount paid</span><span class="v ai">£4,250.00</span>
+          <span class="acts"><span class="b primary">Confirm</span><span class="b">Edit</span></span></li>
+        <li class="confirm missing"><span class="k">Invoice no.</span><span class="v miss">Missing</span>
+          <span class="hint">Usually at the top of the clinic invoice.</span>
+          <span class="acts"><span class="b">Upload document</span><span class="b">Type it in</span></span></li>
       </ul>
-      <span class="btn">All correct →</span>
+      <span class="btn disabled">1 detail missing · 4 to confirm</span>
+      <p class="note">Edit opens step 5. Submit unlocks once every detail is present and confirmed.</p>
     </section>
 
     <!-- 5 -->
