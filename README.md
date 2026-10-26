@@ -15,7 +15,7 @@ Case study presentation as a browser-based JavaScript app. Plain ES modules with
 ## Prototype: document upload
 
 1. The patient uploads one or more documents (photos or PDFs). They're read on the device: PDFs via their text layer, photos and scans via Tesseract OCR (`prototype/ocr.js`).
-2. The patient's name and date of birth are matched against their (demo) profile, tolerant of formats and OCR slips; other identifiers (NHS/patient numbers, email, phone, postcode, street address) are caught by pattern. All are replaced with placeholders (`prototype/identifiers.js`). The patient sees exactly the text that will be sent.
+2. The patient's name and date of birth are matched against their (demo) profile, tolerant of formats and OCR slips; other identifiers (NHS/patient numbers, email, phone, postcode, street address) are caught by pattern. All are replaced with placeholders (`prototype/identifiers.js`). This happens automatically and isn't shown to the patient; the prototype shows it in a "Behind the scenes" panel beside the patient's screen, to explain the GDPR side.
 3. Only that anonymised text goes to Claude, through the `claude-proxy` Edge Function, with a JSON schema so the answer always has the same shape (`prototype/extract.js`).
 4. Results from all documents merge into one list (`prototype/fields.js` defines the fields, currently assumed). Each detail is confirmed or edited one by one. A missing or wrong detail can be fixed by uploading another document, or by typing it in and choosing which uploaded document shows it; typed values are flagged as manual on the claim.
 

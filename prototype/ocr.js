@@ -42,6 +42,7 @@ async function readPdf(file, progress) {
   pdfjs.GlobalWorkerOptions.workerSrc = vendor('pdfjs/pdf.worker.min.mjs');
   const pdf = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
   const pages = [];
+  let usedOcr = false;
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const content = await page.getTextContent();
@@ -55,19 +56,20 @@ async function readPdf(file, progress) {
       await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
       onProgress = (p) => progress((i - 1 + p) / pdf.numPages);
       text = await ocrImage(canvas);
+      usedOcr = true;
     }
     pages.push(text);
     progress(i / pdf.numPages);
   }
-  return pages.join('\n\n');
+  return { text: pages.join('\n\n'), method: usedOcr ? 'OCR of scanned PDF' : 'PDF text layer' };
 }
 
-/** @returns {Promise<string>} */
+/** @returns {Promise<{ text: string, method: string }>} */
 export async function readDocument(file, progress = () => {}) {
   progress(0);
   if (file.type === 'application/pdf') return readPdf(file, progress);
   onProgress = progress;
   const text = await ocrImage(file);
   progress(1);
-  return text;
+  return { text, method: 'OCR (Tesseract)' };
 }

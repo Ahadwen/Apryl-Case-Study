@@ -15,7 +15,7 @@ const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03' };
 
 const state = {
   profile: { ...DEFAULT_PROFILE },
-  docs: [],          // { id, file, name, status, progress, text, anon, result, error, target, targetMiss, showText }
+  docs: [],          // { id, file, name, status, progress, text, method, anon, result, error, target, targetMiss }
   overrides: {},     // key -> { value, source: 'manual' | 'document', docId }
   confirmed: {},     // key -> signature of the value that was confirmed
   sheet: null,       // { key } or { profile: true }
@@ -77,7 +77,7 @@ let reading = false;
 
 function addFiles(files, target = null) {
   for (const file of files) {
-    const doc = { id: nextId++, file, name: file.name, status: 'queued', progress: 0, target, showText: true };
+    const doc = { id: nextId++, file, name: file.name, status: 'queued', progress: 0, target };
     state.docs.push(doc);
     queue.push(doc);
   }
@@ -85,7 +85,8 @@ function addFiles(files, target = null) {
   pump();
 }
 
-// Tesseract runs one recognition at a time, so documents are read in order.
+// Tesseract runs one recognition at a time, so documents are read in order. Each one is anonymised
+// and sent for analysis as soon as it's read; the patient never has to do anything in between.
 async function pump() {
   if (reading) return;
   reading = true;
@@ -95,15 +96,15 @@ async function pump() {
     doc.status = 'reading';
     render();
     try {
-      doc.text = await readDocument(doc.file, (p) => { doc.progress = p; renderSoon(); });
+      ({ text: doc.text, method: doc.method } = await readDocument(doc.file, (p) => { doc.progress = p; renderSoon(); }));
       doc.anon = anonymise(doc.text, state.profile);
-      doc.status = 'ready';
+      analyse(doc);
     } catch (e) {
       console.error(e);
       doc.status = 'error';
-      doc.error = `Couldn't read this file. ${e.message ?? ''}`;
+      doc.error = `We couldn't read this file. Try a clearer photo or a PDF.`;
+      render();
     }
-    render();
   }
   reading = false;
 }
@@ -115,7 +116,6 @@ async function analyse(doc) {
   try {
     doc.result = await extractFields(doc.anon.redacted);
     doc.status = 'done';
-    doc.showText = false;
     if (doc.target) {
       const field = FIELDS.find((f) => f.key === doc.target);
       const value = docValue(doc, field);
@@ -125,7 +125,7 @@ async function analyse(doc) {
   } catch (e) {
     console.error(e);
     doc.status = 'error';
-    doc.error = `Analysis failed: ${e.message}`;
+    doc.error = e.message;
   }
   render();
 }
@@ -162,6 +162,7 @@ function redactedHtml(text) {
   return esc(text).replace(/\[(NAME|DOB|ID|EMAIL|PHONE|POSTCODE|ADDRESS)\]/g, '<span class="red">$1</span>');
 }
 
+// What the patient sees: progress and what each document added. No redaction details.
 function docCard(doc) {
   const head = `
     <div class="doc-head">
@@ -169,43 +170,56 @@ function docCard(doc) {
       <button class="link" data-action="remove-doc" data-id="${doc.id}">Remove</button>
     </div>`;
   const target = doc.target ? `<p class="small muted">Uploaded for: ${esc(FIELDS.find((f) => f.key === doc.target).label)}</p>` : '';
-
-  if (doc.status === 'queued' || doc.status === 'reading') {
-    return `<div class="doc">${head}${target}
-      <p class="small">Reading your document… ${Math.round(doc.progress * 100)}%</p>
-      <div class="bar"><i style="width:${doc.progress * 100}%"></i></div>
-      <p class="small muted">This happens on your device. The file isn't uploaded.</p></div>`;
-  }
-  if (doc.status === 'error' && !doc.anon) {
-    return `<div class="doc">${head}<p class="small warn">${esc(doc.error)}</p></div>`;
-  }
-
-  const { found, other } = doc.anon;
-  const foundLine = found.name || found.dob
-    ? `<p class="small">Found on this document: ${found.name ? '<span class="tick">✓ your name</span>' : ''} ${found.dob ? '<span class="tick">✓ your date of birth</span>' : ''}${other ? ` · ${other} other personal detail${other > 1 ? 's' : ''} removed` : ''}</p>`
-    : `<p class="small warn">We couldn't find your name or date of birth on this document. Check it's yours.${other ? ` (${other} personal detail${other > 1 ? 's' : ''} removed)` : ''}</p>`;
-
-  const textBox = doc.showText ? `
-      <p class="small muted">${doc.status === 'done' ? 'What we sent' : 'This is the only text we send for analysis'}:</p>
-      <pre class="redacted">${redactedHtml(doc.anon.redacted.trim())}</pre>` : '';
-
   let body = '';
-  if (doc.status === 'ready') {
-    body = `${textBox}<button class="btn primary" data-action="analyse" data-id="${doc.id}">Send for analysis</button>`;
+  if (doc.status === 'queued' || doc.status === 'reading') {
+    body = `<p class="small">Reading your document… ${Math.round(doc.progress * 100)}%</p>
+      <div class="bar"><i style="width:${doc.progress * 100}%"></i></div>`;
   } else if (doc.status === 'analysing') {
-    body = `${textBox}<p class="small">Analysing…</p><div class="bar"><i class="indeterminate"></i></div>`;
+    body = '<p class="small">Finding your details…</p><div class="bar"><i class="indeterminate"></i></div>';
   } else if (doc.status === 'error') {
-    body = `${textBox}<p class="small warn">${esc(doc.error)}</p><button class="btn" data-action="analyse" data-id="${doc.id}">Try again</button>`;
+    body = `<p class="small warn">${doc.anon ? "Something went wrong reading the details from this document." : esc(doc.error)}</p>
+      ${doc.anon ? `<button class="btn sm" data-action="analyse" data-id="${doc.id}">Try again</button>` : ''}`;
   } else if (doc.status === 'done') {
-    const added = FIELDS.filter((f) => f.source === 'claude' && doc.result[f.key] !== undefined).map((f) => f.label);
+    const added = FIELDS.filter((f) => docValue(doc, f) !== undefined).map((f) => f.label);
+    const notYours = !doc.anon.found.name && !doc.anon.found.dob;
     body = `
-      <p class="small">${added.length ? `Details on this document: ${esc(added.join(', '))}` : "We couldn't find any claim details on this document."}</p>
+      <p class="small">${added.length ? `<span class="tick">✓</span> ${esc(added.join(', '))}` : "We couldn't find any claim details on this document."}</p>
+      ${notYours ? '<p class="small warn">We couldn\'t find your name or date of birth on this document. Check it\'s yours.</p>' : ''}
       ${doc.targetMiss ? `<p class="small warn">We couldn't find the ${esc(doc.targetMiss.toLowerCase())} on this document either.</p>` : ''}
-      ${doc.result.readability_issues ? `<p class="small warn">Hard to read: ${esc(doc.result.readability_issues)}</p>` : ''}
-      ${textBox}
-      <button class="link" data-action="toggle-text" data-id="${doc.id}">${doc.showText ? 'Hide' : 'Show'} what we sent</button>`;
+      ${doc.result.readability_issues ? '<p class="small warn">Parts of this document were hard to read. A clearer photo may help.</p>' : ''}`;
   }
-  return `<div class="doc">${head}${target}${foundLine}${body}</div>`;
+  return `<div class="doc">${head}${target}${body}</div>`;
+}
+
+// The prototype's explainer, beside the patient's screen: what happens to each document.
+function backstage() {
+  const docs = state.docs.filter((d) => d.status !== 'queued');
+  const step = (n, title, content) => `<div class="bs-step"><span class="bs-n">${n}</span><div><strong>${title}</strong>${content}</div></div>`;
+  const cards = docs.map((doc) => {
+    if (!doc.anon) {
+      return `<div class="bs-doc"><div class="bs-name">${esc(doc.name)}</div>
+        ${step(1, 'Read on the device', `<p>${doc.status === 'error' ? esc(doc.error) : `${Math.round(doc.progress * 100)}%…`}</p>`)}</div>`;
+    }
+    const counts = {};
+    for (const [, label] of doc.anon.redacted.matchAll(/\[([A-Z]+)\]/g)) counts[label] = (counts[label] ?? 0) + 1;
+    const removed = Object.entries(counts).map(([label, n]) => `<span class="red">${label}</span>${n > 1 ? ` ×${n}` : ''}`).join(' ');
+    const matched = `Name ${doc.anon.found.name ? '✓ matched' : '✗ not found'} · Date of birth ${doc.anon.found.dob ? '✓ matched' : '✗ not found'}`;
+    let returned = '<p>Waiting…</p>';
+    if (doc.status === 'done') returned = `<pre class="json">${esc(JSON.stringify(doc.result, null, 2))}</pre>`;
+    if (doc.status === 'error') returned = `<p class="warn">${esc(doc.error)}</p>`;
+    return `<div class="bs-doc"><div class="bs-name">${esc(doc.name)}</div>
+      ${step(1, 'Read on the device', `<p>${esc(doc.method)}. The file itself is never uploaded.</p>`)}
+      ${step(2, 'Identifiers matched and removed in the browser', `<p>${matched} (against the patient's profile)</p><p>Removed: ${removed || 'nothing'}</p>`)}
+      ${step(3, 'Sent to Claude: anonymised text only', `<pre class="redacted">${redactedHtml(doc.anon.redacted.trim())}</pre>`)}
+      ${step(4, 'Returned: fixed JSON shape', returned)}
+    </div>`;
+  }).join('');
+  return `
+    <aside class="backstage">
+      <div class="bs-head"><h2>Behind the scenes</h2><span class="bs-badge">Not shown to the patient</span></div>
+      <p class="small">GDPR data minimisation: documents are read on the patient's device, their name, date of birth and other identifiers are removed there, and only the anonymised text is sent for analysis. Name and date of birth are filled in from the patient's own account, never from the model.</p>
+      ${cards || '<p class="small muted">Upload a document (or a sample) to see what happens to it.</p>'}
+    </aside>`;
 }
 
 function fieldRow(field) {
@@ -320,14 +334,14 @@ function render() {
     Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))} <span class="link">Change</span></button>`;
 
   if (state.submitted) {
-    app.innerHTML = `<header class="top"><h1>Claim reimbursement</h1>${profile}</header><main class="single">${submittedView()}</main>`;
+    app.innerHTML = `<main class="layout"><div class="patient"><header class="top"><h1>Claim reimbursement</h1>${profile}</header>${submittedView()}</div>${backstage()}</main>`;
     return;
   }
 
   app.innerHTML = `
-    <header class="top"><h1>Claim reimbursement</h1>${profile}</header>
     <main class="layout">
-      <div class="col">
+      <div class="patient">
+        <header class="top"><h1>Claim reimbursement</h1>${profile}</header>
         <section class="card">
           <h2>Upload your documents</h2>
           <p class="lead">We need the details listed under <em>Your details</em>. <strong>They don't have to be on one document</strong>: upload as many as you need, and we'll combine them into one claim.</p>
@@ -337,12 +351,12 @@ function render() {
             <strong>${state.docs.length ? 'Add another document' : 'Choose photos or PDFs'}</strong>
             <span class="small muted">or drop them here</span>
           </button>
-          <p class="small muted">Your documents are read on this device. Your name, date of birth and other personal details are removed before anything is sent for analysis.</p>
           <p class="small samples">No documents to hand? Try a sample: ${SAMPLES.map((s, i) => `<button class="link" data-action="sample" data-i="${i}">${esc(s.label)}</button>`).join(' · ')}</p>
         </section>
         ${state.docs.length ? `<section class="docs">${state.docs.map(docCard).join('')}</section>` : ''}
+        ${detailsPanel()}
       </div>
-      <div class="col">${detailsPanel()}</div>
+      ${backstage()}
     </main>
     ${sheet()}`;
 }
@@ -385,7 +399,6 @@ app.addEventListener('click', (e) => {
     case 'sample': return loadSample(SAMPLES[Number(el.dataset.i)]);
     case 'remove-doc': return removeDoc(Number(id));
     case 'analyse': return analyse(doc);
-    case 'toggle-text': doc.showText = !doc.showText; return render();
     case 'confirm': state.confirmed[key] = signature(resolve(field)); return render();
     case 'edit':
     case 'type-in': state.sheet = { key }; return render();
