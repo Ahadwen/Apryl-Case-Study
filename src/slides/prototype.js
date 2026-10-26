@@ -1,19 +1,12 @@
-// The document upload prototype, live inside the slide. It's its own page (prototype/) so it can
-// also be opened full screen or on a phone.
+// The document upload prototype as a slide of its own: it fills the window at its natural size
+// (fullBleed), rather than being scaled into the 16:9 stage. It's a separate page (prototype/)
+// so it can also be used directly, e.g. on a phone.
 export default {
   id: 'prototype',
   title: 'Prototype',
   className: 'is-prototype',
+  fullBleed: true,
   render(el) {
-    el.innerHTML = `
-      <div class="proto-head">
-        <div>
-          <div class="eyebrow">Prototype</div>
-          <h2>Document upload</h2>
-        </div>
-        <a class="proto-open" href="prototype/" target="_blank" rel="noopener">Open full screen ↗</a>
-      </div>
-      <iframe class="proto-frame" src="prototype/" title="Document upload prototype"></iframe>
-    `;
+    el.innerHTML = `<iframe class="proto-frame" src="prototype/" title="Document upload prototype"></iframe>`;
   },
 };

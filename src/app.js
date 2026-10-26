@@ -3,6 +3,7 @@ import { countVisit } from './visits.js';
 
 // Slides render into a fixed 1280x720 stage that is scaled to fit the window,
 // so layouts look identical on a laptop, a projector, or a shared screen.
+// A slide with fullBleed: true (the live prototype) fills the window at its natural size instead.
 const STAGE_W = 1280;
 const STAGE_H = 720;
 
@@ -10,18 +11,20 @@ const app = document.getElementById('app');
 app.innerHTML = `
   <div class="viewport">
     <div class="stage"></div>
+    <div class="full"></div>
   </div>
-  <nav class="hud">
-    <span class="hud-count"></span>
-    <button class="hud-btn" data-dir="-1" aria-label="Previous slide">&larr;</button>
-    <button class="hud-btn" data-dir="1" aria-label="Next slide">&rarr;</button>
-  </nav>
+  <button class="nav-btn prev" data-dir="-1" aria-label="Previous slide"></button>
+  <button class="nav-btn next" data-dir="1" aria-label="Next slide"></button>
+  <div class="hud"><span class="hud-count"></span></div>
   <div class="progress"><div class="progress-bar"></div></div>
 `;
 
 const stage = app.querySelector('.stage');
+const full = app.querySelector('.full');
 const count = app.querySelector('.hud-count');
 const bar = app.querySelector('.progress-bar');
+const prev = app.querySelector('.nav-btn.prev');
+const next = app.querySelector('.nav-btn.next');
 
 let current = -1;
 let cleanup = null;
@@ -40,12 +43,17 @@ function show(index) {
   const slide = slides[index];
   const el = document.createElement('section');
   el.className = `slide ${slide.className ?? ''}`.trim();
-  stage.replaceChildren(el);
+  stage.replaceChildren();
+  full.replaceChildren();
+  (slide.fullBleed ? full : stage).append(el);
+  app.classList.toggle('is-full', Boolean(slide.fullBleed));
   // A slide's render() may return a cleanup function (timers, listeners, etc).
   cleanup = slide.render(el);
 
   count.textContent = `${index + 1} / ${slides.length}`;
   bar.style.width = `${((index + 1) / slides.length) * 100}%`;
+  prev.disabled = index === 0;
+  next.disabled = index === slides.length - 1;
   document.title = `${slide.title} · Apryl Case Study`;
   history.replaceState(null, '', `#${slide.id}`);
 }
@@ -69,7 +77,13 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
 });
 
-app.querySelectorAll('.hud-btn').forEach((btn) =>
+// An embedded prototype (iframe) has the keyboard while it's focused, so it forwards ← / → here.
+window.addEventListener('message', (e) => {
+  if (e.origin !== location.origin || typeof e.data?.deckNav !== 'number') return;
+  show(current + e.data.deckNav);
+});
+
+app.querySelectorAll('.nav-btn').forEach((btn) =>
   btn.addEventListener('click', () => show(current + Number(btn.dataset.dir)))
 );
 

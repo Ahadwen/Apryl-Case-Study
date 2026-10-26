@@ -535,6 +535,11 @@ app.addEventListener('toggle', (e) => {
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && state.preview != null) { state.preview = null; render(); }
+  // Embedded in the deck: hand ← / → back to it, unless the patient is typing or a dialog is open.
+  if (window.parent !== window && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')
+      && !e.target.closest('input, textarea, select') && !state.sheet && state.preview == null) {
+    window.parent.postMessage({ deckNav: e.key === 'ArrowRight' ? 1 : -1 }, location.origin);
+  }
 });
 
 app.addEventListener('change', (e) => {
