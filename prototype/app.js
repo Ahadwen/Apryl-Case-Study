@@ -21,6 +21,7 @@ const state = {
   confirmed: {},     // key -> signature of the value that was confirmed
   sheet: null,       // { key } or { profile: true }
   preview: null,     // index into SAMPLES while a sample is shown full size
+  collapsed: new Set(), // behind-the-scenes panels the viewer has closed
   submitted: null,
 };
 
@@ -231,21 +232,27 @@ function crossCheck() {
       <td>${seen.map((x) => `<div><span class="muted">${esc(docLabel(x.doc))}:</span> ${esc(formatValue(field, x.value))}</div>`).join('')}</td>
       <td><span class="verdict ${cls}">${text}</span></td></tr>`);
   }
-  return `<div class="bs-doc">
-    <div class="bs-name">Cross-document check</div>
+  return panel('xcheck', 'Cross-document check', `
     <p class="small">Details that appear on more than one document are compared, ignoring formatting. A real difference is flagged to the patient and recorded on the claim for the reviewer; "expected" means documents legitimately differ, e.g. pharmacy vs clinic.</p>
-    ${rows.length ? `<table class="xcheck"><tr><th>Detail</th><th>Values</th><th>Result</th></tr>${rows.join('')}</table>` : '<p class="small muted">No detail appears on more than one document yet.</p>'}
-  </div>`;
+    ${rows.length ? `<table class="xcheck"><tr><th>Detail</th><th>Values</th><th>Result</th></tr>${rows.join('')}</table>` : '<p class="small muted">No detail appears on more than one document yet.</p>'}`);
+}
+
+// A collapsible white panel. Open/closed is kept in state, since every render rebuilds the DOM.
+function panel(key, title, body) {
+  return `<details class="bs-doc" data-panel="${key}" ${state.collapsed.has(key) ? '' : 'open'}>
+    <summary class="bs-name">${title}</summary>
+    <div class="bs-body">${body}</div>
+  </details>`;
 }
 
 // The prototype's explainer, beside the patient's screen: what happens to each document.
 function backstage() {
   const docs = state.docs.filter((d) => d.status !== 'queued');
   const step = (n, title, content) => `<div class="bs-step"><span class="bs-n">${n}</span><div><strong>${title}</strong>${content}</div></div>`;
+  const title = (doc) => `${esc(docLabel(doc))} <span class="small muted">· ${esc(doc.name)}</span>`;
   const cards = docs.map((doc) => {
     if (!doc.anon) {
-      return `<div class="bs-doc"><div class="bs-name">${esc(docLabel(doc))} <span class="small muted">· ${esc(doc.name)}</span></div>
-        ${step(1, 'Read on the device', `<p>${doc.status === 'error' ? esc(doc.error) : `${Math.round(doc.progress * 100)}%…`}</p>`)}</div>`;
+      return panel(`doc-${doc.id}`, title(doc), step(1, 'Read on the device', `<p>${doc.status === 'error' ? esc(doc.error) : `${Math.round(doc.progress * 100)}%…`}</p>`));
     }
     const counts = {};
     for (const [, label] of doc.anon.redacted.matchAll(/\[([A-Z]+)\]/g)) counts[label] = (counts[label] ?? 0) + 1;
@@ -254,25 +261,21 @@ function backstage() {
     let returned = '<p>Waiting…</p>';
     if (doc.status === 'done') returned = `<pre class="json">${esc(JSON.stringify(doc.result, null, 2))}</pre>`;
     if (doc.status === 'error') returned = `<p class="warn">${esc(doc.error)}</p>`;
-    return `<div class="bs-doc"><div class="bs-name">${esc(docLabel(doc))} <span class="small muted">· ${esc(doc.name)}</span></div>
+    return panel(`doc-${doc.id}`, title(doc), `
       ${step(1, 'Read on the device', `<p>${esc(doc.method)}. The file itself is never uploaded.</p>`)}
       ${step(2, 'Identifiers matched and removed in the browser', `<p>${matched} (against the patient's profile)</p><p>Removed: ${removed || 'nothing'}</p>`)}
       ${step(3, 'Sent to Claude: anonymised text only', `<pre class="redacted">${redactedHtml(doc.anon.redacted.trim())}</pre>`)}
-      ${step(4, 'Returned: fixed JSON shape', returned)}
-    </div>`;
+      ${step(4, 'Returned: fixed JSON shape', returned)}`);
   }).join('');
   return `
     <aside class="backstage">
       <div class="bs-head"><h2>Behind the scenes</h2><span class="bs-badge">Not shown to the patient</span></div>
-      ${state.submitted ? `<div class="bs-doc">
-        <div class="bs-name">Claim record: what a reviewer receives</div>
+      ${state.submitted ? panel('claim', 'Claim record: what a reviewer receives', `
         ${state.submitted.flags.length
           ? `<p class="small"><strong class="warn">${state.submitted.flags.length} flag${state.submitted.flags.length > 1 ? 's' : ''} for the reviewer:</strong></p><ul class="small flags">${state.submitted.flags.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>`
           : '<p class="small">No flags: every detail was read from a document and the documents agree.</p>'}
-        <pre class="json">${esc(JSON.stringify(state.submitted, null, 2))}</pre>
-      </div>` : ''}
-      <div class="bs-doc">
-        <div class="bs-name">Try it</div>
+        <pre class="json">${esc(JSON.stringify(state.submitted, null, 2))}</pre>`) : ''}
+      ${panel('try', 'Try it', `
         <p class="small">Upload your own documents on the left, or use a sample (all details invented):</p>
         <div class="samples">${SAMPLES.map((smp, i) => `
           <div class="sample">
@@ -282,8 +285,7 @@ function backstage() {
           </div>`).join('')}
         </div>
         <p class="small">Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))} <button class="link" data-action="profile">Change</button><br>
-          <span class="muted">In the real app the patient is signed in. Change this to try documents with another name on them.</span></p>
-      </div>
+          <span class="muted">In the real app the patient is signed in. Change this to try documents with another name on them.</span></p>`)}
       <p class="small">GDPR data minimisation: documents are read on the patient's device, their name, date of birth and other identifiers are removed there, and only the anonymised text is sent for analysis. Name and date of birth are filled in from the patient's own account, never from the model.</p>
       ${cards || '<p class="small muted">Upload a document (or a sample) to see what happens to it.</p>'}
       ${crossCheck()}
@@ -517,6 +519,14 @@ app.addEventListener('submit', (e) => {
   state.sheet = null;
   render();
 });
+
+// <details> toggle events don't bubble, so listen in the capture phase.
+app.addEventListener('toggle', (e) => {
+  const key = e.target.dataset?.panel;
+  if (!key) return;
+  if (e.target.open) state.collapsed.delete(key);
+  else state.collapsed.add(key);
+}, true);
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && state.preview != null) { state.preview = null; render(); }

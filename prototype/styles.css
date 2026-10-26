@@ -72,8 +72,13 @@ button { font: inherit; color: inherit; }
 .bs-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
 .bs-head h2 { margin: 0; }
 .bs-badge { font-size: 12px; font-weight: 600; color: #3b4a5e; border: 1px solid #9aa4b2; border-radius: 999px; padding: 1px 10px; background: #fff; }
-.bs-doc { background: var(--surface); border-radius: 10px; padding: 12px; display: grid; gap: 10px; }
-.bs-name { font-weight: 600; overflow-wrap: anywhere; }
+.bs-doc { background: var(--surface); border-radius: 10px; padding: 12px; }
+.bs-name { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; list-style: none; display: flex; gap: 8px; align-items: baseline; }
+.bs-name::-webkit-details-marker { display: none; }
+.bs-name::before { content: '▸'; color: var(--muted); font-size: 12px; transition: transform 0.15s; }
+details[open] > .bs-name::before { transform: rotate(90deg); }
+.bs-body { display: grid; gap: 10px; margin-top: 10px; }
+.bs-name .small { font-weight: 400; }
 .bs-step { display: grid; grid-template-columns: 24px 1fr; gap: 8px; font-size: 13px; }
 .bs-step > div { min-width: 0; }
 .bs-step p { margin: 2px 0 0; }
