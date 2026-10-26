@@ -264,6 +264,13 @@ function backstage() {
   return `
     <aside class="backstage">
       <div class="bs-head"><h2>Behind the scenes</h2><span class="bs-badge">Not shown to the patient</span></div>
+      ${state.submitted ? `<div class="bs-doc">
+        <div class="bs-name">Claim record: what a reviewer receives</div>
+        ${state.submitted.flags.length
+          ? `<p class="small"><strong class="warn">${state.submitted.flags.length} flag${state.submitted.flags.length > 1 ? 's' : ''} for the reviewer:</strong></p><ul class="small flags">${state.submitted.flags.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>`
+          : '<p class="small">No flags: every detail was read from a document and the documents agree.</p>'}
+        <pre class="json">${esc(JSON.stringify(state.submitted, null, 2))}</pre>
+      </div>` : ''}
       <div class="bs-doc">
         <div class="bs-name">Try it</div>
         <p class="small">Upload your own documents on the left, or use a sample (all details invented):</p>
@@ -389,18 +396,17 @@ function sheet() {
 
 function submittedView() {
   const claim = state.submitted;
+  const manual = Object.values(claim.details).filter((d) => d.source === 'manual').length;
   const rows = FIELDS.map((f) => {
     const c = claim.details[f.key];
-    return `<li class="row"><span class="k">${esc(f.label)}</span><span class="v ${c.source === 'manual' ? 'manual' : ''}">${esc(formatValue(f, c.value))}${c.source === 'manual' ? ' <span class="flag">Manual</span>' : ''}</span><span class="from">from ${esc(c.document)}</span></li>`;
+    return `<li class="row"><span class="k">${esc(f.label)}</span><span class="v ${c.source === 'manual' ? 'manual' : ''}">${esc(formatValue(f, c.value))}${c.source === 'manual' ? ' <span class="flag">Manual</span>' : ''}</span><span class="from">${c.source === 'manual' ? 'you said it\'s shown on' : 'from'} ${esc(c.document)}</span></li>`;
   }).join('');
   return `
     <section class="card">
       <h2>Claim submitted</h2>
-      <p>Thanks. We'll review your claim and let you know.${claim.flags.length ? ` ${claim.flags.length} detail${claim.flags.length > 1 ? 's were' : ' was'} entered manually, so ${claim.flags.length > 1 ? 'they' : 'it'} may be checked against your documents.` : ''}</p>
+      <p>Thanks. We'll review your claim and let you know.${manual ? ` ${manual} detail${manual > 1 ? 's were' : ' was'} entered manually, so ${manual > 1 ? 'they' : 'it'} may be checked against your documents.` : ''}</p>
       <ul class="fields">${rows}</ul>
-      <p class="small muted">The claim record (what a reviewer receives):</p>
-      <pre class="json">${esc(JSON.stringify(claim, null, 2))}</pre>
-      <button class="btn" data-action="restart">Start again</button>
+      <button class="btn" data-action="restart">Start a new claim</button>
     </section>`;
 }
 

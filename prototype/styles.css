@@ -258,3 +258,6 @@ input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1p
   box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
 }
 @media (max-width: 640px) { .lightbox .x { top: 6px; right: 6px; } }
+.flags { margin: 0; padding-left: 18px; }
+.flags li + li { margin-top: 2px; }
+.backstage .json { max-height: 360px; }
