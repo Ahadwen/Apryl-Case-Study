@@ -62,6 +62,15 @@
     .hint { font-size: 12px; color: var(--muted); }
     .count { font-size: 13px; }
     .btn.disabled { border-color: var(--line); color: var(--muted); }
+    .attention { display: grid; gap: 4px; background: #fff7ed; border: 1.5px solid #b45309; border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+    .attention strong { color: #b45309; }
+    .lbl { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+    .lbl .input, .select { color: var(--ink); font-size: 14px; }
+    .select { display: flex; justify-content: space-between; border: 1.5px solid var(--ink); border-radius: 6px; padding: 6px 10px; }
+    .req { font-size: 11px; color: #b45309; }
+    .opts-list { display: grid; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; margin-top: -8px; }
+    .opts-list span { padding: 4px 10px; }
+    .opts-list span:first-child { background: var(--fill); }
     .questions { margin-top: 28px; max-width: 80ch; }
     .questions h2 { margin-bottom: 8px; }
     .questions li + li { margin-top: 6px; }
@@ -69,7 +78,7 @@
 </head>
 <body>
   <h1>Document upload: wireframe</h1>
-  <p class="intro">Five states of one page. Identifiers are found and removed in the browser; only the anonymised text goes to Claude, which returns a fixed JSON shape that fills in the rest of the list. The patient then confirms or edits each detail, fixing it by re-uploading a clearer photo or typing it in (typed values are flagged on the claim).</p>
+  <p class="intro">Five states of one page. Identifiers are found and removed in the browser; only the anonymised text goes to Claude, which returns a fixed JSON shape that fills in the rest of the list. The patient then confirms or edits each detail, fixing it by uploading a clearer or extra document, or by typing it in and choosing which uploaded document shows it (typed values are flagged on the claim).</p>
 
   <div class="legend">
     <span style="--c: var(--ok)">Filled in the browser (identifiers)</span>
@@ -181,32 +190,30 @@ Total paid                   £4,250.00</div>
 
     <!-- 5 -->
     <section class="frame">
-      <div class="step">5 · Fix a detail</div>
-      <h2>Treatment date is wrong</h2>
-      <div class="choice">
-        <div class="opt"><strong>Upload a clearer photo</strong><span class="muted">Retake or add the page that shows the date. We'll read it again.</span></div>
-        <div class="opt"><strong>Type it in</strong>
-          <div class="input">12/09/2026</div>
-          <span class="flag">Entered manually</span> <span class="muted">This is noted on your claim and may be checked.</span>
-        </div>
+      <div class="step">5 · Type it in</div>
+      <h2>Invoice number</h2>
+      <div class="attention">
+        <strong>⚠ This must be shown on one of your documents</strong>
+        <span>Your claim can only include details we can see on a document. If it's on one you've already uploaded, type it below and tell us which one. If not, upload a document that shows it.</span>
       </div>
-      <p>Your claim:</p>
+      <label class="lbl">Invoice number<div class="input">LFC-20931</div></label>
+      <label class="lbl">Which document shows this? <span class="req">required</span>
+        <div class="select"><span>invoice-lfc.pdf</span><span>▾</span></div>
+      </label>
+      <div class="opts-list">
+        <span>invoice-lfc.pdf</span><span>prescription.jpg</span>
+      </div>
+      <div class="acts"><span class="b primary">Save</span><span class="b">Upload a document instead</span></div>
+      <p class="note">Same screen when Edit is used to correct a wrong value.</p>
+      <p>On the claim:</p>
       <ul class="fields">
-        <li><span class="k">Treatment date</span><span class="v manual">12/09/2026 <span class="flag">Manual</span></span></li>
-        <li><span class="k">Invoice no.</span><span class="v ai">LFC-20931</span></li>
+        <li><span class="k">Invoice no.</span><span class="v manual">LFC-20931 <span class="flag">Manual</span></span></li>
       </ul>
-      <div class="doc">{
-  "treatment_date": {
-    "value": "2026-09-12",
-    "source": "manual"        // flagged
-  },
-  "invoice_number": {
-    "value": "LFC-20931",
-    "source": "document",     // re-uploaded photo
-    "document": "invoice-p2.jpg"
-  }
+      <div class="doc">"invoice_number": {
+  "value": "LFC-20931",
+  "source": "manual",           // flagged
+  "document": "invoice-lfc.pdf" // reviewer checks this one
 }</div>
-      <span class="btn">Submit claim</span>
     </section>
   </div>
 
