@@ -8,8 +8,8 @@ import { extractFields } from './extract.js';
 import { compareValues } from './compare.js';
 
 const SAMPLES = [
-  { file: 'clinic-invoice.pdf', label: 'Clinic invoice (PDF)', type: 'application/pdf' },
-  { file: 'pharmacy-label.jpg', label: 'Prescription label (photo)', type: 'image/jpeg' },
+  { file: 'clinic-invoice.pdf', preview: 'clinic-invoice-preview.png', label: 'Clinic invoice', kind: 'PDF', type: 'application/pdf' },
+  { file: 'pharmacy-label.jpg', preview: 'pharmacy-label.jpg', label: 'Prescription label', kind: 'Photo', type: 'image/jpeg' },
 ];
 
 const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03' };
@@ -248,6 +248,19 @@ function backstage() {
   return `
     <aside class="backstage">
       <div class="bs-head"><h2>Behind the scenes</h2><span class="bs-badge">Not shown to the patient</span></div>
+      <div class="bs-doc">
+        <div class="bs-name">Try it</div>
+        <p class="small">Upload your own documents on the left, or use a sample (all details invented):</p>
+        <div class="samples">${SAMPLES.map((smp, i) => `
+          <div class="sample">
+            <a href="samples/${smp.file}" target="_blank" rel="noopener" title="View full size"><img src="samples/${smp.preview}" alt="${esc(smp.label)} sample"></a>
+            <div class="small"><strong>${esc(smp.label)}</strong> · ${smp.kind}</div>
+            <button class="btn sm" data-action="sample" data-i="${i}">Use this sample</button>
+          </div>`).join('')}
+        </div>
+        <p class="small">Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))} <button class="link" data-action="profile">Change</button><br>
+          <span class="muted">In the real app the patient is signed in. Change this to try documents with another name on them.</span></p>
+      </div>
       <p class="small">GDPR data minimisation: documents are read on the patient's device, their name, date of birth and other identifiers are removed there, and only the anonymised text is sent for analysis. Name and date of birth are filled in from the patient's own account, never from the model.</p>
       ${cards || '<p class="small muted">Upload a document (or a sample) to see what happens to it.</p>'}
       ${crossCheck()}
@@ -362,8 +375,7 @@ function submittedView() {
 }
 
 function render() {
-  const profile = `<button class="profile" data-action="profile" title="Change demo patient">
-    Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))} <span class="link">Change</span></button>`;
+  const profile = `<span class="profile">Signed in as <strong>${esc(state.profile.name)}</strong></span>`;
 
   if (state.submitted) {
     app.innerHTML = `<main class="layout"><div class="patient"><header class="top"><h1>Claim reimbursement</h1>${profile}</header>${submittedView()}</div>${backstage()}</main>`;
@@ -383,7 +395,6 @@ function render() {
             <strong>${state.docs.length ? 'Add another document' : 'Choose photos or PDFs'}</strong>
             <span class="small muted">or drop them here</span>
           </button>
-          <p class="small samples">No documents to hand? Try a sample: ${SAMPLES.map((s, i) => `<button class="link" data-action="sample" data-i="${i}">${esc(s.label)}</button>`).join(' · ')}</p>
         </section>
         ${state.docs.length ? `<section class="docs">${state.docs.map(docCard).join('')}</section>` : ''}
         ${detailsPanel()}

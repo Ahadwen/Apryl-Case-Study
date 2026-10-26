@@ -1,5 +1,6 @@
 // Generates the prototype's sample documents (all details invented) with Playwright:
 //   prototype/samples/clinic-invoice.pdf  a digital PDF with a text layer
+//   prototype/samples/clinic-invoice-preview.png  an image of the invoice, for the sample thumbnail
 //   prototype/samples/pharmacy-label.jpg  a slightly rotated "photo" of a dispensing label, read by OCR
 // Run: node scripts/make-samples.cjs
 
@@ -65,6 +66,8 @@ const label = `<!doctype html><html><head><style>
   const page = await browser.newPage();
   await page.setContent(invoice);
   await page.pdf({ path: out('clinic-invoice.pdf'), format: 'A4', printBackground: true });
+  await page.setViewportSize({ width: 794, height: 1123 });
+  await page.screenshot({ path: out('clinic-invoice-preview.png') });
   await page.setViewportSize({ width: 900, height: 640 });
   await page.setContent(label);
   await page.screenshot({ path: out('pharmacy-label.jpg'), type: 'jpeg', quality: 82 });
