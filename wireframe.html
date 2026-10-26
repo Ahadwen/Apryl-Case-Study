@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Upload Wireframe</title>
+  <style>
+    :root { --ink: #222; --muted: #777; --line: #bbb; --fill: #f1f1f1; --hi: #fff3b0; --ok: #d9f2dd; --ai: #dbe8ff; --bg: #fafafa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px 16px 48px; background: var(--bg); color: var(--ink); font: 14px/1.45 ui-sans-serif, system-ui, sans-serif; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    .intro { color: var(--muted); margin: 0 0 24px; max-width: 70ch; }
+    .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .frame { background: #fff; border: 2px solid var(--ink); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .step { font: 600 11px/1 ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    h2 { font-size: 16px; margin: 0; }
+    p { margin: 0; }
+    .note { font-size: 12px; color: var(--muted); border-left: 3px solid var(--line); padding-left: 8px; }
+    .box { border: 1.5px dashed var(--line); border-radius: 8px; padding: 12px; }
+    .drop { text-align: center; padding: 28px 12px; color: var(--muted); }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 12px; }
+    ul.fields { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    ul.fields li { display: grid; grid-template-columns: 120px 1fr; gap: 8px; align-items: baseline; }
+    ul.fields .k { color: var(--muted); }
+    .blank { border-bottom: 1.5px solid var(--line); min-height: 1.3em; }
+    .v { padding: 0 4px; border-radius: 3px; }
+    .v.local { background: var(--ok); }
+    .v.ai { background: var(--ai); }
+    .v.miss { color: #b45309; }
+    .doc { background: var(--fill); border-radius: 6px; padding: 10px; font: 12px/1.5 ui-monospace, monospace; white-space: pre-wrap; }
+    .doc mark { background: var(--hi); }
+    .doc .red { background: var(--ink); color: #fff; padding: 0 3px; border-radius: 2px; }
+    .bar { height: 8px; background: var(--fill); border-radius: 4px; overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 60%; background: var(--line); }
+    .btn { align-self: flex-start; border: 1.5px solid var(--ink); border-radius: 6px; padding: 6px 14px; font-weight: 600; background: #fff; }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+    .questions { margin-top: 28px; max-width: 80ch; }
+    .questions h2 { margin-bottom: 8px; }
+    .questions li + li { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Document upload: wireframe</h1>
+  <p class="intro">Four states of one page. Identifiers are found and removed in the browser; only the anonymised text goes to Claude, which returns a fixed JSON shape that fills in the rest of the list.</p>
+
+  <div class="legend">
+    <span style="--c: var(--ok)">Filled in the browser (identifiers)</span>
+    <span style="--c: var(--ai)">Filled by Claude from anonymised text</span>
+    <span style="--c: var(--hi)">Identifier found in the text</span>
+    <span style="--c: var(--ink)">Redacted before sending</span>
+  </div>
+
+  <div class="flow">
+    <!-- 1 -->
+    <section class="frame">
+      <div class="step">1 · Upload</div>
+      <h2>Upload your documents</h2>
+      <p>Any of these work:</p>
+      <div class="chips">
+        <span class="chip">Clinic invoice</span><span class="chip">Receipt</span><span class="chip">Prescription</span>
+        <span class="chip">Drug label</span><span class="chip">Pharmacy receipt</span><span class="chip">Treatment plan</span>
+      </div>
+      <p>Together they should show:</p>
+      <ul class="fields">
+        <li><span class="k">Name</span><span class="blank"></span></li>
+        <li><span class="k">Date of birth</span><span class="blank"></span></li>
+        <li><span class="k">Clinic / provider</span><span class="blank"></span></li>
+        <li><span class="k">Treatment</span><span class="blank"></span></li>
+        <li><span class="k">Treatment date</span><span class="blank"></span></li>
+        <li><span class="k">Medication</span><span class="blank"></span></li>
+        <li><span class="k">Amount paid</span><span class="blank"></span></li>
+        <li><span class="k">Invoice no.</span><span class="blank"></span></li>
+      </ul>
+      <div class="box drop">Drop a photo or PDF here<br>or <u>choose file</u></div>
+    </section>
+
+    <!-- 2 -->
+    <section class="frame">
+      <div class="step">2 · Reading (OCR)</div>
+      <h2>Reading your document…</h2>
+      <div class="bar"><i></i></div>
+      <p class="note">Text recognition runs in the browser; the file doesn't leave the device.</p>
+      <div class="doc">LONDON FERTILITY CENTRE
+Invoice #LFC-20931   Date: 14/09/2026
+
+Patient: <mark>Jane Smith</mark>
+DOB: <mark>03/02/1990</mark>   NHS no: <mark>485 777 3456</mark>
+
+IVF cycle – egg collection   12/09/2026
+Gonal-f 900 IU pen x2
+Total paid                   £4,250.00</div>
+      <p class="note">Identifiers found by matching against the patient's profile (name, DOB) plus patterns (NHS no., phone, email, address).</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="frame">
+      <div class="step">3 · Identifiers + anonymise</div>
+      <h2>We found you on this document</h2>
+      <ul class="fields">
+        <li><span class="k">Name</span><span class="v local">Jane Smith ✓</span></li>
+        <li><span class="k">Date of birth</span><span class="v local">03/02/1990 ✓</span></li>
+        <li><span class="k">Clinic / provider</span><span class="blank"></span></li>
+        <li><span class="k">Treatment</span><span class="blank"></span></li>
+        <li><span class="k">…</span><span class="blank"></span></li>
+      </ul>
+      <p>This is the only text sent for analysis:</p>
+      <div class="doc">LONDON FERTILITY CENTRE
+Invoice #LFC-20931   Date: 14/09/2026
+
+Patient: <span class="red">[NAME]</span>
+DOB: <span class="red">[DOB]</span>   NHS no: <span class="red">[ID]</span>
+
+IVF cycle – egg collection   12/09/2026
+Gonal-f 900 IU pen x2
+Total paid                   £4,250.00</div>
+      <span class="btn">Analyse document →</span>
+    </section>
+
+    <!-- 4 -->
+    <section class="frame">
+      <div class="step">4 · Claude → JSON → list</div>
+      <h2>Check your details</h2>
+      <ul class="fields">
+        <li><span class="k">Name</span><span class="v local">Jane Smith</span></li>
+        <li><span class="k">Date of birth</span><span class="v local">03/02/1990</span></li>
+        <li><span class="k">Clinic / provider</span><span class="v ai">London Fertility Centre</span></li>
+        <li><span class="k">Treatment</span><span class="v ai">IVF – egg collection</span></li>
+        <li><span class="k">Treatment date</span><span class="v ai">12/09/2026</span></li>
+        <li><span class="k">Medication</span><span class="v ai">Gonal-f 900 IU × 2</span></li>
+        <li><span class="k">Amount paid</span><span class="v ai">£4,250.00</span></li>
+        <li><span class="k">Invoice no.</span><span class="v ai">LFC-20931</span></li>
+      </ul>
+      <p class="note">Anything not found is flagged (“Not on this document – upload another or type it in”).</p>
+      <div class="doc">{
+  "provider": "London Fertility Centre",
+  "treatment_type": "ivf_egg_collection",
+  "treatment_date": "2026-09-12",
+  "medications": [{ "name": "Gonal-f", "dose": "900 IU", "qty": 2 }],
+  "amount": { "value": 4250.00, "currency": "GBP" },
+  "invoice_number": "LFC-20931",
+  "missing": []
+}</div>
+      <span class="btn">Submit claim</span>
+    </section>
+  </div>
+
+  <div class="questions">
+    <h2>Open questions</h2>
+    <ol>
+      <li><strong>How do we recognise the name and DOB?</strong> Proposed: the patient is logged in, so we already know them; we look for those exact values in the text (tolerant of formats like 3 Feb 1990 / 03.02.1990), which also proves the document is theirs. Patterns catch other identifiers (NHS no., phone, email, address).</li>
+      <li><strong>Which fields?</strong> The list above is my guess at a reimbursement claim. What's the real list?</li>
+      <li><strong>One document or several?</strong> E.g. invoice + prescription together filling one list.</li>
+    </ol>
+  </div>
+</body>
+</html>
