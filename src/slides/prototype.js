@@ -1,25 +1,19 @@
-// Placeholder for a live prototype slide. Everything inside .prototype is a real,
-// interactive app; it shows that a slide can hold state, handle input and clean up.
+// The document upload prototype, live inside the slide. It's its own page (prototype/) so it can
+// also be opened full screen or on a phone.
 export default {
   id: 'prototype',
   title: 'Prototype',
-  className: 'is-split',
+  className: 'is-prototype',
   render(el) {
     el.innerHTML = `
-      <div>
-        <div class="eyebrow">Prototype</div>
-        <h2>Working prototype</h2>
-        <p class="muted">Placeholder. The real prototype will replace the panel on the right.</p>
+      <div class="proto-head">
+        <div>
+          <div class="eyebrow">Prototype</div>
+          <h2>Document upload</h2>
+        </div>
+        <a class="proto-open" href="prototype/" target="_blank" rel="noopener">Open full screen ↗</a>
       </div>
-      <div class="prototype" data-capture-keys>
-        <label>Type something <input type="text" placeholder="Arrow keys stay in here"></label>
-        <p class="echo muted">&nbsp;</p>
-      </div>
+      <iframe class="proto-frame" src="prototype/" title="Document upload prototype"></iframe>
     `;
-    const input = el.querySelector('input');
-    const echo = el.querySelector('.echo');
-    const onInput = () => { echo.textContent = input.value || ' '; };
-    input.addEventListener('input', onInput);
-    return () => input.removeEventListener('input', onInput);
   },
 };
