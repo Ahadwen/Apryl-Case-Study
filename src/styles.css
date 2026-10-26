@@ -57,6 +57,19 @@ html, body {
   margin-bottom: 20px;
 }
 .lede { font-size: 34px; color: var(--muted); }
+
+/* Content slides */
+.slide h3 { font-size: 0.8em; font-weight: 600; color: var(--accent); margin: 0 0 0.5em; }
+.slide .statement { font-size: 40px; max-width: 26ch; }
+.slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.slide .aside { margin-top: 1em; color: var(--muted); }
+.slide .aside strong { color: var(--ink); }
+.slide.is-dense { font-size: 24px; }
+.slide.is-dense h2 { font-size: 44px; }
+.timeline { list-style: none; padding: 0 !important; display: grid; gap: 0; }
+.timeline li { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 18px 0; border-top: 1px solid var(--rule); margin: 0 !important; }
+.timeline li:last-child { border-bottom: 1px solid var(--rule); }
+.timeline .when { font-weight: 600; color: var(--accent); }
 .muted { color: var(--muted); }
 
 /* Full-bleed slides fill the window instead of the scaled stage; side gutters keep the nav buttons clear. */
