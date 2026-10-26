@@ -1,7 +1,7 @@
 // Document upload prototype: upload → OCR in the browser → identifiers matched and removed →
 // anonymised text to Claude → one list of details the patient confirms or edits → claim.
 
-import { FIELDS, DOCUMENT_EXAMPLES, formatValue, formatDate } from './fields.js';
+import { FIELDS, DOCUMENT_EXAMPLES, DOCUMENT_TYPES, formatValue, formatDate } from './fields.js';
 import { readDocument } from './ocr.js';
 import { anonymise } from './identifiers.js';
 import { extractFields } from './extract.js';
@@ -16,7 +16,7 @@ const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03' };
 
 const state = {
   profile: { ...DEFAULT_PROFILE },
-  docs: [],          // { id, file, name, status, progress, text, method, anon, result, error, target, targetMiss }
+  docs: [],          // { id, file, name, status, progress, text, method, anon, result, error, target, targetMiss, type }
   overrides: {},     // key -> { value, source: 'manual' | 'document', docId }
   confirmed: {},     // key -> signature of the value that was confirmed
   sheet: null,       // { key } or { profile: true }
@@ -38,6 +38,17 @@ fileInput.addEventListener('change', () => {
 // ---------- Field resolution ----------
 
 const docById = (id) => state.docs.find((d) => d.id === id);
+
+// The patient's choice of type wins over the model's guess.
+const docType = (doc) => doc.type ?? doc.result?.document_type;
+
+// Documents are named by type ("Clinic invoice", "Receipt 2"), not by filename.
+function docLabel(doc) {
+  const type = docType(doc);
+  if (!type) return `Document ${state.docs.indexOf(doc) + 1}`;
+  const same = state.docs.filter((d) => docType(d) === type);
+  return same.length > 1 ? `${DOCUMENT_TYPES[type]} ${same.indexOf(doc) + 1}` : DOCUMENT_TYPES[type];
+}
 const norm = (v) => JSON.stringify(v).toLowerCase().replace(/\s+/g, ' ');
 
 function docValue(doc, field) {
@@ -165,11 +176,15 @@ function redactedHtml(text) {
 
 // What the patient sees: progress and what each document added. No redaction details.
 function docCard(doc) {
+  const typePicker = docType(doc)
+    ? `<label class="type-pick small muted">Type
+        <select data-change="doc-type" data-id="${doc.id}">${Object.entries(DOCUMENT_TYPES).map(([k, v]) => `<option value="${k}" ${k === docType(doc) ? 'selected' : ''}>${v}</option>`).join('')}</select></label>` : '';
   const head = `
     <div class="doc-head">
-      <span class="doc-name">${esc(doc.name)}</span>
+      <span class="doc-name">${esc(docLabel(doc))}</span>
       <button class="link" data-action="remove-doc" data-id="${doc.id}">Remove</button>
-    </div>`;
+    </div>
+    <div class="doc-meta"><span class="small muted file">${esc(doc.name)}</span>${typePicker}</div>`;
   const target = doc.target ? `<p class="small muted">Uploaded for: ${esc(FIELDS.find((f) => f.key === doc.target).label)}</p>` : '';
   let body = '';
   if (doc.status === 'queued' || doc.status === 'reading') {
@@ -212,7 +227,7 @@ function crossCheck() {
     if (verdict === 'different' && field.varies) verdict = 'expected';
     const [cls, text] = VERDICTS[verdict];
     rows.push(`<tr><td>${esc(field.label)}</td>
-      <td>${seen.map((x) => `<div><span class="muted">${esc(x.doc.name)}:</span> ${esc(formatValue(field, x.value))}</div>`).join('')}</td>
+      <td>${seen.map((x) => `<div><span class="muted">${esc(docLabel(x.doc))}:</span> ${esc(formatValue(field, x.value))}</div>`).join('')}</td>
       <td><span class="verdict ${cls}">${text}</span></td></tr>`);
   }
   return `<div class="bs-doc">
@@ -228,7 +243,7 @@ function backstage() {
   const step = (n, title, content) => `<div class="bs-step"><span class="bs-n">${n}</span><div><strong>${title}</strong>${content}</div></div>`;
   const cards = docs.map((doc) => {
     if (!doc.anon) {
-      return `<div class="bs-doc"><div class="bs-name">${esc(doc.name)}</div>
+      return `<div class="bs-doc"><div class="bs-name">${esc(docLabel(doc))} <span class="small muted">· ${esc(doc.name)}</span></div>
         ${step(1, 'Read on the device', `<p>${doc.status === 'error' ? esc(doc.error) : `${Math.round(doc.progress * 100)}%…`}</p>`)}</div>`;
     }
     const counts = {};
@@ -238,7 +253,7 @@ function backstage() {
     let returned = '<p>Waiting…</p>';
     if (doc.status === 'done') returned = `<pre class="json">${esc(JSON.stringify(doc.result, null, 2))}</pre>`;
     if (doc.status === 'error') returned = `<p class="warn">${esc(doc.error)}</p>`;
-    return `<div class="bs-doc"><div class="bs-name">${esc(doc.name)}</div>
+    return `<div class="bs-doc"><div class="bs-name">${esc(docLabel(doc))} <span class="small muted">· ${esc(doc.name)}</span></div>
       ${step(1, 'Read on the device', `<p>${esc(doc.method)}. The file itself is never uploaded.</p>`)}
       ${step(2, 'Identifiers matched and removed in the browser', `<p>${matched} (against the patient's profile)</p><p>Removed: ${removed || 'nothing'}</p>`)}
       ${step(3, 'Sent to Claude: anonymised text only', `<pre class="redacted">${redactedHtml(doc.anon.redacted.trim())}</pre>`)}
@@ -279,9 +294,9 @@ function fieldRow(field) {
   const doc = docById(r.docId);
   const cls = r.source === 'manual' ? 'manual' : field.source === 'profile' ? 'local' : 'ai';
   const flag = r.source === 'manual' ? ' <span class="flag">Manual</span>' : '';
-  const from = doc ? `<span class="from">${r.source === 'manual' ? 'you said it\'s shown on' : 'from'} ${esc(doc.name)}</span>` : '';
+  const from = doc ? `<span class="from">${r.source === 'manual' ? 'you said it\'s shown on' : 'from'} ${esc(docLabel(doc))}</span>` : '';
   const conflict = r.conflicts.length
-    ? `<span class="hint warn">${r.conflicts.map((c) => `${esc(c.doc.name)} says ${esc(formatValue(field, c.value))}`).join('; ')}. Check which is right.</span>` : '';
+    ? `<span class="hint warn">${r.conflicts.map((c) => `${esc(docLabel(c.doc))} says ${esc(formatValue(field, c.value))}`).join('; ')}. Check which is right.</span>` : '';
   const acts = isConfirmed(field, r)
     ? `<span class="ok">✓ Confirmed</span><button class="link" data-action="edit" data-key="${field.key}">Edit</button>`
     : `<button class="btn sm primary" data-action="confirm" data-key="${field.key}">Confirm</button><button class="btn sm" data-action="edit" data-key="${field.key}">Edit</button>`;
@@ -338,7 +353,7 @@ function sheet() {
   const picker = docs.length
     ? `<label class="lbl">Which document shows this? <span class="req">Required</span>
         <select name="doc" required><option value="">Choose a document…</option>
-        ${docs.map((d) => `<option value="${d.id}" ${r?.source === 'manual' && r.docId === d.id ? 'selected' : ''}>${esc(d.name)}</option>`).join('')}</select></label>`
+        ${docs.map((d) => `<option value="${d.id}" ${r?.source === 'manual' && r.docId === d.id ? 'selected' : ''}>${esc(docLabel(d))} (${esc(d.name)})</option>`).join('')}</select></label>`
     : '<p class="small warn">You haven\'t uploaded any documents yet.</p>';
   return `<div class="scrim"><form class="sheet" data-form="field" data-key="${field.key}">
     <h2>${r ? 'Edit' : 'Type in'}: ${esc(field.label.toLowerCase())}</h2>
@@ -412,14 +427,17 @@ function submit() {
   for (const f of FIELDS) {
     const r = resolve(f);
     const doc = docById(r.docId);
-    details[f.key] = { value: r.value, source: r.source, document: doc?.name ?? null };
-    if (r.source === 'manual') flags.push(`${f.label} entered manually; patient says it's shown on ${doc?.name}`);
-    for (const c of r.conflicts) flags.push(`${f.label}: ${c.doc.name} says ${formatValue(f, c.value)}; patient confirmed ${formatValue(f, r.value)}`);
+    details[f.key] = { value: r.value, source: r.source, document: doc ? docLabel(doc) : null };
+    if (r.source === 'manual') flags.push(`${f.label} entered manually; patient says it's shown on ${docLabel(doc)}`);
+    for (const c of r.conflicts) flags.push(`${f.label}: ${docLabel(c.doc)} says ${formatValue(f, c.value)}; patient confirmed ${formatValue(f, r.value)}`);
   }
   state.submitted = {
     submitted_at: new Date().toISOString(),
     details,
-    documents: state.docs.map((d) => ({ name: d.name, type: d.result?.document_type ?? null })),
+    documents: state.docs.map((d) => ({
+      name: docLabel(d), type: docType(d) ?? null, file: d.name,
+      type_set_by: d.type ? 'patient' : 'model',
+    })),
     flags,
   };
   render();
@@ -472,6 +490,13 @@ app.addEventListener('submit', (e) => {
   state.confirmed[field.key] = signature(resolve(field));
   state.sheet = null;
   render();
+});
+
+app.addEventListener('change', (e) => {
+  if (e.target.dataset.change === 'doc-type') {
+    docById(Number(e.target.dataset.id)).type = e.target.value;
+    render();
+  }
 });
 
 // Drag and drop anywhere on the page.

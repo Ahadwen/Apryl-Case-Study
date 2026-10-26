@@ -26,6 +26,18 @@ export const FIELDS = [
 
 export const DOCUMENT_EXAMPLES = ['Clinic invoice', 'Receipt', 'Prescription', 'Drug label', 'Pharmacy receipt', 'Treatment plan'];
 
+// Document types, as returned by extract.js. Used to name uploads, since photo filenames are
+// usually meaningless ("IMG_4021.jpg").
+export const DOCUMENT_TYPES = {
+  clinic_invoice: 'Clinic invoice',
+  receipt: 'Receipt',
+  prescription: 'Prescription',
+  drug_label: 'Drug label',
+  pharmacy_receipt: 'Pharmacy receipt',
+  treatment_plan: 'Treatment plan',
+  other: 'Other document',
+};
+
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function formatDate(iso) {
