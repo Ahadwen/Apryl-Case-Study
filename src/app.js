@@ -1,4 +1,5 @@
 import { slides } from './slides/index.js';
+import { countVisit } from './visits.js';
 
 // Slides render into a fixed 1280x720 stage that is scaled to fit the window,
 // so layouts look identical on a laptop, a projector, or a shared screen.
@@ -77,3 +78,4 @@ window.addEventListener('resize', fit);
 
 fit();
 show(indexFromHash());
+countVisit();
