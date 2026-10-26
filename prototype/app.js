@@ -195,8 +195,8 @@ function docCard(doc) {
   } else if (doc.status === 'analysing') {
     body = '<p class="small">Finding your details…</p><div class="bar"><i class="indeterminate"></i></div>';
   } else if (doc.status === 'error') {
-    body = `<p class="small warn">${doc.anon ? "Something went wrong reading the details from this document." : esc(doc.error)}</p>
-      ${doc.anon ? `<button class="btn sm" data-action="analyse" data-id="${doc.id}">Try again</button>` : ''}`;
+    body = `<p class="small warn">${doc.anon ? 'Something went wrong reading the details from this document.' : esc(doc.error)}</p>
+      <button class="btn sm" data-action="${doc.anon ? 'analyse' : 'retry-read'}" data-id="${doc.id}">Try again</button>`;
   } else if (doc.status === 'done') {
     const added = FIELDS.filter((f) => docValue(doc, f) !== undefined).map((f) => f.label);
     const notYours = !doc.anon.found.name && !doc.anon.found.dob;
@@ -489,6 +489,11 @@ app.addEventListener('click', (e) => {
       state.preview = null; return render();
     case 'remove-doc': return removeDoc(Number(id));
     case 'analyse': return analyse(doc);
+    case 'retry-read':
+      Object.assign(doc, { status: 'queued', progress: 0, error: null });
+      queue.push(doc);
+      render();
+      return pump();
     case 'confirm': state.confirmed[key] = signature(resolve(field)); return render();
     case 'edit':
     case 'type-in': state.sheet = { key }; return render();

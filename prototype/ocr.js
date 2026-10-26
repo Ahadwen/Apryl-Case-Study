@@ -16,19 +16,33 @@ function getWorker() {
       langPath: vendor('tesseract/lang'),
       logger: (m) => { if (m.status === 'recognizing text') onProgress(m.progress); },
     });
-  })();
+  })().catch((e) => {
+    // Don't cache a failure: the next document (or "Try again") starts afresh.
+    workerPromise = null;
+    throw e;
+  });
   return workerPromise;
 }
 
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) return resolve();
-    const s = document.createElement('script');
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = () => reject(new Error(`Couldn't load ${src}`));
-    document.head.append(s);
-  });
+// Loads a classic script, retrying once: a single dropped request (flaky network, or a request
+// that lands mid-deploy) shouldn't stop documents being read.
+async function loadScript(src, attempts = 2) {
+  if (window.Tesseract) return;
+  for (let i = 1; ; i++) {
+    try {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => { s.remove(); reject(new Error(`Couldn't load ${src}`)); };
+        document.head.append(s);
+      });
+      return;
+    } catch (e) {
+      if (i >= attempts) throw e;
+      await new Promise((r) => setTimeout(r, 1000));
+    }
+  }
 }
 
 async function ocrImage(image) {

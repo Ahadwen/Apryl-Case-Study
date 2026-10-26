@@ -73,10 +73,22 @@ button { font: inherit; color: inherit; }
 .bs-head h2 { margin: 0; }
 .bs-badge { font-size: 12px; font-weight: 600; color: #3b4a5e; border: 1px solid #9aa4b2; border-radius: 999px; padding: 1px 10px; background: #fff; }
 .bs-doc { background: var(--surface); border-radius: 10px; padding: 12px; }
-.bs-name { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; list-style: none; display: flex; gap: 8px; align-items: baseline; }
+.bs-name { font-weight: 600; overflow-wrap: anywhere; cursor: pointer; list-style: none; display: flex; gap: 12px; align-items: center; }
 .bs-name::-webkit-details-marker { display: none; }
-.bs-name::before { content: '▸'; color: var(--muted); font-size: 12px; transition: transform 0.15s; }
-details[open] > .bs-name::before { transform: rotate(90deg); }
+/* Chevron: points right when closed, down when open. */
+.bs-name::before {
+  content: '';
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-left: 4px;
+  border-right: 2.5px solid #3b4a5e;
+  border-bottom: 2.5px solid #3b4a5e;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+details[open] > .bs-name::before { transform: rotate(45deg) translate(-2px, -2px); }
+.bs-name:hover::before { border-color: var(--accent); }
 .bs-body { display: grid; gap: 10px; margin-top: 10px; }
 .bs-name .small { font-weight: 400; }
 .bs-step { display: grid; grid-template-columns: 24px 1fr; gap: 8px; font-size: 13px; }
