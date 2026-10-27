@@ -1,7 +1,10 @@
 // Document upload prototype: upload → OCR in the browser → identifiers matched and removed →
 // anonymised text to Claude → one list of details the patient confirms or edits → claim.
 
-import { FIELDS, DOCUMENT_EXAMPLES, DOCUMENT_TYPES, formatValue, formatDate } from './fields.js';
+import {
+  FIELDS, DOCUMENTS, DOCUMENT_EXAMPLES, DOCUMENT_TYPES, CLAIM_TYPES, COUNTRIES, RULES,
+  ruleApplies, requirements, formatValue, formatDate,
+} from './fields.js';
 import { readDocument } from './ocr.js';
 import { anonymise } from './identifiers.js';
 import { extractFields } from './extract.js';
@@ -10,14 +13,18 @@ import { compareValues } from './compare.js';
 const SAMPLES = [
   { file: 'clinic-invoice.pdf', preview: 'clinic-invoice-preview.png', label: 'Clinic invoice', kind: 'PDF', type: 'application/pdf' },
   { file: 'pharmacy-label.jpg', preview: 'pharmacy-label.jpg', label: 'Prescription label', kind: 'Photo', type: 'image/jpeg' },
+  { file: 'medical-letter.pdf', preview: 'medical-letter-preview.png', label: 'Medical necessity letter', kind: 'PDF', type: 'application/pdf' },
 ];
 
-const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03' };
+const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03', country: 'GB' };
 
 const state = {
   profile: { ...DEFAULT_PROFILE },
   docs: [],          // { id, file, name, status, progress, text, method, anon, result, error, target, targetMiss, type }
+  claimType: null,   // key of CLAIM_TYPES, chosen by the patient first: it decides what's required
   overrides: {},     // key -> { value, source: 'manual' | 'document', docId }
+  docOverrides: {},  // document requirement -> { docId, source: 'manual' } when the patient points at a document
+  toast: null,
   confirmed: {},     // key -> signature of the value that was confirmed
   sheet: null,       // { key } or { profile: true }
   preview: null,     // index into SAMPLES while a sample is shown full size
@@ -73,6 +80,22 @@ function resolve(field) {
     else if (!field.varies && compareValues(field, value, found.value) === 'different') conflicts.push({ value, doc });
   }
   return found && { ...found, conflicts };
+}
+
+const reqs = () => requirements(state.claimType, state.profile.country);
+
+// A document requirement is met by a recognised document of the right type, or one the model
+// flagged (an invoice marked paid also proves payment), or one the patient points at (flagged).
+function docSatisfies(doc, key) {
+  const req = DOCUMENTS[key];
+  return doc.status === 'done' && (req.types.includes(docType(doc)) || Boolean(req.flag && doc.result?.[req.flag]));
+}
+
+function resolveDoc(key) {
+  const override = state.docOverrides[key];
+  if (override && docById(override.docId)) return override;
+  const doc = state.docs.find((d) => docSatisfies(d, key));
+  return doc ? { docId: doc.id, source: 'document' } : null;
 }
 
 const signature = (r) => r && `${r.source}|${r.docId}|${norm(r.value)}`;
@@ -147,6 +170,7 @@ async function analyse(doc) {
 function removeDoc(id) {
   state.docs = state.docs.filter((d) => d.id !== id);
   for (const [key, o] of Object.entries(state.overrides)) if (o.docId === id) delete state.overrides[key];
+  for (const [key, o] of Object.entries(state.docOverrides)) if (o.docId === id) delete state.docOverrides[key];
   render();
 }
 
@@ -198,7 +222,11 @@ function docCard(doc) {
     body = `<p class="small warn">${doc.anon ? 'Something went wrong reading the details from this document.' : esc(doc.error)}</p>
       <button class="btn sm" data-action="${doc.anon ? 'analyse' : 'retry-read'}" data-id="${doc.id}">Try again</button>`;
   } else if (doc.status === 'done') {
-    const added = FIELDS.filter((f) => docValue(doc, f) !== undefined).map((f) => f.label);
+    const { documents, fields } = reqs();
+    const added = [
+      ...documents.filter((k) => docSatisfies(doc, k)).map((k) => DOCUMENTS[k].label),
+      ...fields.filter((f) => docValue(doc, f) !== undefined).map((f) => f.label),
+    ];
     const notYours = !doc.anon.found.name && !doc.anon.found.dob;
     body = `
       <p class="small">${added.length ? `<span class="tick">✓</span> ${esc(added.join(', '))}` : "We couldn't find any claim details on this document."}</p>
@@ -245,6 +273,21 @@ function panel(key, title, body) {
   </details>`;
 }
 
+// The requirements matrix, with the rules that apply to this claim highlighted.
+function rulesPanel() {
+  const label = (keys, map) => (keys ?? []).map((k) => map(k)).join(', ') || '–';
+  const rows = RULES.map((rule) => {
+    const on = state.claimType && ruleApplies(rule, state.claimType, state.profile.country);
+    return `<tr class="${on ? 'on' : ''}"><td>${on ? '✓ ' : ''}${esc(rule.when)}</td>
+      <td>${esc(label(rule.documents, (k) => DOCUMENTS[k].label))}</td>
+      <td>${esc(label(rule.details, (k) => FIELDS.find((f) => f.key === k).label))}</td></tr>`;
+  }).join('');
+  return panel('rules', 'Requirements matrix', `
+    <p class="small">Claim type (chosen by the patient) and country (from their account) decide which documents and details are required. <strong class="warn">Assumed rules, pending confirmation from the claims team.</strong></p>
+    <table class="xcheck"><tr><th>When</th><th>Documents</th><th>Details</th></tr>${rows}</table>
+    <p class="small muted">${state.claimType ? `This claim: ${esc(CLAIM_TYPES[state.claimType])} in ${esc(COUNTRIES[state.profile.country])}.` : 'Choose a claim type on the left to see which rules apply.'}</p>`);
+}
+
 // The prototype's explainer, beside the patient's screen: what happens to each document.
 function backstage() {
   const docs = state.docs.filter((d) => d.status !== 'queued');
@@ -284,8 +327,9 @@ function backstage() {
             <button class="btn sm" data-action="sample" data-i="${i}">Use this sample</button>
           </div>`).join('')}
         </div>
-        <p class="small">Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))} <button class="link" data-action="profile">Change</button><br>
+        <p class="small">Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))} · ${esc(COUNTRIES[state.profile.country])} <button class="link" data-action="profile">Change</button><br>
           <span class="muted">In the real app the patient is signed in. Change this to try documents with another name on them.</span></p>`)}
+      ${rulesPanel()}
       <p class="small">GDPR data minimisation: documents are read on the patient's device, their name, date of birth and other identifiers are removed there, and only the anonymised text is sent for analysis. Name and date of birth are filled in from the patient's own account, never from the model.</p>
       ${cards || '<p class="small muted">Upload a document (or a sample) to see what happens to it.</p>'}
       ${crossCheck()}
@@ -313,23 +357,92 @@ function fieldRow(field) {
   return `<li class="row">${label}<span class="v ${cls}">${esc(formatValue(field, r.value))}${flag}</span>${from}${conflict}<span class="acts">${acts}</span></li>`;
 }
 
-function detailsPanel() {
-  const resolved = FIELDS.map((f) => [f, resolve(f)]);
+// A required document: ticked when a matching document is recognised. If we didn't recognise it,
+// the patient can point at the upload that is it (flagged for the reviewer).
+function docReqRow(key) {
+  const req = DOCUMENTS[key];
+  const r = resolveDoc(key);
+  const label = `<span class="k">${esc(req.label)}</span>`;
+  if (!r) {
+    const tried = state.docs.some((d) => d.status === 'done');
+    return `<li class="row ${tried ? 'missing' : ''}">${label}<span class="v ${tried ? 'miss' : 'todo'}">${tried ? 'Missing' : 'Needed'}</span>
+      <span class="hint">${esc(req.hint)}</span>
+      ${tried ? `<span class="acts"><button class="btn sm" data-action="upload">Upload document</button><button class="btn sm" data-action="point-doc" data-key="${key}">I've uploaded it</button></span>` : ''}</li>`;
+  }
+  const doc = docById(r.docId);
+  return `<li class="row">${label}<span class="v ${r.source === 'manual' ? 'manual' : 'ok-doc'}">✓ ${esc(docLabel(doc))}${r.source === 'manual' ? ' <span class="flag">Manual</span>' : ''}</span>
+    ${r.source === 'manual' ? '<span class="from">you said it\'s this document</span>' : ''}</li>`;
+}
+
+function checklistPanel() {
+  const { documents, fields } = reqs();
+  const docsHave = documents.filter((k) => resolveDoc(k)).length;
+  const resolved = fields.map((f) => [f, resolve(f)]);
   const found = resolved.filter(([, r]) => r).length;
   const confirmed = resolved.filter(([f, r]) => isConfirmed(f, r)).length;
-  const missing = FIELDS.length - found;
+  const docsMissing = documents.length - docsHave;
+  const missing = fields.length - found;
   const toConfirm = found - confirmed;
-  const ready = missing === 0 && toConfirm === 0;
+  const ready = docsMissing === 0 && missing === 0 && toConfirm === 0;
   const parts = [];
+  if (docsMissing) parts.push(`${docsMissing} document${docsMissing > 1 ? 's' : ''} missing`);
   if (missing) parts.push(`${missing} detail${missing > 1 ? 's' : ''} missing`);
   if (toConfirm) parts.push(`${toConfirm} to confirm`);
   return `
     <section class="card details">
-      <h2>Your details</h2>
-      <p class="count"><strong>${found} of ${FIELDS.length} details found</strong> · ${confirmed} confirmed</p>
-      <div class="bar"><i style="width:${(found / FIELDS.length) * 100}%"></i></div>
-      <ul class="fields">${FIELDS.map(fieldRow).join('')}</ul>
+      <h2>What we need</h2>
+      <h3 class="sub">Documents <span class="muted">${docsHave} of ${documents.length}</span></h3>
+      <ul class="fields">${documents.map(docReqRow).join('')}</ul>
+      <h3 class="sub">Your details <span class="muted">${found} of ${fields.length} found · ${confirmed} confirmed</span></h3>
+      <div class="bar"><i style="width:${(found / fields.length) * 100}%"></i></div>
+      <ul class="fields">${fields.map(fieldRow).join('')}</ul>
       <button class="btn primary block" data-action="submit" ${ready ? '' : 'disabled'}>${ready ? 'Submit claim' : state.docs.length ? parts.join(' · ') : 'Add your documents to start'}</button>
+      ${ready ? '' : '<button class="btn block secondary" data-action="save-later">Save and finish later</button>'}
+    </section>`;
+}
+
+// The patient asks their clinic for the letter; we draft it from what the documents already show.
+// Written in the patient's voice: it's their record to request, which clinics deal with routinely.
+function clinicLetter() {
+  const value = (key) => { const f = FIELDS.find((x) => x.key === key); const r = resolve(f); return r && formatValue(f, r.value); };
+  const clinic = value('provider') ?? '[clinic name]';
+  const treatment = value('treatment') ?? CLAIM_TYPES[state.claimType];
+  const date = value('treatment_date');
+  const subject = 'Letter confirming medical necessity for my treatment';
+  const body = `Dear ${clinic},
+
+I'm claiming reimbursement for ${treatment}${date ? ` on ${date}` : ''} through my fertility benefit. To process the claim, they need a letter from you confirming that the treatment was medically necessary.
+
+Could you please send me a signed letter on clinic letterhead that includes:
+- my name and date of birth
+- the treatment and date(s)
+- the medical reason for the treatment (diagnosis or indication)
+- the name and signature of the treating clinician
+
+Thank you,
+${state.profile.name}`;
+  return { subject, body };
+}
+
+function necessityCallout() {
+  if (!reqs().documents.includes('medical_necessity') || resolveDoc('medical_necessity')) return '';
+  const { subject, body } = clinicLetter();
+  return `
+    <section class="card callout">
+      <h2>This claim needs proof of medical necessity</h2>
+      <p>That's usually a referral letter, a diagnosis letter or a statement from your doctor. Clinics can take a few days to send one, so it's worth asking now.</p>
+      <details class="letter" ${state.collapsed.has('letter') ? '' : 'open'} data-panel="letter">
+        <summary>A message you can send your clinic</summary>
+        <pre class="letter-text">${esc(`Subject: ${subject}
+
+${body}`)}</pre>
+        <div class="acts">
+          <button class="btn sm primary" data-action="copy-letter">Copy message</button>
+          <a class="btn sm" href="mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}">Email it</a>
+        </div>
+        <p class="small muted">${resolve(FIELDS.find((f) => f.key === 'provider')) ? 'Filled in from your invoice.' : 'Upload your invoice first and we\'ll fill in the clinic and treatment for you.'}</p>
+      </details>
+      <p class="small">You can save this claim and come back when the letter arrives.</p>
     </section>`;
 }
 
@@ -355,7 +468,27 @@ function sheet() {
       <p class="small muted">In the real app the patient is logged in, so we already know who they are. Change these to try your own documents. This clears the current claim.</p>
       <label class="lbl">Name<input name="name" required value="${esc(state.profile.name)}"></label>
       <label class="lbl">Date of birth<input name="dob" type="date" required value="${esc(state.profile.dob)}"></label>
+      <label class="lbl">Country<select name="country">${Object.entries(COUNTRIES).map(([k, v]) => `<option value="${k}" ${k === state.profile.country ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
       <div class="acts"><button class="btn primary" type="submit">Save</button><button class="btn" type="button" data-action="close">Cancel</button></div>
+    </form></div>`;
+  }
+  if (state.sheet.docReq) {
+    const req = DOCUMENTS[state.sheet.docReq];
+    const docs = state.docs.filter((d) => d.anon);
+    return `<div class="scrim"><form class="sheet" data-form="doc" data-key="${state.sheet.docReq}">
+      <h2>${esc(req.label)}</h2>
+      <div class="attention">
+        <strong>⚠ We didn't recognise this among your documents</strong>
+        <span>If one of your uploads is your ${esc(req.label.toLowerCase())}, tell us which. It will be checked by a person. If not, upload it.</span>
+      </div>
+      <label class="lbl">Which document is it? <span class="req">Required</span>
+        <select name="doc" required><option value="">Choose a document…</option>
+        ${docs.map((d) => `<option value="${d.id}">${esc(docLabel(d))} (${esc(d.name)})</option>`).join('')}</select></label>
+      <div class="acts">
+        <button class="btn primary" type="submit">Save</button>
+        <button class="btn" type="button" data-action="upload">Upload it instead</button>
+        <button class="btn" type="button" data-action="close">Cancel</button>
+      </div>
     </form></div>`;
   }
   const field = FIELDS.find((f) => f.key === state.sheet.key);
@@ -399,7 +532,9 @@ function sheet() {
 function submittedView() {
   const claim = state.submitted;
   const manual = Object.values(claim.details).filter((d) => d.source === 'manual').length;
-  const rows = FIELDS.map((f) => {
+  const docRows = Object.entries(claim.documents_required).map(([k, c]) =>
+    `<li class="row"><span class="k">${esc(DOCUMENTS[k].label)}</span><span class="v ${c.source === 'manual' ? 'manual' : ''}">✓ ${esc(c.document)}${c.source === 'manual' ? ' <span class="flag">Manual</span>' : ''}</span></li>`).join('');
+  const rows = reqs().fields.map((f) => {
     const c = claim.details[f.key];
     return `<li class="row"><span class="k">${esc(f.label)}</span><span class="v ${c.source === 'manual' ? 'manual' : ''}">${esc(formatValue(f, c.value))}${c.source === 'manual' ? ' <span class="flag">Manual</span>' : ''}</span><span class="from">${c.source === 'manual' ? 'you said it\'s shown on' : 'from'} ${esc(c.document)}</span></li>`;
   }).join('');
@@ -407,7 +542,7 @@ function submittedView() {
     <section class="card">
       <h2>Claim submitted</h2>
       <p>Thanks. We'll review your claim and let you know.${manual ? ` ${manual} detail${manual > 1 ? 's were' : ' was'} entered manually, so ${manual > 1 ? 'they' : 'it'} may be checked against your documents.` : ''}</p>
-      <ul class="fields">${rows}</ul>
+      <ul class="fields">${docRows}${rows}</ul>
       <button class="btn" data-action="restart">Start a new claim</button>
     </section>`;
 }
@@ -425,8 +560,15 @@ function render() {
       <div class="patient">
         <header class="top"><h1>Claim reimbursement</h1>${profile}</header>
         <section class="card">
+          <label class="lbl claim-type"><strong>What are you claiming for?</strong>
+            <select data-change="claim-type"><option value="">Choose…</option>
+            ${Object.entries(CLAIM_TYPES).map(([k, v]) => `<option value="${k}" ${k === state.claimType ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+        </section>
+        ${state.claimType ? `
+        ${necessityCallout()}
+        <section class="card">
           <h2>Upload your documents</h2>
-          <p class="lead">We need the details listed under <em>Your details</em>. <strong>They don't have to be on one document</strong>: upload as many as you need, and we'll combine them into one claim.</p>
+          <p class="lead">We need what's listed under <em>What we need</em>. <strong>It doesn't have to be on one document</strong>: upload as many as you need, and we'll combine them into one claim.</p>
           <p class="small muted">For example:</p>
           <div class="chips">${DOCUMENT_EXAMPLES.map((d) => `<span class="chip">${esc(d)}</span>`).join('')}</div>
           <button class="drop" data-action="upload">
@@ -435,11 +577,19 @@ function render() {
           </button>
         </section>
         ${state.docs.length ? `<section class="docs">${state.docs.map(docCard).join('')}</section>` : ''}
-        ${detailsPanel()}
+        ${checklistPanel()}` : ''}
       </div>
       ${backstage()}
     </main>
-    ${sheet()}${lightbox()}`;
+    ${sheet()}${lightbox()}${state.toast ? `<div class="toast" role="status">${esc(state.toast)}</div>` : ''}`;
+}
+
+let toastTimer;
+function toast(message) {
+  state.toast = message;
+  render();
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { state.toast = null; render(); }, 3500);
 }
 
 // ---------- Actions ----------
@@ -447,7 +597,14 @@ function render() {
 function submit() {
   const details = {};
   const flags = [];
-  for (const f of FIELDS) {
+  const { documents, fields } = reqs();
+  const documentsRequired = {};
+  for (const k of documents) {
+    const r = resolveDoc(k);
+    documentsRequired[k] = { document: docLabel(docById(r.docId)), source: r.source };
+    if (r.source === 'manual') flags.push(`${DOCUMENTS[k].label}: not recognised automatically; patient says it's ${docLabel(docById(r.docId))}`);
+  }
+  for (const f of fields) {
     const r = resolve(f);
     const doc = docById(r.docId);
     details[f.key] = { value: r.value, source: r.source, document: doc ? docLabel(doc) : null };
@@ -456,6 +613,9 @@ function submit() {
   }
   state.submitted = {
     submitted_at: new Date().toISOString(),
+    claim_type: state.claimType,
+    country: state.profile.country,
+    documents_required: documentsRequired,
     details,
     documents: state.docs.map((d) => ({
       name: docLabel(d), type: docType(d) ?? null, file: d.name,
@@ -468,7 +628,7 @@ function submit() {
 }
 
 function reset() {
-  Object.assign(state, { docs: [], overrides: {}, confirmed: {}, sheet: null, submitted: null });
+  Object.assign(state, { docs: [], claimType: null, overrides: {}, docOverrides: {}, confirmed: {}, sheet: null, submitted: null });
   queue.length = 0;
   render();
 }
@@ -480,7 +640,6 @@ app.addEventListener('click', (e) => {
   const field = FIELDS.find((f) => f.key === key);
   const doc = id && docById(Number(id));
   switch (action) {
-    case 'upload': return upload();
     case 'sample': state.preview = null; render(); return loadSample(SAMPLES[Number(el.dataset.i)]);
     case 'preview': state.preview = Number(el.dataset.i); return render();
     case 'close-preview':
@@ -498,8 +657,17 @@ app.addEventListener('click', (e) => {
     case 'edit':
     case 'type-in': state.sheet = { key }; return render();
     case 'upload-for': state.sheet = null; render(); return upload(key);
+    case 'upload': state.sheet = null; render(); return upload();
     case 'close': state.sheet = null; return render();
     case 'profile': state.sheet = { profile: true }; return render();
+    case 'point-doc': state.sheet = { docReq: key }; return render();
+    case 'copy-letter': {
+      const { subject, body } = clinicLetter();
+      navigator.clipboard?.writeText(`Subject: ${subject}\n\n${body}`).catch(() => {});
+      return toast('Message copied. Paste it into an email or your clinic\'s patient portal.');
+    }
+    // Concept only: saving isn't built in the prototype.
+    case 'save-later': return toast("Claim saved. We'll remind you to finish it, and you can pick it up any time from your claims.");
     case 'submit': return submit();
     case 'restart': return reset();
   }
@@ -510,8 +678,13 @@ app.addEventListener('submit', (e) => {
   const form = e.target;
   const data = new FormData(form);
   if (form.dataset.form === 'profile') {
-    state.profile = { name: data.get('name').trim(), dob: data.get('dob') };
+    state.profile = { name: data.get('name').trim(), dob: data.get('dob'), country: data.get('country') };
     return reset();
+  }
+  if (form.dataset.form === 'doc') {
+    state.docOverrides[form.dataset.key] = { docId: Number(data.get('doc')), source: 'manual' };
+    state.sheet = null;
+    return render();
   }
   const field = FIELDS.find((f) => f.key === form.dataset.key);
   let value = data.get('value');
@@ -545,6 +718,10 @@ window.addEventListener('keydown', (e) => {
 app.addEventListener('change', (e) => {
   if (e.target.dataset.change === 'doc-type') {
     docById(Number(e.target.dataset.id)).type = e.target.value;
+    render();
+  }
+  if (e.target.dataset.change === 'claim-type') {
+    state.claimType = e.target.value || null;
     render();
   }
 });

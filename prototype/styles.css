@@ -278,3 +278,34 @@ input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1p
 .flags { margin: 0; padding-left: 18px; }
 .flags li + li { margin-top: 2px; }
 .backstage .json { max-height: 360px; }
+
+/* Claim type, two-part checklist, medical necessity callout */
+.claim-type { color: var(--ink); font-size: 15px; }
+.claim-type select { margin-top: 4px; }
+h3.sub { font-size: 14px; margin: 16px 0 0; display: flex; justify-content: space-between; gap: 8px; }
+h3.sub .muted { font-weight: 400; font-size: 13px; }
+.v.todo { color: var(--muted); padding-left: 0; }
+.v.ok-doc { background: var(--local); }
+.btn.secondary { margin-top: 8px; background: var(--surface); }
+.callout { border-color: var(--warn); background: var(--warn-bg); }
+.callout h2 { color: var(--warn); }
+.letter { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 8px 0; }
+.letter summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.letter-text { background: var(--fill); border-radius: 8px; padding: 10px; margin: 8px 0; font: 13px/1.5 'Inter', system-ui, sans-serif; white-space: pre-wrap; }
+.letter .btn { text-decoration: none; display: inline-block; color: var(--ink); }
+.letter .btn.primary { color: #fff; }
+.xcheck tr.on td { background: var(--local); }
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  max-width: min(520px, calc(100% - 32px));
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  z-index: 20;
+}

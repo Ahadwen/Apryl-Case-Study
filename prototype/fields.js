@@ -1,5 +1,9 @@
-// The details a claim needs. Assumed for now; extend this list (and SCHEMA in extract.js) as the
-// real requirements come in.
+// What a claim needs, in two layers:
+//   DOCUMENTS: evidence a reviewer must see (an invoice, proof of payment, sometimes proof of
+//              medical necessity). Ticked by recognising the document, not by reading fields.
+//   FIELDS:    the information, extracted from whatever was uploaded; any document can supply any item.
+// Which ones apply depends on the claim type and country (RULES). All of this is assumed for now;
+// extend it (and SCHEMA in extract.js) as the real requirements come in.
 //
 // source "profile": matched in the browser against the logged-in patient; never sent to Claude.
 // source "claude":  read by Claude from the anonymised text.
@@ -24,7 +28,57 @@ export const FIELDS = [
     hint: 'Usually at the top of the clinic invoice.' },
 ];
 
-export const DOCUMENT_EXAMPLES = ['Clinic invoice', 'Receipt', 'Prescription', 'Drug label', 'Pharmacy receipt', 'Treatment plan'];
+export const DOCUMENT_EXAMPLES = ['Clinic invoice', 'Receipt', 'Prescription', 'Drug label', 'Pharmacy receipt', 'Medical letter'];
+
+// A document requirement is met by a document of one of these types, or one the model says has
+// the flag (e.g. an invoice marked "paid" also proves payment).
+export const DOCUMENTS = {
+  invoice: { label: 'Invoice', types: ['clinic_invoice', 'pharmacy_receipt'],
+    hint: 'From your clinic or pharmacy.' },
+  proof_of_payment: { label: 'Proof of payment', types: ['receipt', 'pharmacy_receipt', 'bank_statement'], flag: 'shows_payment',
+    hint: 'A receipt, a bank or card statement, or an invoice marked as paid.' },
+  medical_necessity: { label: 'Proof of medical necessity', types: ['medical_letter'], flag: 'states_medical_necessity',
+    hint: 'Usually a referral letter, a diagnosis letter or a statement from your doctor.' },
+  prescription: { label: 'Prescription', types: ['prescription', 'drug_label'],
+    hint: 'The prescription, or the pharmacy label on the medication.' },
+};
+
+export const CLAIM_TYPES = {
+  ivf: 'IVF cycle',
+  egg_freezing: 'Egg freezing',
+  iui: 'IUI',
+  medication: 'Fertility medication',
+  consultation: 'Consultation or tests',
+};
+
+export const COUNTRIES = { GB: 'United Kingdom', DE: 'Germany', NL: 'Netherlands', SE: 'Sweden' };
+
+// The requirements matrix: each rule adds documents and details when its conditions hold.
+// ASSUMED, pending confirmation from the claims team.
+export const RULES = [
+  { when: 'Every claim', documents: ['invoice', 'proof_of_payment'], details: ['name', 'dob', 'provider', 'amount_paid', 'invoice_number'] },
+  { when: 'Treatment claims', claims: ['ivf', 'egg_freezing', 'iui', 'consultation'], details: ['treatment', 'treatment_date'] },
+  { when: 'IVF or egg freezing', claims: ['ivf', 'egg_freezing'], documents: ['medical_necessity'] },
+  { when: 'IUI in Germany', claims: ['iui'], countries: ['DE'], documents: ['medical_necessity'] },
+  { when: 'Medication', claims: ['medication'], documents: ['prescription'], details: ['medication'] },
+];
+
+export const ruleApplies = (rule, claim, country) =>
+  (!rule.claims || rule.claims.includes(claim)) && (!rule.countries || rule.countries.includes(country));
+
+export function requirements(claim, country) {
+  const documents = new Set();
+  const details = new Set();
+  for (const rule of RULES) {
+    if (!ruleApplies(rule, claim, country)) continue;
+    rule.documents?.forEach((d) => documents.add(d));
+    rule.details?.forEach((d) => details.add(d));
+  }
+  return {
+    documents: Object.keys(DOCUMENTS).filter((k) => documents.has(k)),
+    fields: FIELDS.filter((f) => details.has(f.key)),
+  };
+}
 
 // Document types, as returned by extract.js. Used to name uploads, since photo filenames are
 // usually meaningless ("IMG_4021.jpg").
@@ -35,6 +89,8 @@ export const DOCUMENT_TYPES = {
   drug_label: 'Drug label',
   pharmacy_receipt: 'Pharmacy receipt',
   treatment_plan: 'Treatment plan',
+  medical_letter: 'Medical letter',
+  bank_statement: 'Bank or card statement',
   other: 'Other document',
 };
 

@@ -4,7 +4,8 @@
 import { callClaude } from '../src/api.js';
 
 const SYSTEM = `You read documents a patient uploads to claim reimbursement for fertility treatment:
-clinic invoices, receipts, prescriptions, drug labels, pharmacy receipts and treatment plans.
+clinic invoices, receipts, prescriptions, drug labels, pharmacy receipts, treatment plans, medical
+letters and bank or card statements.
 
 The text comes from OCR, so expect odd spacing and the occasional misread character.
 Personal identifiers have been replaced with placeholders such as [NAME], [DOB], [ID], [ADDRESS],
@@ -18,13 +19,15 @@ Extract only what the document states. Never guess. Use "" for anything the docu
 - amount_paid: the total the patient paid or was charged, as a plain number like "4250.00".
 - currency: ISO code for amount_paid, e.g. "GBP"; "" if there's no amount.
 - invoice_number: the invoice or receipt number exactly as printed.
+- shows_payment: true if the document shows the amount was actually paid (a receipt, "paid in full", a card payment line); false for an invoice that is only a bill.
+- states_medical_necessity: true if the document is a clinician's statement that the treatment is medically necessary or medically indicated (e.g. a referral or diagnosis letter).
 - readability_issues: a short note if parts of the text look garbled, otherwise "".`;
 
 // Structured output: additionalProperties must be false on every object.
 const SCHEMA = {
   type: 'object',
   properties: {
-    document_type: { type: 'string', enum: ['clinic_invoice', 'receipt', 'prescription', 'drug_label', 'pharmacy_receipt', 'treatment_plan', 'other'] },
+    document_type: { type: 'string', enum: ['clinic_invoice', 'receipt', 'prescription', 'drug_label', 'pharmacy_receipt', 'treatment_plan', 'medical_letter', 'bank_statement', 'other'] },
     provider: { type: 'string' },
     treatment: { type: 'string' },
     treatment_date: { type: 'string' },
@@ -32,9 +35,11 @@ const SCHEMA = {
     amount_paid: { type: 'string' },
     currency: { type: 'string' },
     invoice_number: { type: 'string' },
+    shows_payment: { type: 'boolean' },
+    states_medical_necessity: { type: 'boolean' },
     readability_issues: { type: 'string' },
   },
-  required: ['document_type', 'provider', 'treatment', 'treatment_date', 'medication', 'amount_paid', 'currency', 'invoice_number', 'readability_issues'],
+  required: ['document_type', 'provider', 'treatment', 'treatment_date', 'medication', 'amount_paid', 'currency', 'invoice_number', 'shows_payment', 'states_medical_necessity', 'readability_issues'],
   additionalProperties: false,
 };
 
@@ -54,7 +59,12 @@ export async function extractFields(redactedText) {
   if (!text) throw new Error('No answer from the model.');
   const raw = JSON.parse(text);
 
-  const out = { document_type: raw.document_type, readability_issues: raw.readability_issues };
+  const out = {
+    document_type: raw.document_type,
+    shows_payment: raw.shows_payment === true,
+    states_medical_necessity: raw.states_medical_necessity === true,
+    readability_issues: raw.readability_issues,
+  };
   for (const key of ['provider', 'treatment', 'medication', 'invoice_number']) {
     if (raw[key]?.trim()) out[key] = raw[key].trim();
   }
