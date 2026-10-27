@@ -12,9 +12,10 @@ const ROWS = [
     'Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations',
     'Set up metric capture and dashboards',
     'Discuss privacy and data regulation with legal',
+    'Validate a prototype with the operators',
   ]],
   ['Go ahead', ['Decision against the go-ahead checklist'], 'goahead'],
-  ['Weeks 3–6', ['Build it, test against historical claims', 'Validate prototype iterations with operators']],
+  ['Weeks 3–6', ['Build the feature, with continued input from operators where needed', 'Test against historical claims']],
   ['February', ['Feature goes live']],
   ['March–June', [
     'Follow the dashboard periodically, and intervene with further effort if needed',
