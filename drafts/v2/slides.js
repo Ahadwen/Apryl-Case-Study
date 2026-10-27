@@ -69,14 +69,14 @@ const UNKNOWNS = [
 
 const unknowns = {
   id: 'unknowns',
-  title: 'Unknowns',
+  title: 'Assumptions',
   className: 'is-dense v2-unknowns',
   render(el) {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">03 · Assumptions</div>
-      <h2 data-focus="head">Unknowns, and how we'd test them</h2>
+      <h2 data-focus="head">Assumptions, and how we'd test them</h2>
       <table class="ut" data-focus>
-        <tr><th>Unknown</th><th>How we'd test it</th></tr>
+        <tr><th>Assumption</th><th>How we'd test it</th></tr>
         ${UNKNOWNS.map(([u, t]) => `<tr><td>${u}</td><td>${t}</td></tr>`).join('')}
       </table>
     `;
