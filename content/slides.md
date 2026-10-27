@@ -2,6 +2,13 @@
 
 Agreed content per slide. Copy is draft until marked final; the deck is rendered from this once every slide is agreed.
 
+## Title — agreed
+
+- Eyebrow: Case study
+- Title: Progyny Global
+- Byline: Alastair Hadwen · 2026
+- (No subtitle: "Response to the case study brief" dropped)
+
 ## 01 · The problem — agreed (copy: draft)
 
 Mockup: `drafts/problem.html`
