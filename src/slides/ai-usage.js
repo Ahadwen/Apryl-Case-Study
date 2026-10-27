@@ -4,11 +4,11 @@ export default {
   className: 'is-dense',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow">08 · AI usage reflection</div>
-      <h2>AI usage reflection</h2>
-      <p>Used for thinking, challenge and research. All copy is yours.</p>
-      <h3>Ten logged disagreements, for example:</h3>
-      <ul>
+      <div class="eyebrow" data-focus="head">08 · AI usage reflection</div>
+      <h2 data-focus="head">AI usage reflection</h2>
+      <p data-focus>Used for thinking, challenge and research. All copy is yours.</p>
+      <h3 data-focus="list">Ten logged disagreements, for example:</h3>
+      <ul data-focus="list">
         <li>four-eyes isn’t up for debate</li>
         <li>ask for information, not documents</li>
         <li>fraud is out of scope</li>

@@ -78,6 +78,10 @@ html, body {
 .timeline .when { font-weight: 600; color: var(--accent); }
 .muted { color: var(--muted); }
 
+/* Focus mode (Space): the current section stays sharp, the rest blur and fade. */
+.slide [data-focus] { transition: filter 0.25s ease, opacity 0.25s ease; }
+.slide.focusing [data-focus]:not(.focused) { filter: blur(5px); opacity: 0.35; }
+
 /* Full-bleed slides fill the window instead of the scaled stage; side gutters keep the nav buttons clear. */
 .full { position: absolute; inset: 0 72px 4px; display: none; }
 .is-full .full { display: block; }

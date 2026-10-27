@@ -4,10 +4,10 @@ export default {
   className: 'is-title',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow">Case study</div>
-      <h1>Apryl</h1>
-      <p class="lede">Response to the case study brief</p>
-      <p class="muted">Alastair Hadwen · 2026</p>
+      <div class="eyebrow" data-focus="head">Case study</div>
+      <h1 data-focus="head">Apryl</h1>
+      <p class="lede" data-focus>Response to the case study brief</p>
+      <p class="muted" data-focus>Alastair Hadwen · 2026</p>
     `;
   },
 };

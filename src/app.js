@@ -29,6 +29,8 @@ const next = app.querySelector('.nav-btn.next');
 let current = -1;
 let cleanup = null;
 let currentEl = null;
+let sections = [];   // groups of elements on the current slide that Space steps through
+let step = -1;       // index into sections; -1 = everything visible
 
 function fit() {
   const scale = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
@@ -52,6 +54,8 @@ function show(index) {
   cleanup = slide.render(el);
   if (!slide.fullBleed) shrinkToFit(el);
   currentEl = slide.fullBleed ? null : el;
+  sections = sectionsOf(el);
+  step = -1;
 
   count.textContent = `${index + 1} / ${slides.length}`;
   bar.style.width = `${((index + 1) / slides.length) * 100}%`;
@@ -71,6 +75,28 @@ function shrinkToFit(el) {
   }
 }
 
+// Sections are marked with data-focus. Elements sharing a value form one section (e.g. the
+// eyebrow and heading); an empty value makes the element a section of its own. Order follows the page.
+function sectionsOf(el) {
+  const groups = new Map();
+  let anon = 0;
+  for (const node of el.querySelectorAll('[data-focus]')) {
+    const key = node.dataset.focus || `#${anon++}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(node);
+  }
+  return [...groups.values()];
+}
+
+// Space steps the focus through the sections, blurring the rest; after the last, back to all visible.
+function stepFocus(dir) {
+  if (!sections.length || !currentEl) return;
+  const n = sections.length + 1;  // the sections, plus "all visible"
+  step = ((step + 1 + dir) % n + n) % n - 1;
+  currentEl.classList.toggle('focusing', step >= 0);
+  sections.forEach((group, i) => group.forEach((node) => node.classList.toggle('focused', i === step)));
+}
+
 function indexFromHash() {
   const i = slides.findIndex((s) => s.id === location.hash.slice(1));
   return i === -1 ? 0 : i;
@@ -83,7 +109,8 @@ function isTyping(target) {
 
 document.addEventListener('keydown', (e) => {
   if (isTyping(e.target) || e.metaKey || e.ctrlKey || e.altKey) return;
-  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(current + 1); }
+  if (e.key === ' ') { e.preventDefault(); stepFocus(e.shiftKey ? -1 : 1); }
+  if (['ArrowRight', 'PageDown'].includes(e.key)) { e.preventDefault(); show(current + 1); }
   if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(current - 1); }
   if (e.key === 'Home') show(0);
   if (e.key === 'End') show(slides.length - 1);

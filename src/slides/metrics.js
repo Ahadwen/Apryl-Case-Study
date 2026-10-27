@@ -4,11 +4,11 @@ export default {
   className: 'is-dense',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow">03 · Metrics</div>
-      <h2>Metrics to capture</h2>
-      <p class="subtitle">Captured from week 1, before anything changes, so we know whether the hypothesis holds.</p>
+      <div class="eyebrow" data-focus="head">03 · Metrics</div>
+      <h2 data-focus="head">Metrics to capture</h2>
+      <p class="subtitle" data-focus="head">Captured from week 1, before anything changes, so we know whether the hypothesis holds.</p>
       <div class="cols wide-left">
-        <div>
+        <div data-focus>
           <h3>Operator tracking</h3>
           <p class="purpose">Is the effort finding information, or making judgements?</p>
           <ul>
@@ -22,7 +22,7 @@ export default {
             <li>% of claims rejected</li>
           </ul>
         </div>
-        <div>
+        <div data-focus>
           <h3>Member tracking</h3>
           <p class="purpose">Are we making it harder to claim?</p>
           <ul>

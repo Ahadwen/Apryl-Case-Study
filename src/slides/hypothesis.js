@@ -4,17 +4,17 @@ export default {
   className: 'is-dense',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow">01 · Hypothesis, conditions, assumptions</div>
-      <h2 class="statement">Most of the reviewer effort and delay comes from finding and chasing information, not from judgement.</h2>
+      <div class="eyebrow" data-focus="head">01 · Hypothesis, conditions, assumptions</div>
+      <h2 class="statement" data-focus="head">Most of the reviewer effort and delay comes from finding and chasing information, not from judgement.</h2>
       <div class="cols wide-right">
-        <div>
+        <div data-focus>
           <h3>For this to be true</h3>
           <ul>
             <li>the 40% information requests are mostly preventable at upload</li>
             <li>most claims are straightforward</li>
           </ul>
         </div>
-        <div>
+        <div data-focus>
           <h3>Assumptions</h3>
           <ul>
             <li>review time per claim is unknown, and could be 10 minutes or an hour</li>
