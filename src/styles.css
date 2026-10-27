@@ -96,7 +96,7 @@ html, body {
 .s-problem .legend .lc::before { background: #e5f2e3; border-color: #96c48f; }
 
 /* 02 Context */
-.s-context .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 0.4em; }
+.s-context .cols2 { display: grid; grid-template-columns: 1fr 1.25fr; gap: 56px; margin-top: 0.4em; }
 .s-context .cols2 > div { border-top: 3px solid; padding-top: 16px; }
 .s-context .cols2 > .known { border-color: #2f855a; }
 .s-context .cols2 > .assumed { border-color: var(--accent); }
