@@ -5,7 +5,7 @@
 <style>
   body { overflow: auto; }
   .stage { position: relative; top: 0; left: 0; transform: none; }
-  .slide.is-dense { font-size: 20px; padding-top: 56px; padding-bottom: 56px; }
+  .slide.is-dense { font-size: 18px; padding-top: 56px; padding-bottom: 56px; }
   .split { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; }
   .split > div { border-top: 3px solid; padding-top: 14px; }
   .split > .member { border-color: #e7b07a; } .member h3 { color: #b4651f !important; }
@@ -13,11 +13,11 @@
   .split h3 { font-size: 1.05em !important; margin-bottom: 0.6em !important; }
   .split li + li { margin-top: 0.45em; }
   .split ol { padding-left: 1.3em; }
-  .principles { margin-top: 1.4em; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; border-top: 1px solid var(--rule); padding-top: 14px; }
-  .principles p { margin: 0; line-height: 1.4; }
-  .principles strong { color: var(--ink); }
   .slide .lead-in { font-size: 1.05em; line-height: 1.4; margin: -0.3em 0 1em; max-width: 1000px; }
   .lead-in strong { color: var(--accent); }
+  .princ-strip { margin-top: 1.1em; padding-top: 12px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: auto 1fr 1fr; gap: 28px; align-items: baseline; }
+  .plabel { font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .slide .princ-strip p { margin: 0; line-height: 1.4; font-size: 0.9em; }
   .alt { margin-top: 1em !important; color: var(--muted); font-size: 0.85em; }
 </style></head>
 <body><div class="stage"><section class="slide is-dense">
@@ -44,5 +44,10 @@
         <li><strong>Sources:</strong> each fact is shown with its source highlighted.</li>
       </ul>
     </div>
+  </div>
+  <div class="princ-strip">
+    <span class="plabel">Principles</span>
+    <p><strong>Privacy and GDPR:</strong> documents are read and masked on the member's device. The AI never learns who the member is.</p>
+    <p><strong>Machine vs. human:</strong> we automate the data retrieval; the judgement still sits with the operators.</p>
   </div>
 </section></div></body></html>
