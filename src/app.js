@@ -61,7 +61,7 @@ function show(index) {
   bar.style.width = `${((index + 1) / slides.length) * 100}%`;
   prev.disabled = index === 0;
   next.disabled = index === slides.length - 1;
-  document.title = `${slide.title} · Apryl Case Study`;
+  document.title = `${slide.title} · Progyny Global Case Study`;
   history.replaceState(null, '', `#${slide.id}`);
 }
 

@@ -61,23 +61,111 @@ html, body {
 
 /* Content slides */
 .slide h3 { font-size: 0.8em; font-weight: 600; color: var(--accent); margin: 0 0 0.5em; }
-.slide .statement { font-size: 1.6em; max-width: 30ch; }
-.slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-.slide .cols.wide-right { grid-template-columns: 2fr 3fr; }
-.slide .cols.wide-left { grid-template-columns: 3fr 2fr; }
-.slide .aside { margin-top: 1em; color: var(--muted); }
-.slide .subtitle { color: var(--muted); margin: -0.6em 0 1.2em; }
-.slide .purpose { color: var(--muted); font-style: italic; font-size: 0.9em; margin: -0.3em 0 0.6em; }
-.slide li.headline { font-weight: 600; color: var(--accent); }
-.slide .tag { display: inline-block; font-size: 0.6em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; vertical-align: 0.2em; color: #fff; background: var(--accent); border-radius: 4px; padding: 0.1em 0.5em; margin-left: 0.3em; }
-.slide .aside strong { color: var(--ink); }
 .slide.is-dense { font-size: 22px; }
 .slide.is-dense h2 { font-size: 1.9em; }
-.timeline { list-style: none; padding: 0 !important; display: grid; gap: 0; }
-.timeline li { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 18px 0; border-top: 1px solid var(--rule); margin: 0 !important; }
-.timeline li:last-child { border-bottom: 1px solid var(--rule); }
-.timeline .when { font-weight: 600; color: var(--accent); }
 .muted { color: var(--muted); }
+
+/* Base sizes per slide; shrinkToFit (app.js) steps down from these if a slide still overflows. */
+.slide.s-proposal { font-size: 17px; padding-top: 30px; padding-bottom: 30px; }
+.slide.s-metrics { font-size: 17px; padding-top: 40px; padding-bottom: 40px; }
+.slide.s-milestones { font-size: 20px; }
+.slide.s-risks, .slide.s-ai { font-size: 19px; }
+
+/* 01 The problem */
+.s-problem h2.reframe { font-size: 1.75em; line-height: 1.15; margin: 0 0 0.35em; }
+.s-problem .reframe .no { color: var(--muted); font-weight: 600; }
+.slide.s-problem .goal { font-size: 1em; margin-bottom: 3.2em; max-width: 880px; }
+.s-problem .goal strong { color: var(--accent); }
+.s-problem .flows { display: grid; gap: 30px; }
+.s-problem .flow { display: grid; grid-template-columns: 100px minmax(0, 1fr); align-items: center; gap: 12px; }
+.s-problem .flow .lbl { font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; }
+.s-problem .flow.today .lbl { color: var(--muted); }
+.s-problem .flow.proposed .lbl { color: var(--accent); }
+.s-problem .steps { display: flex; align-items: center; gap: 6px; }
+.s-problem .step { border-radius: 10px; padding: 8px; font-size: 0.6em; line-height: 1.25; text-align: center; border: 1.5px solid; flex: 1 1 0; min-width: 0; }
+.s-problem .m { background: #fdecd9; border-color: #e7b07a; }
+.s-problem .a { background: #dfe9f6; border-color: #8fadd4; }
+.s-problem .c { background: #e5f2e3; border-color: #96c48f; }
+.s-problem .arrow { color: var(--muted); font-size: 0.8em; flex: none; }
+.s-problem .loop { position: relative; display: flex; align-items: center; gap: 6px; padding: 10px 10px 8px; border: 2px dashed #c9a27a; border-radius: 14px; flex: 5 1 0; min-width: 0; }
+.s-problem .loop::after { content: '↻ repeats for 40% of claims'; position: absolute; top: -13px; left: 14px; background: var(--bg); padding: 0 6px; font-size: 0.55em; font-weight: 700; color: #a8621f; }
+.s-problem .legend { display: flex; gap: 18px; font-size: 0.6em; color: var(--muted); margin-top: 14px; padding-left: 112px; }
+.s-problem .legend span::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid; }
+.s-problem .legend .lm::before { background: #fdecd9; border-color: #e7b07a; }
+.s-problem .legend .la::before { background: #dfe9f6; border-color: #8fadd4; }
+.s-problem .legend .lc::before { background: #e5f2e3; border-color: #96c48f; }
+
+/* 02 Context */
+.s-context .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 0.4em; }
+.s-context .cols2 > div { border-top: 3px solid; padding-top: 16px; }
+.s-context .cols2 > .known { border-color: #2f855a; }
+.s-context .cols2 > .assumed { border-color: var(--accent); }
+.s-context .known h3 { color: #2f855a; }
+.s-context .cols2 h3 { font-size: 1em; margin-bottom: 0.15em; }
+.s-context .sub { color: var(--muted); font-size: 0.8em; margin: 0 0 0.9em; }
+.s-context li + li { margin-top: 0.55em; }
+
+/* 03 Proposal */
+.slide.is-dense h2.ptitle { margin-bottom: 0.35em; font-size: 1.65em; }
+.s-proposal .ptitle span { color: var(--accent); }
+.slide.s-proposal .lead-in { font-size: 1.05em; line-height: 1.4; margin: -0.3em 0 1em; max-width: 1000px; }
+.s-proposal .lead-in strong { color: var(--accent); }
+.s-proposal .split { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; }
+.s-proposal .split > div { border-top: 3px solid; padding-top: 14px; }
+.s-proposal .split > .member { border-color: #e7b07a; }
+.s-proposal .split > .operator { border-color: #8fadd4; }
+.s-proposal .member h3 { color: #b4651f; }
+.s-proposal .operator h3 { color: #3d6496; }
+.s-proposal .split h3 { font-size: 1.05em; margin-bottom: 0.6em; }
+.s-proposal .split li + li { margin-top: 0.45em; }
+.s-proposal .split ol { padding-left: 1.3em; }
+.s-proposal .princ-strip { margin-top: 1.1em; padding-top: 12px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: auto 1fr 1fr; gap: 28px; align-items: baseline; }
+.s-proposal .plabel { font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.slide.s-proposal .princ-strip p { margin: 0; line-height: 1.4; font-size: 0.9em; }
+
+/* 04 Metrics */
+.slide.is-dense.s-metrics h2 { margin-bottom: 0.25em; }
+.slide.s-metrics .subtitle { color: var(--muted); margin: 0 0 1.1em; }
+.s-metrics .mgrid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; align-items: start; }
+.s-metrics table.all { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+.s-metrics table.all th { text-align: left; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0 0 6px; }
+.s-metrics table.all td { padding: 6px 10px 6px 0; border-top: 1px solid var(--rule); vertical-align: top; line-height: 1.3; }
+.s-metrics table.all tr.group td { border-top: 0; padding-top: 14px; font-weight: 700; font-size: 0.85em; }
+.s-metrics tr.group.op td { color: #3d6496; }
+.s-metrics tr.group.mem td { color: #b4651f; }
+.s-metrics .box { border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; }
+.s-metrics .box h3 { font-size: 1em; margin: 0 0 0.15em; }
+.slide.s-metrics .box .why { color: var(--muted); font-size: 0.85em; margin: 0 0 0.7em; }
+.s-metrics .box ul { padding-left: 1.2em; margin: 0; }
+.s-metrics .box li { line-height: 1.3; }
+.s-metrics .box li + li { margin-top: 0.4em; }
+.s-metrics .box li.head { font-weight: 700; }
+.s-metrics .improve { background: #e3f2e7; }
+.s-metrics .improve h3 { color: #2f855a; }
+.s-metrics .guard { background: #fdecd9; }
+.s-metrics .guard h3 { color: #a8621f; }
+
+/* 06 Milestones */
+.timeline { list-style: none; padding: 0 !important; display: grid; gap: 0; }
+.timeline > li { display: grid; grid-template-columns: 170px 1fr; gap: 32px; padding: 14px 0; border-top: 1px solid var(--rule); margin: 0 !important; }
+.timeline > li:last-child { border-bottom: 1px solid var(--rule); }
+.timeline .when { font-weight: 600; color: var(--accent); }
+.timeline ul { margin: 0; padding-left: 1.1em; }
+.timeline ul li + li { margin-top: 0.25em; }
+
+/* 07 Risks and scoping */
+.s-risks .rs { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: start; }
+.s-risks .rs h3 { font-size: 1em; }
+.s-risks .rs li + li { margin-top: 0.45em; }
+.s-risks .scope h4 { margin: 0 0 0.3em; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.s-risks .scope ul { margin-bottom: 1em; }
+.s-risks .team { border-top: 1px solid var(--rule); padding-top: 10px; }
+
+/* 08 AI usage */
+.s-ai .ai { display: grid; grid-template-columns: 1fr 1.5fr; gap: 56px; align-items: start; }
+.s-ai .ai h3 { font-size: 1em; }
+.s-ai .ai li + li { margin-top: 0.5em; }
+.s-ai .ai h3.gap { margin-top: 1.2em; }
 
 /* Focus mode (Space): the current section stays sharp, the rest blur and fade. */
 .slide [data-focus] { transition: filter 0.25s ease, opacity 0.25s ease; }

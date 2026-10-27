@@ -1,18 +1,29 @@
+const ROWS = [
+  ['Weeks 1–2', [
+    'Sit with reviewers and understand their workflows',
+    'Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations',
+    'Set up metric capture and dashboards',
+    'Legal confirmation',
+  ]],
+  ['Weeks 3–6', ['Build it, test against historical claims', 'Validate prototype iterations with operators']],
+  ['February', ['Feature goes live']],
+  ['March–June', [
+    'Follow the dashboard periodically, and intervene with further effort if needed',
+    'Otherwise, move focus to a different product area',
+  ]],
+];
+
 export default {
   id: 'milestones',
   title: 'Milestones',
-  className: 'is-dense',
+  className: 'is-dense s-milestones',
   render(el) {
-    const rows = [
-      ['Weeks 1–2', 'Metric capture, dashboard, legal advice.'],
-      ['Weeks 3–6', 'Build it, test against historical claims.'],
-      ['February', 'Live, both reviewers still signing off.'],
-      ['March–June', 'Light touch. A monthly look at the dashboard, checks graduate when they hit their threshold, and the claims team writes down rules themselves.'],
-    ];
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">06 · Milestones</div>
       <h2 data-focus="head">Milestones</h2>
-      <ol class="timeline">${rows.map(([when, what]) => `<li data-focus><span class="when">${when}</span><span>${what}</span></li>`).join('')}</ol>
+      <ol class="timeline">${ROWS.map(([when, items]) => `
+        <li data-focus><span class="when">${when}</span><ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul></li>`).join('')}
+      </ol>
     `;
   },
 };

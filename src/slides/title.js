@@ -1,12 +1,11 @@
 export default {
   id: 'title',
-  title: 'Apryl',
+  title: 'Progyny Global',
   className: 'is-title',
   render(el) {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">Case study</div>
-      <h1 data-focus="head">Apryl</h1>
-      <p class="lede" data-focus>Response to the case study brief</p>
+      <h1 data-focus="head">Progyny Global</h1>
       <p class="muted" data-focus>Alastair Hadwen · 2026</p>
     `;
   },
