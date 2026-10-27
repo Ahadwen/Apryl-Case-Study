@@ -11,12 +11,12 @@ export default {
       <div data-focus>
         <h3>That could look like</h3>
         <div class="opts">
-          <div>One treatment type uses the new flow</div>
-          <div>A percentage of members</div>
-          <div>All members, for a set timeframe</div>
+          <div>The new flow is used for one specific treatment type</div>
+          <div>A percentage of members use the new flow</div>
+          <div>All members use the new flow and the results are closely monitored</div>
         </div>
       </div>
-      <p class="check" data-focus>During the pilot, operators double-check a sample of extracted details against the documents.</p>
+      <p class="check" data-focus>Pilot design leans on technical viability and so is decided in close discussion with engineering.<br>During the pilot, operators double-check a sample of extracted details against the documents.</p>
       <div class="outcome" data-focus>
         <p>The aim is to confirm that the idea holds water.</p>
         <p class="then">Then either <strong>more work is needed</strong>, or <strong>we move on</strong>.</p>

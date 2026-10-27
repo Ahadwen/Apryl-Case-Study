@@ -102,7 +102,8 @@ Full-window: a thin context column, then the prototype's member screen and behin
 
 **Title:** A pilot
 - We run a pilot to confirm this does help move us towards our target.
-- **That could look like:** One treatment type uses the new flow · A percentage of members · All members, for a set timeframe
+- **That could look like:** The new flow is used for one specific treatment type · A percentage of members use the new flow · All members use the new flow and the results are closely monitored
+- Pilot design leans on technical viability and so is decided in close discussion with engineering.
 - During the pilot, operators double-check a sample of extracted details against the documents.
 - The aim is to confirm that the idea holds water.
 - Then either **more work is needed**, or **we move on**.
