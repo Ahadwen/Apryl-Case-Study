@@ -78,6 +78,34 @@ Mockup: `drafts/proposal.html` (17px; it's dense, but read one section at a time
 
 **Dropped:** two lanes (clean / judgement), four-eyes, "alternative considered".
 
+## 04 · Metrics — agreed (copy: draft)
+
+Mockup: `drafts/metrics.html` (17px)
+
+**Title:** Metrics, and a definition of success
+**Subtitle:** Captured from week 1, before anything changes, so we can test our assumptions.
+
+**Left — table "Everything we should capture"**
+- Operator: Time between claim creation and closure (granted, at least partially) · Time between claim creation and closure (denied) · Time between claim submission and last document upload before closure · Number of document requests · Operator minutes per claim (no judgement call required) · Operator minutes per claim (judgement call required) · Operator minutes per claim (on average, full sample) · % of claims rejected
+- Member: Abandonment rate · Document rejection rate · Manual entry rate
+
+**Right — "Success: should improve"** (*What the redesign is for*), plain bullets
+- **Time between submission and last document upload: towards zero** (bold)
+- Number of document requests
+- Operator minutes per claim (no judgement call required)
+- Time between claim creation and closure (granted)
+
+**Right — "Guardrails: shouldn't get worse"** (*What the redesign could break*)
+- Abandonment rate: the checklist mustn't put members off
+- % of claims rejected: complete doesn't mean eligible
+- Manual entry and document rejection rates: low, or extraction isn't working
+
+**Space steps:** title → table → success → guardrails
+
+## 05 · Prototype — agreed
+
+Already built (full-window slide). Lead-in bar: **05 · Prototype** · Data extraction, information checklist, which gates claim submissions · *Left: what the member sees · Right: behind the scenes*
+
 ## Order
 
 01 Problem · 02 Context · 03 Proposal · 04 Metrics · 05 Prototype · then Milestones, Risks, AI usage
