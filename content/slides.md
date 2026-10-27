@@ -146,6 +146,7 @@ Mockup: `drafts/ai-usage.html`
 **What it did**
 - Brainstorming, dissecting the brief, and stress-testing assumptions
 - Built the prototype and this deck, iterating on my instruction
+- Sense checks, grammar and spelling checks, and quality control throughout my inputs and drafts
 
 **What it didn't do**
 - Case study approach and strategy
