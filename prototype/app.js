@@ -16,7 +16,7 @@ const SAMPLES = [
   { file: 'medical-letter.pdf', preview: 'medical-letter-preview.png', label: 'Medical necessity letter', kind: 'PDF', type: 'application/pdf' },
 ];
 
-const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03', country: 'GB' };
+const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03', country: 'GB', nationalId: '' };
 
 const state = {
   profile: { ...DEFAULT_PROFILE },
@@ -60,11 +60,15 @@ function docLabel(doc) {
 }
 const norm = (v) => JSON.stringify(v).toLowerCase().replace(/\s+/g, ' ');
 
+// Every piece of information must come from a document that identifies the patient: their name,
+// date of birth or national ID number is on it. Anything else on an anonymous document is ignored.
+const identifiesPatient = (doc) => Boolean(doc.anon && (doc.anon.found.name || doc.anon.found.dob || doc.anon.found.nationalId));
+
 function docValue(doc, field) {
   if (field.source === 'profile') {
     return doc.anon?.found[field.key] ? state.profile[field.key] : undefined;
   }
-  return doc.status === 'done' ? doc.result?.[field.key] : undefined;
+  return doc.status === 'done' && identifiesPatient(doc) ? doc.result?.[field.key] : undefined;
 }
 
 // Where a field's value comes from: a manual entry or chosen re-upload first, then the first
@@ -88,7 +92,8 @@ const reqs = () => requirements(state.claimType, state.profile.country);
 // flagged (an invoice marked paid also proves payment), or one the patient points at (flagged).
 function docSatisfies(doc, key) {
   const req = DOCUMENTS[key];
-  return doc.status === 'done' && (req.types.includes(docType(doc)) || Boolean(req.flag && doc.result?.[req.flag]));
+  return doc.status === 'done' && identifiesPatient(doc)
+    && (req.types.includes(docType(doc)) || Boolean(req.flag && doc.result?.[req.flag]));
 }
 
 function resolveDoc(key) {
@@ -227,10 +232,10 @@ function docCard(doc) {
       ...documents.filter((k) => docSatisfies(doc, k)).map((k) => DOCUMENTS[k].label),
       ...fields.filter((f) => docValue(doc, f) !== undefined).map((f) => f.label),
     ];
-    const notYours = !doc.anon.found.name && !doc.anon.found.dob;
+    const notYours = !identifiesPatient(doc);
     body = `
-      <p class="small">${added.length ? `<span class="tick">✓</span> ${esc(added.join(', '))}` : "We couldn't find any claim details on this document."}</p>
-      ${notYours ? '<p class="small warn">We couldn\'t find your name or date of birth on this document. Check it\'s yours.</p>' : ''}
+      ${notYours ? '' : `<p class="small">${added.length ? `<span class="tick">✓</span> ${esc(added.join(', '))}` : "We couldn't find any claim details on this document."}</p>`}
+      ${notYours ? '<p class="small warn">This document doesn\'t show your name, date of birth or ID number, so we can\'t use it: everything on your claim has to come from a document that identifies you. Check it\'s yours, or upload a version that shows your details.</p>' : ''}
       ${doc.targetMiss ? `<p class="small warn">We couldn't find the ${esc(doc.targetMiss.toLowerCase())} on this document either.</p>` : ''}
       ${doc.result.readability_issues ? '<p class="small warn">Parts of this document were hard to read. A clearer photo may help.</p>' : ''}`;
   }
@@ -300,13 +305,17 @@ function backstage() {
     const counts = {};
     for (const [, label] of doc.anon.redacted.matchAll(/\[([A-Z]+)\]/g)) counts[label] = (counts[label] ?? 0) + 1;
     const removed = Object.entries(counts).map(([label, n]) => `<span class="red">${label}</span>${n > 1 ? ` ×${n}` : ''}`).join(' ');
-    const matched = `Name ${doc.anon.found.name ? '✓ matched' : '✗ not found'} · Date of birth ${doc.anon.found.dob ? '✓ matched' : '✗ not found'}`;
+    const f = doc.anon.found;
+    const matched = `Name ${f.name ? '✓' : '✗'} · Date of birth ${f.dob ? '✓' : '✗'}${state.profile.nationalId ? ` · National ID ${f.nationalId ? '✓' : '✗'}` : ''}`;
+    const identifies = identifiesPatient(doc)
+      ? '<p class="tick">Identifies the patient: its details can be used.</p>'
+      : '<p class="warn"><strong>Doesn\'t identify the patient: nothing from it is used.</strong></p>';
     let returned = '<p>Waiting…</p>';
     if (doc.status === 'done') returned = `<pre class="json">${esc(JSON.stringify(doc.result, null, 2))}</pre>`;
     if (doc.status === 'error') returned = `<p class="warn">${esc(doc.error)}</p>`;
     return panel(`doc-${doc.id}`, title(doc), `
       ${step(1, 'Read on the device', `<p>${esc(doc.method)}. The file itself is never uploaded.</p>`)}
-      ${step(2, 'Identifiers matched and removed in the browser', `<p>${matched} (against the patient's profile)</p><p>Removed: ${removed || 'nothing'}</p>`)}
+      ${step(2, 'Identifiers matched and removed in the browser', `<p>${matched} (matched against the patient's account)</p>${identifies}<p>Removed: ${removed || 'nothing'}</p>`)}
       ${step(3, 'Sent to Claude: anonymised text only', `<pre class="redacted">${redactedHtml(doc.anon.redacted.trim())}</pre>`)}
       ${step(4, 'Returned: fixed JSON shape', returned)}`);
   }).join('');
@@ -327,10 +336,11 @@ function backstage() {
             <button class="btn sm" data-action="sample" data-i="${i}">Use this sample</button>
           </div>`).join('')}
         </div>
-        <p class="small">Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))} · ${esc(COUNTRIES[state.profile.country])} <button class="link" data-action="profile">Change</button><br>
+        <p class="small">Demo patient: <strong>${esc(state.profile.name)}</strong> · ${esc(formatDate(state.profile.dob))}${state.profile.nationalId ? ` · ID ${esc(state.profile.nationalId)}` : ''} · ${esc(COUNTRIES[state.profile.country])} <button class="link" data-action="profile">Change</button><br>
           <span class="muted">In the real app the patient is signed in. Change this to try documents with another name on them.</span></p>`)}
       ${rulesPanel()}
       <p class="small">GDPR data minimisation: documents are read on the patient's device, their name, date of birth and other identifiers are removed there, and only the anonymised text is sent for analysis. Name and date of birth are filled in from the patient's own account, never from the model.</p>
+      <p class="small">Only documents that identify the patient (name, date of birth or national ID number on them) count towards the claim.</p>
       ${cards || '<p class="small muted">Upload a document (or a sample) to see what happens to it.</p>'}
       ${crossCheck()}
     </aside>`;
@@ -478,13 +488,14 @@ function sheet() {
       <p class="small muted">In the real app the patient is logged in, so we already know who they are. Change these to try your own documents. This clears the current claim.</p>
       <label class="lbl">Name<input name="name" required value="${esc(state.profile.name)}"></label>
       <label class="lbl">Date of birth<input name="dob" type="date" required value="${esc(state.profile.dob)}"></label>
+      <label class="lbl">National ID number <span class="small muted">optional, e.g. a Swedish personnummer</span><input name="nationalId" value="${esc(state.profile.nationalId)}" placeholder="19900203-1234"></label>
       <label class="lbl">Country<select name="country">${Object.entries(COUNTRIES).map(([k, v]) => `<option value="${k}" ${k === state.profile.country ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
       <div class="acts"><button class="btn primary" type="submit">Save</button><button class="btn" type="button" data-action="close">Cancel</button></div>
     </form></div>`;
   }
   if (state.sheet.docReq) {
     const req = DOCUMENTS[state.sheet.docReq];
-    const docs = state.docs.filter((d) => d.anon);
+    const docs = state.docs.filter(identifiesPatient);
     return `<div class="scrim"><form class="sheet" data-form="doc" data-key="${state.sheet.docReq}">
       <h2>${esc(req.label)}</h2>
       <div class="attention">
@@ -503,7 +514,7 @@ function sheet() {
   }
   const field = FIELDS.find((f) => f.key === state.sheet.key);
   const r = resolve(field);
-  const docs = state.docs.filter((d) => d.anon);
+  const docs = state.docs.filter(identifiesPatient);
   const current = r?.value;
   let input = '';
   if (field.input === 'text') input = `<label class="lbl">${esc(field.label)}<input name="value" required value="${esc(current ?? '')}"></label>`;
@@ -521,7 +532,7 @@ function sheet() {
     ? `<label class="lbl">Which document shows this? <span class="req">Required</span>
         <select name="doc" required><option value="">Choose a document…</option>
         ${docs.map((d) => `<option value="${d.id}" ${r?.source === 'manual' && r.docId === d.id ? 'selected' : ''}>${esc(docLabel(d))} (${esc(d.name)})</option>`).join('')}</select></label>`
-    : '<p class="small warn">You haven\'t uploaded any documents yet.</p>';
+    : '<p class="small warn">None of your uploads shows your name, date of birth or ID number yet.</p>';
   return `<div class="scrim"><form class="sheet" data-form="field" data-key="${field.key}">
     <h2>${r ? 'Edit' : 'Type in'}: ${esc(field.label.toLowerCase())}</h2>
     <div class="attention">
@@ -686,7 +697,7 @@ app.addEventListener('submit', (e) => {
   const form = e.target;
   const data = new FormData(form);
   if (form.dataset.form === 'profile') {
-    state.profile = { name: data.get('name').trim(), dob: data.get('dob'), country: data.get('country') };
+    state.profile = { name: data.get('name').trim(), dob: data.get('dob'), country: data.get('country'), nationalId: data.get('nationalId').trim() };
     return reset();
   }
   if (form.dataset.form === 'doc') {

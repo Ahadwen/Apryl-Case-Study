@@ -46,6 +46,7 @@ const PATTERNS = [
   // Labelled patient numbers: "NHS no: 485 777 3456", "Patient ID: AB12345", "MRN 00912"
   { label: 'ID', re: /\b(?:nhs|patient|hospital|mrn|chi|member(?:ship)?)\s*(?:no\.?|number|id|#)?\s*[:#]?\s*((?=[A-Z -]*\d)[A-Z0-9][A-Z0-9 -]{3,14}[A-Z0-9])\b/gi, group: 1 },
   { label: 'ID', re: /\b\d{3}[ -]?\d{3}[ -]?\d{4}\b/g },                                   // bare NHS-style number
+  { label: 'ID', re: /\b(?:19|20)?\d{6}\s?[-+]\s?\d{4}\b/g },                               // Swedish personnummer
   { label: 'EMAIL', re: /\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b/g },
   { label: 'PHONE', re: /(?:\+44\s?\(?0?\)?\s?\d{2,4}|\(?\b0\d{2,4}\)?)[\s-]?\d{3,4}[\s-]?\d{3,4}\b/g },
   { label: 'POSTCODE', re: /\b[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\b/gi },
@@ -95,8 +96,18 @@ function merge(ranges) {
 /**
  * @param {string} text OCR text
  * @param {{ name: string, dob: string }} profile dob as yyyy-mm-dd
- * @returns {{ redacted: string, segments: {text: string, label?: string}[], found: {name: boolean, dob: boolean}, other: number }}
+ * @returns {{ redacted: string, segments: {text: string, label?: string}[], found: {name: boolean, dob: boolean, nationalId: boolean}, other: number }}
  */
+// The patient's national ID number (e.g. a Swedish personnummer, 19900203-1234) as printed in any
+// spacing: separators are optional, and the century can be left off.
+function nationalIdPattern(id) {
+  let digits = String(id ?? '').replace(/\D/g, '');
+  if (digits.length < 6) return null;
+  let century = '';
+  if (digits.length === 12) { century = `(?:${digits.slice(0, 2)})?`; digits = digits.slice(2); }
+  return new RegExp(`\\b${century}${digits.split('').join('[\\s+-]?')}\\b`, 'g');
+}
+
 export function anonymise(text, profile) {
   const name = findName(text, profile.name);
   const ranges = [...name.ranges];
@@ -105,6 +116,15 @@ export function anonymise(text, profile) {
   for (const m of text.matchAll(dobPattern(profile.dob))) {
     ranges.push([m.index, m.index + m[0].length, 'DOB']);
     dobFound = true;
+  }
+
+  let idFound = false;
+  const idRe = nationalIdPattern(profile.nationalId);
+  if (idRe) {
+    for (const m of text.matchAll(idRe)) {
+      ranges.push([m.index, m.index + m[0].length, 'ID']);
+      idFound = true;
+    }
   }
 
   let other = 0;
@@ -133,5 +153,5 @@ export function anonymise(text, profile) {
     .join('')
     .replace(/\[NAME\](?:[\s,.]+\[NAME\])+/g, '[NAME]');
 
-  return { redacted, segments, found: { name: name.found, dob: dobFound }, other };
+  return { redacted, segments, found: { name: name.found, dob: dobFound, nationalId: idFound }, other };
 }
