@@ -1,8 +1,8 @@
 const CHECKLIST = [
   'Legal approval',
   'Claims operator approval',
-  'The data shows claims operator input time is worth prioritising',
-  'The data shows document chasing is a real problem',
+  'Time based metrics prove that claims operator time is a problem worth prioritising',
+  'Investigation confirms that incomplete document submissions are a reasonable first focus, in order to improve claim processing time and operator input time',
 ];
 
 const ROWS = [
@@ -10,7 +10,7 @@ const ROWS = [
     'Sit with reviewers and understand their workflows',
     'Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations',
     'Set up metric capture and dashboards',
-    'Legal confirmation',
+    'Discuss privacy and data regulation with legal',
   ]],
   ['Go ahead', ['Decision against the go-ahead checklist'], 'goahead'],
   ['Weeks 3–6', ['Build it, test against historical claims', 'Validate prototype iterations with operators']],

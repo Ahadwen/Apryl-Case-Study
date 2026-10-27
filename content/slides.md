@@ -117,7 +117,7 @@ Already built (full-window slide). Lead-in bar: **05 · Prototype** · Data extr
 
 Mockup: `drafts/milestones.html` (week 1 is in January)
 
-- **Weeks 1–2:** Sit with reviewers and understand their workflows · Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations · Set up metric capture and dashboards · Legal confirmation
+- **Weeks 1–2:** Sit with reviewers and understand their workflows · Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations · Set up metric capture and dashboards · Discuss privacy and data regulation with legal
 - **Go ahead** (green): Decision against the go-ahead checklist
 - **Weeks 3–6:** Build it, test against historical claims · Validate prototype iterations with operators
 - **February:** Feature goes live
@@ -126,8 +126,8 @@ Mockup: `drafts/milestones.html` (week 1 is in January)
 **Go-ahead checklist** (green box, right; steps in with the Go ahead row)
 - Legal approval
 - Claims operator approval
-- The data shows claims operator input time is worth prioritising
-- The data shows document chasing is a real problem
+- Time based metrics prove that claims operator time is a problem worth prioritising
+- Investigation confirms that incomplete document submissions are a reasonable first focus, in order to improve claim processing time and operator input time
 
 **Space steps:** heading → each row (Go ahead row + checklist together)
 
