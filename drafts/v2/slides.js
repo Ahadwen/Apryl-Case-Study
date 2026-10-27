@@ -214,12 +214,6 @@ const investigation = {
           ])}</ul>
         </div>
       </div>
-      <div class="mvh" data-focus>
-        <span class="lbl">Machine vs human</span>
-        <span><strong>Automate:</strong> reading documents, checking completeness</span>
-        <span><strong>Assist:</strong> flagging gaps and mismatches</span>
-        <span><strong>People:</strong> every decision</span>
-      </div>
     `;
   },
 };

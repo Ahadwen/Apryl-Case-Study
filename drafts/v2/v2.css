@@ -59,8 +59,6 @@
 .v2-success .ready h3 { color: #2f855a; }
 .v2-success .pilot { background: #dfe9f6; }
 .v2-success .pilot h3 { color: #3d6496; }
-.v2-success .mvh { display: grid; grid-template-columns: auto 1fr 0.8fr 0.6fr; gap: 24px; align-items: baseline; margin-top: 1.4em; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 0.8em; }
-.v2-success .mvh .lbl { font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 
 /* 06 Prototyping: thin context column, then the prototype. All three columns share one 64px gap:
    this grid's gap, and the prototype's own (it's loaded with ?inline, which uses the same gap). */
