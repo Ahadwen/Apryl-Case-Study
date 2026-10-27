@@ -119,6 +119,24 @@ Mockup: `drafts/milestones.html` (week 1 is in January)
 
 **Note:** "legal confirmation", not "legal and DPIA" (also update Risks).
 
+## 07 · Risks and scoping — agreed (copy: draft)
+
+Mockup: `drafts/risks.html`
+
+**Risks**
+- Legal confirmation is the critical path. No AI on real documents until it's done.
+- Needs the claims team's time: to write down rules, and for us to sit with them and understand their workflows.
+- OCR quality on bad photos.
+- Guardrail metrics may show need for further action.
+- Anonymised medical letters can still contain health details.
+
+**Scoping**
+- In scope: Metrics and dashboards · Claim type and checklist · Document reading, masking and extraction · Member confirmation and gated submit · Operator view with sources
+- Out of scope: Fraud, payout, employer configuration tooling · Changes to how operators make judgement calls
+- **Team:** about 2 engineers, plus time from the claims team.
+
+**Space steps:** heading → risks → scoping
+
 ## Order
 
-01 Problem · 02 Context · 03 Proposal · 04 Metrics · 05 Prototype · then Milestones, Risks, AI usage
+01 Problem · 02 Context · 03 Proposal · 04 Metrics · 05 Prototype · 06 Milestones · 07 Risks and scoping · 08 AI usage
