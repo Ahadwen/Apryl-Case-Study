@@ -105,8 +105,8 @@ Full-window: a thin context column, then the prototype's member screen and behin
 - **That could look like:** The new flow is used for one specific treatment type · A percentage of members use the new flow · All members use the new flow and the results are closely monitored
 - Pilot specifics are partially decided on technical viability and so in close discussion with engineering.
 - During the pilot, operators double-check a sample of extracted details against the documents.
-- The aim is to confirm that the idea holds water.
-- Then either **more work is needed**, or **we move on**.
+- The aim is to confirm that the change makes a meaningful impact towards the strategic goal.
+- Then decide: either **more work is needed**, or **we move on to other priorities**.
 
 ## 08 · Risks and scope — agreed
 

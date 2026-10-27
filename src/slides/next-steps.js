@@ -18,8 +18,8 @@ export default {
       </div>
       <p class="check" data-focus>Pilot specifics are partially decided on technical viability and so in close discussion with engineering.<br>During the pilot, operators double-check a sample of extracted details against the documents.</p>
       <div class="outcome" data-focus>
-        <p>The aim is to confirm that the idea holds water.</p>
-        <p class="then">Then either <strong>more work is needed</strong>, or <strong>we move on</strong>.</p>
+        <p>The aim is to confirm that the change makes a meaningful impact towards the strategic goal.</p>
+        <p class="then">Then decide: either <strong>more work is needed</strong>, or <strong>we move on to other priorities</strong>.</p>
       </div>
     `;
   },
