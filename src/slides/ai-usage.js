@@ -11,7 +11,7 @@ export default {
       <div class="note" data-focus>
         <div class="eyebrow">A note on AI</div>
         <h3>Used for</h3>
-        <ul>${list(['Drafting the prototype and these slides (Claude Code)', 'Quality-checking language'])}</ul>
+        <ul>${list(['Brainstorming and discussion', 'Building the prototype and these slides (Claude Code)', 'Quality-checking language'])}</ul>
         <h3>Not used for</h3>
         <ul>${list(['Strategy or matters of taste. The concepts here are my own.', 'Language and copy: the content is my own.'])}</ul>
         <h3>Where I pushed back</h3>
