@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+  body { overflow: auto; }
+  .stage { position: relative; top: 0; left: 0; transform: none; }
+  .slide.is-dense { font-size: 20px; }
+  .timeline li { grid-template-columns: 170px 1fr; padding: 14px 0; }
+  .timeline ul { margin: 0; padding-left: 1.1em; }
+  .timeline ul li, .timeline ul li:last-child { display: list-item; border: 0 !important; padding: 0; }
+  .timeline ul li + li { margin-top: 0.25em !important; }
+  .new { background: #fff3b0; border-radius: 3px; padding: 0 3px; }
+</style></head>
+<body><div class="stage"><section class="slide is-dense">
+  <div class="eyebrow">06 · Milestones</div>
+  <h2>Milestones</h2>
+  <ol class="timeline">
+    <li><span class="when">Weeks 1–2</span><ul>
+      <li>Sit with reviewers for a day each</li>
+      <li>Write down what reviewers check that isn't written anywhere: country exceptions, judgement calls, Slack escalations</li>
+      <li>Set up metric capture and dashboards</li>
+      <li>Legal confirmation</li></ul></li>
+    <li><span class="when">Weeks 3–6</span><ul>
+      <li><span class="new">Write the requirements for the most common claim types</span></li>
+      <li>Build it, test against historical claims</li></ul></li>
+    <li><span class="when"><span class="new">January</span></span><ul>
+      <li><span class="new">Pilot on one claim type, alongside the current process</span></li></ul></li>
+    <li><span class="when">February</span><ul>
+      <li>Live, both reviewers still signing off</li></ul></li>
+    <li><span class="when">March–June</span><ul>
+      <li>Light touch: a monthly look at the dashboard, <span class="new">the checklist expands to more claim types as accuracy holds</span>, and the claims team writes down rules themselves</li></ul></li>
+  </ol>
+</section></div></body></html>
