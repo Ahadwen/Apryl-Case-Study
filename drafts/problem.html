@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+  body { overflow: auto; }
+  .stage { position: relative; top: 0; left: 0; transform: none; }
+  .reframe { font-size: 1.75em; line-height: 1.15; margin: 0 0 0.35em; letter-spacing: -0.02em; font-weight: 700; }
+  .reframe .no { color: var(--muted); font-weight: 600; }
+  .goal { font-size: 1.05em; margin-bottom: 1.1em; max-width: 62ch; }
+  .goal strong { color: var(--accent); }
+  .flows { display: grid; gap: 18px; }
+  .flow { display: grid; grid-template-columns: 100px minmax(0, 1fr); align-items: center; gap: 12px; }
+  .flow .lbl { font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; }
+  .flow.today .lbl { color: var(--muted); }
+  .flow.proposed .lbl { color: var(--accent); }
+  .steps { display: flex; align-items: center; flex-wrap: nowrap; gap: 6px; }
+  .step { border-radius: 10px; padding: 8px 8px; font-size: 0.6em; line-height: 1.25; text-align: center; border: 1.5px solid; flex: 1 1 0; min-width: 0; }
+  .loop { flex: 5 1 0; min-width: 0; }
+  .m { background: #fdecd9; border-color: #e7b07a; }
+  .a { background: #dfe9f6; border-color: #8fadd4; }
+  .c { background: #e5f2e3; border-color: #96c48f; }
+  .arrow { color: var(--muted); font-size: 0.8em; flex: none; }
+  .loop { position: relative; display: flex; align-items: center; gap: 6px; padding: 10px 10px 8px; border: 2px dashed #c9a27a; border-radius: 14px; }
+  .loop::after { content: '↻ repeats for 40% of claims'; position: absolute; top: -13px; left: 14px; background: var(--bg); padding: 0 6px; font-size: 0.55em; font-weight: 700; color: #a8621f; }
+  .legend { display: flex; gap: 18px; font-size: 0.6em; color: var(--muted); margin-top: 14px; padding-left: 112px; }
+  .legend span::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid; }
+  .legend .lm::before { background: #fdecd9; border-color: #e7b07a; }
+  .legend .la::before { background: #dfe9f6; border-color: #8fadd4; }
+  .legend .lc::before { background: #e5f2e3; border-color: #96c48f; }
+</style></head>
+<body><div class="stage"><section class="slide is-dense">
+  <div class="eyebrow">01 · The problem</div>
+  <h2 class="reframe"><span class="no">Not a back-office problem. Not a UX problem.</span><br>A collaboration problem.</h2>
+  <p class="goal">Reviewers know what a claim needs. Members hold the documents, and sometimes only the clinic can provide them. <strong>The goal: help the member understand what's needed from them, as seamlessly as possible, before they submit.</strong></p>
+  <div class="flows">
+    <div class="flow today"><span class="lbl">Today</span>
+      <div class="steps">
+        <span class="step m">Member submits</span><span class="arrow">→</span>
+        <div class="loop">
+          <span class="step a">Reviewer finds what's missing</span><span class="arrow">→</span>
+          <span class="step a">Request sent to member</span><span class="arrow">→</span>
+          <span class="step m">Member asks clinic</span><span class="arrow">→</span>
+          <span class="step c">Clinic sends document</span><span class="arrow">→</span>
+          <span class="step m">Member re-uploads</span>
+        </div><span class="arrow">→</span>
+        <span class="step a">Decision</span>
+      </div>
+    </div>
+    <div class="flow proposed"><span class="lbl">Proposed</span>
+      <div class="steps">
+        <span class="step a">Member sees exactly what's needed</span><span class="arrow">→</span>
+        <span class="step m">Member gathers it, asking the clinic early</span><span class="arrow">→</span>
+        <span class="step c">Clinic sends document</span><span class="arrow">→</span>
+        <span class="step m">Member submits a complete claim</span><span class="arrow">→</span>
+        <span class="step a">Reviewed once</span><span class="arrow">→</span>
+        <span class="step a">Decision</span>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span class="lm">Member</span><span class="la">Apryl</span><span class="lc">Clinic</span></div>
+</section></div></body></html>
