@@ -61,9 +61,9 @@ Manual entry rate and document rejection rate only exist once a solution is pilo
 
 **Top — Speculatively, say the investigation shows that:**
 - Headcount scaling is a real problem
-- We don't want AI making decisions
 - Most cases move quickly once the documentation is in place
-- The current member screen is a fairly loose request for documentation, and doesn't solve the problem as stated
+- The current member screens are mostly well built and don't require an infrastructural redesign
+- The current member screen doesn't give structured information or provide quality control on document submissions
 
 **Bottom — Given these conditions, a sensible area to investigate:**
 - **Can we make it intuitive for members to understand what they need to submit?**

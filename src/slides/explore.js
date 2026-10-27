@@ -16,9 +16,9 @@ export default {
         <h3>Speculatively, say the investigation shows that:</h3>
         <ul>${list([
           'Headcount scaling is a real problem',
-          "We don't want AI making decisions",
           'Most cases move quickly once the documentation is in place',
-          "The current member screen is a fairly loose request for documentation, and doesn't solve the problem as stated",
+          "The current member screens are mostly well built and don't require an infrastructural redesign",
+          "The current member screen doesn't give structured information or provide quality control on document submissions",
         ])}</ul>
       </div>
       <div class="then" data-focus="then">
