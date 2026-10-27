@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+  body { overflow: auto; }
+  .stage { position: relative; top: 0; left: 0; transform: none; }
+  .slide.is-dense { font-size: 19px; padding-top: 60px; padding-bottom: 60px; }
+  .split { display: grid; grid-template-columns: 3fr 2fr; gap: 48px; }
+  .split > div { border-top: 3px solid; padding-top: 14px; }
+  .split > .member { border-color: #e7b07a; } .member h3 { color: #b4651f !important; }
+  .split > .operator { border-color: #8fadd4; } .operator h3 { color: #3d6496 !important; }
+  .split h3 { font-size: 1.05em !important; margin-bottom: 0.6em !important; }
+  .split li + li { margin-top: 0.45em; }
+  .principles { margin-top: 1.4em; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; border-top: 1px solid var(--rule); padding-top: 14px; }
+  .principles p { margin: 0; line-height: 1.4; }
+  .principles strong { color: var(--ink); }
+  .alt { margin-top: 1em !important; color: var(--muted); font-size: 0.85em; }
+</style></head>
+<body><div class="stage"><section class="slide is-dense">
+  <div class="eyebrow">03 · Proposal</div>
+  <h2>Proposal</h2>
+  <div class="split">
+    <div class="member">
+      <h3>For the member</h3>
+      <ul>
+        <li>They say what they're claiming for. With their country and employer, that sets the checklist.</li>
+        <li>The checklist asks for a few mandatory documents, then information any document can supply. Only documents that identify the member count.</li>
+        <li>If proof of medical necessity is needed, they're told upfront, with a ready-made message for their clinic. They can save and come back.</li>
+        <li>Facts are pre-filled; they confirm each one. Missing or unreadable: upload another document, or type it in, flagged for a person to check.</li>
+        <li>Submit unlocks when the checklist is complete.</li>
+      </ul>
+    </div>
+    <div class="operator">
+      <h3>For the operator</h3>
+      <ul>
+        <li>Every claim arrives complete and confirmed.</li>
+        <li>Deterministic checks run automatically.</li>
+        <li>Each fact is shown with its source highlighted.</li>
+        <li>Two lanes: clean claims (verify and sign off) and judgement claims (AI summary, person decides).</li>
+        <li>Both reviewers sign off either way: the four-eyes check stays.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="principles">
+    <p><strong>Privacy:</strong> documents are read and masked on the device. The AI never learns who the member is.</p>
+    <p><strong>Machine vs. human:</strong> deterministic checks are automated, extraction is assisted, judgement stays with people. Each check earns its autonomy through measured accuracy.</p>
+  </div>
+  <p class="alt">Alternative considered: AI judging the whole claim. Rejected because it's harder to audit, version and defend.</p>
+</section></div></body></html>
