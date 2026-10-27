@@ -10,7 +10,8 @@ export default {
         <div>
           <h3>Operator tracking</h3>
           <ul>
-            <li>Time between claim creation and closure</li>
+            <li>Time between claim creation and closure (granted)</li>
+            <li>Time between claim creation and closure (denied)</li>
             <li>Time between claim submission and last document upload before closure</li>
             <li>Number of document requests</li>
             <li>Operator minutes per claim (no judgement call required)</li>
