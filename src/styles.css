@@ -170,8 +170,6 @@ html, body {
 .s-proto .pctx ul { list-style: none; padding: 0; margin: 0; }
 .s-proto .pctx li + li { margin-top: 0.6em; padding-top: 0.6em; border-top: 1px solid var(--rule); }
 .s-proto .proto-frame { width: 100%; height: 100%; }
-.s-proto .pnote { margin-top: 0.8em; padding-top: 0.7em; border-top: 2px solid var(--ink); color: var(--muted); }
-.slide.s-proto .pnote p { margin: 0 0 0.5em; }
 /* Short screens (e.g. 1280x720): a step smaller so the whole column fits without scrolling. */
 @media (max-height: 800px) { .s-proto .pctx { font-size: 16px; padding: 14px 0; } }
 

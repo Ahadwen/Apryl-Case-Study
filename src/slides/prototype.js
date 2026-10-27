@@ -19,10 +19,6 @@ export default {
           'At this stage, we aim to prove that the UX can contain these steps and still feel intuitive, plus that the requirements are met.',
           'Next iterations will likely include more edge cases, further design efforts, or fields that were missed on first draft.',
         ])}</ul>
-        <div class="pnote">
-          <p>The pitch suggested I add several solution screens and list the relative strengths between them.</p>
-          <p>Prototyping often creates smaller, more specific decisions between iterations.</p>
-        </div>
       </aside>
       <iframe class="proto-frame" src="prototype/?inline" title="Document upload prototype"></iframe>
     `;
