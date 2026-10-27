@@ -10,6 +10,9 @@ import { anonymise } from './identifiers.js';
 import { extractFields } from './extract.js';
 import { compareValues } from './compare.js';
 
+// ?inline: the deck places the prototype beside its own column and sets the spacing itself.
+if (new URLSearchParams(location.search).has('inline')) document.documentElement.classList.add('inline');
+
 const SAMPLES = [
   { file: 'clinic-invoice.pdf', preview: 'clinic-invoice-preview.png', label: 'Clinic invoice', kind: 'PDF', type: 'application/pdf' },
   { file: 'pharmacy-label.jpg', preview: 'pharmacy-label.jpg', label: 'Prescription label', kind: 'Photo', type: 'image/jpeg' },

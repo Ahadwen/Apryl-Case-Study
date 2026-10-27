@@ -59,13 +59,14 @@
 .v2-success .mvh { display: grid; grid-template-columns: auto 1fr 0.8fr 0.6fr; gap: 24px; align-items: baseline; margin-top: 1.4em; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 0.8em; }
 .v2-success .mvh .lbl { font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 
-/* 06 Prototyping: thin context column, then the prototype at its natural size */
-.slide.v2-proto { flex-direction: row; justify-content: flex-start; }
-.v2-proto .pctx { flex: none; width: 230px; padding: 24px 20px 24px 4px; border-right: 1px solid var(--rule); font-size: 14px; line-height: 1.45; color: #3d3d42; overflow: auto; }
+/* 06 Prototyping: thin context column, then the prototype. All three columns share one 64px gap:
+   this grid's gap, and the prototype's own (it's loaded with ?inline, which uses the same gap). */
+.slide.v2-proto { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 64px; max-width: 1240px; margin: 0 auto; }
+.v2-proto .pctx { padding: 24px 0; font-size: 14px; line-height: 1.45; color: #3d3d42; overflow: auto; }
 .v2-proto .pctx .eyebrow { font-size: 12px; margin-bottom: 18px; }
 .v2-proto .pctx ul { list-style: none; padding: 0; margin: 0; }
 .v2-proto .pctx li + li { margin-top: 1.4em; padding-top: 1.4em; border-top: 1px solid var(--rule); }
-.v2-proto .proto-frame { flex: 1; min-width: 0; height: 100%; }
+.v2-proto .proto-frame { width: 100%; height: 100%; }
 
 /* 07 Next steps: a pilot */
 .slide.v2-pilot { font-size: 22px; }

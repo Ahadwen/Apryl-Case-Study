@@ -237,7 +237,7 @@ const prototype = {
           'At this stage, the goal is to prove that the UX makes sense, and that the requirements are met.',
         ])}</ul>
       </aside>
-      <iframe class="proto-frame" src="../../prototype/" title="Document upload prototype"></iframe>
+      <iframe class="proto-frame" src="../../prototype/?inline" title="Document upload prototype"></iframe>
     `;
   },
 };

@@ -58,6 +58,10 @@ button { font: inherit; color: inherit; }
   .backstage { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
 }
 
+/* Inline in the deck (?inline): flush to the frame's edges, with the deck's column gap at any width. */
+html.inline .layout { max-width: none; margin: 0; padding: 16px 0 48px; grid-template-columns: minmax(0, 460px) minmax(0, 1fr); align-items: start; column-gap: var(--deck-gap, 64px); }
+html.inline .backstage { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+
 /* Behind the scenes: the prototype's explainer, visibly not part of the patient's screen. */
 .backstage {
   min-width: 0;
