@@ -127,7 +127,7 @@ Full-window: a thin context column, then the prototype's member screen and behin
 - Keep it small: a couple of engineers for a couple of months, leaving us free to invest further or move on. No 6-month blocks of work.
 - This example wouldn't touch operator tooling, employer configuration tooling, fraud prevention, or payments.
 
-## 09 · A note on AI — agreed
+## A note on AI — agreed (no number: reads as a note, not a slide)
 
 One small card.
 - **Used for:** Drafting the prototype and these slides (Claude Code) · Quality-checking language
@@ -136,4 +136,4 @@ One small card.
 
 ## Order
 
-Title · 01 Context · 02 Metrics · 03 Assumptions · 04 Identify a problem · 05 Investigation · 06 Prototyping · 07 Next steps · 08 Risks and scope · 09 A note on AI — rendered in the deck
+Title · 01 Context · 02 Metrics · 03 Assumptions · 04 Identify a problem · 05 Investigation · 06 Prototyping · 07 Next steps · 08 Risks and scope · A note on AI — rendered in the deck

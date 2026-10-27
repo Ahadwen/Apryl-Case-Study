@@ -8,7 +8,7 @@ export default {
   render(el) {
     el.innerHTML = `
       <div class="note" data-focus>
-        <div class="eyebrow">09 · A note on AI</div>
+        <div class="eyebrow">A note on AI</div>
         <h3>Used for</h3>
         <ul>${list(['Drafting the prototype and these slides (Claude Code)', 'Quality-checking language'])}</ul>
         <h3>Not used for</h3>
