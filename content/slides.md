@@ -34,7 +34,14 @@ Reviewers know what a claim needs. Members have most of the documents; some, lik
 
 Mockup: `drafts/context.html`
 
-**Title:** What we know, and what we assume
+**Title:** Approach, what we know, and what we assume
+
+**Approach** — *How I'd work* (numbered, narrower first column)
+1. Confirm the priority — Is this the metric to focus on?
+2. Identify a problem — Is there a sensible way to move it?
+3. Investigate and prototype
+4. Build a small, focused solution
+5. Qualify the result — Did it move?
 
 **What we know** — *Confirmed*
 - 2 FTE review claims (alongside digital card transactions); 2 more hires planned for 2026
@@ -50,7 +57,7 @@ Mockup: `drafts/context.html`
 - Proof of medical necessity can be anticipated and requested before submission
 - A claim is created when the member opens it, and moves to "submitted" when submitted
 
-**Space steps:** heading → What we know → What we assume
+**Space steps:** heading → Approach → What we know → What we assume
 
 **Carried forward:**
 - Four-eyes (two human sign-offs) → was planned for Proposal; dropped there as out of scope

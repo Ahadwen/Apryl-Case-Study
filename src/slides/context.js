@@ -5,8 +5,18 @@ export default {
   render(el) {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">02 · Context</div>
-      <h2 data-focus="head">What we know, and what we assume</h2>
+      <h2 data-focus="head">Approach, what we know, and what we assume</h2>
       <div class="cols2">
+        <div class="approach" data-focus>
+          <h3>Approach</h3><p class="sub">How I'd work</p>
+          <ol>
+            <li><strong>Confirm the priority</strong><span>Is this the metric to focus on?</span></li>
+            <li><strong>Identify a problem</strong><span>Is there a sensible way to move it?</span></li>
+            <li><strong>Investigate and prototype</strong></li>
+            <li><strong>Build a small, focused solution</strong></li>
+            <li><strong>Qualify the result</strong><span>Did it move?</span></li>
+          </ol>
+        </div>
         <div class="known" data-focus>
           <h3>What we know</h3><p class="sub">Confirmed</p>
           <ul>
