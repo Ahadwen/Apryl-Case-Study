@@ -50,7 +50,7 @@ const context = {
   },
 };
 
-const UNKNOWNS = [
+const ASSUMPTIONS = [
   ['Most of the 40% of information requests are preventable at upload',
     'Go through recent document requests with operators: which could have been asked for upfront?'],
   ['Most claims would be straightforward if all data and documents were already presented as required',
@@ -67,17 +67,17 @@ const UNKNOWNS = [
     "Check against operators' and leadership's other priorities"],
 ];
 
-const unknowns = {
-  id: 'unknowns',
+const assumptions = {
+  id: 'assumptions',
   title: 'Assumptions',
-  className: 'is-dense v2-unknowns',
+  className: 'is-dense v2-assumptions',
   render(el) {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">03 · Assumptions</div>
       <h2 data-focus="head">Assumptions, and how we'd test them</h2>
       <table class="ut" data-focus>
         <tr><th>Assumption</th><th>How we'd test it</th></tr>
-        ${UNKNOWNS.map(([u, t]) => `<tr><td>${u}</td><td>${t}</td></tr>`).join('')}
+        ${ASSUMPTIONS.map(([u, t]) => `<tr><td>${u}</td><td>${t}</td></tr>`).join('')}
       </table>
     `;
   },
@@ -330,4 +330,4 @@ const ai = {
   },
 };
 
-export const slides = [title, context, metrics, unknowns, explore, investigation, prototype, pilot, risks, ai];
+export const slides = [title, context, metrics, assumptions, explore, investigation, prototype, pilot, risks, ai];
