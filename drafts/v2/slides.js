@@ -150,7 +150,7 @@ const explore = {
       <div class="then" data-focus="then">
         <h3>Given these conditions, a sensible area to investigate:</h3>
         <p class="q">Can we make it intuitive for members to understand what they need to submit?</p>
-        <p class="if">If so, operators get a clean run, without annoying the member.</p>
+        <p class="if">If so, operators engage with a better standard of claim on average, with fewer requests for more documentation.</p>
       </div>
       <div class="flows" data-focus="then">
         <div class="flow today"><span class="lbl">Today</span>
