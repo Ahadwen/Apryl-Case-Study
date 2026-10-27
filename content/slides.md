@@ -76,6 +76,7 @@ Manual entry rate and document rejection rate only exist once a solution is pilo
 ## 05 · Investigation — agreed
 
 **Title:** Defining success
+**Subtitle:** Problem statement → Prototype → Pilot → Evaluation
 
 Three columns:
 - **Target picture:** AI doesn't make the decisions, it makes life easier for humans to evaluate a case. We maintain the principle of four eyes on a given outcome. · Operators can more often rely on the data they receive · Member UX remains simple and transparent · GDPR compliance

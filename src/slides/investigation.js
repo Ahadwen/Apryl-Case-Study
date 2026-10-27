@@ -9,6 +9,7 @@ export default {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">05 · Investigation</div>
       <h2 data-focus="head">Defining success</h2>
+      <p class="path" data-focus="head">Problem statement <span>→</span> Prototype <span>→</span> Pilot <span>→</span> Evaluation</p>
       <div class="three">
         <div class="box target" data-focus>
           <h3>Target picture</h3>
