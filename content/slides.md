@@ -137,6 +137,26 @@ Mockup: `drafts/risks.html`
 
 **Space steps:** heading → risks → scoping
 
+## 08 · AI usage reflection — agreed (copy: draft)
+
+Mockup: `drafts/ai-usage.html`
+
+**Title:** How I used AI
+
+**What it did**
+- A sparring partner: challenging the brief and stress-testing assumptions
+- Research
+- Built the prototype and this deck, to my direction
+
+**Where I overruled it**
+- It pitched a standard slide deck. I wanted a browser app where the prototype is a slide.
+- It showed the anonymisation step to the member. That belongs behind the scenes.
+- It invented an "alternative considered" I had never considered, and principles that were word salad.
+- It reached for jargon ("DPIA", "inventory the knowledge"). I replaced it with plain words.
+- It planned a January pilot without realising week 1 is January.
+
+**Space steps:** heading → what it did → where I overruled it
+
 ## Order
 
 01 Problem · 02 Context · 03 Proposal · 04 Metrics · 05 Prototype · 06 Milestones · 07 Risks and scoping · 08 AI usage
