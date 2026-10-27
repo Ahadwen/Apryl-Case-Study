@@ -92,7 +92,13 @@ function sectionsOf(el) {
 function stepFocus(dir) {
   if (!sections.length || !currentEl) return;
   const n = sections.length + 1;  // the sections, plus "all visible"
-  step = ((step + 1 + dir) % n + n) % n - 1;
+  setFocus(((step + 1 + dir) % n + n) % n - 1);
+}
+
+// -1 shows everything (Esc jumps straight there).
+function setFocus(i) {
+  if (!currentEl) return;
+  step = i;
   currentEl.classList.toggle('focusing', step >= 0);
   sections.forEach((group, i) => group.forEach((node) => node.classList.toggle('focused', i === step)));
 }
@@ -110,6 +116,7 @@ function isTyping(target) {
 document.addEventListener('keydown', (e) => {
   if (isTyping(e.target) || e.metaKey || e.ctrlKey || e.altKey) return;
   if (e.key === ' ') { e.preventDefault(); stepFocus(e.shiftKey ? -1 : 1); }
+  if (e.key === 'Escape') setFocus(-1);
   if (['ArrowRight', 'PageDown'].includes(e.key)) { e.preventDefault(); show(current + 1); }
   if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(current - 1); }
   if (e.key === 'Home') show(0);
