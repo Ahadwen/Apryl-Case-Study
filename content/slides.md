@@ -131,7 +131,7 @@ Full-window: a thin context column, then the prototype's member screen and behin
 
 One small card.
 - **Used for:** Drafting the prototype and these slides (Claude Code) · Quality-checking language
-- **Not used for:** Strategy or matters of taste. The concepts here are my own.
+- **Not used for:** Strategy or matters of taste. The concepts here are my own. · Language and copy: the content is my own.
 - **Where I pushed back:** It invented ideas and spoke for my perspective without checking with me; I overruled it in those cases. · It kept defaulting to jargon and corporate language; I aimed for readability.
 
 ## Order
