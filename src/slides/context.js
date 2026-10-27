@@ -4,7 +4,7 @@ export default {
   className: 'is-dense s-context',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow" data-focus="head">02 · Context</div>
+      <div class="eyebrow" data-focus="head">01 · Context</div>
       <h2 data-focus="head">Approach, what we know, and what we assume</h2>
       <div class="cols2">
         <div class="approach" data-focus>

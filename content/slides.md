@@ -9,28 +9,7 @@ Agreed content per slide. Copy is draft until marked final; the deck is rendered
 - Byline: Alastair Hadwen · 2026
 - (No subtitle: "Response to the case study brief" dropped)
 
-## 01 · The problem — agreed (copy: draft)
-
-Mockup: `drafts/problem.html`
-
-**Headline**
-- (grey) Not a back-office problem. Not a UX problem.
-- (black) A collaboration problem.
-
-**Paragraph**
-Reviewers know what a claim needs. Members have most of the documents; some, like proof of medical necessity, only the clinic can provide. **The goal: help the member understand what's needed from them, as seamlessly as possible, before they submit.**
-
-**Diagram** (steps coloured by party: Member / Progyny / Clinic)
-- Today: Member submits (M) → [loop, "repeats for 40% of claims": Reviewer finds what's missing (A) → Request sent to member (A) → Member asks clinic (M) → Clinic sends document (C) → Member re-uploads (M)] → Decision (A)
-- Proposed: Member sees exactly what's needed (M) → Member gathers it, asking the clinic early (M) → Clinic sends document (C) → Member submits a complete claim (M) → Reviewed once (A) → Decision (A)
-
-**Space steps:** headline → paragraph → Today → Proposed
-
-**Layout notes:** paragraph fixed width (960px) at 1em so it sits on three lines; generous space above the diagram.
-
-**Moved elsewhere:** the old hypothesis conditions and assumptions (see Research).
-
-## 02 · Context — agreed (copy: draft)
+## 01 · Context — agreed (copy: draft)
 
 Mockup: `drafts/context.html`
 
@@ -62,6 +41,27 @@ Mockup: `drafts/context.html`
 **Carried forward:**
 - Four-eyes (two human sign-offs) → was planned for Proposal; dropped there as out of scope
 - Research activities (sit with reviewers, inventory knowledge in people's heads, baseline metrics, legal/DPIA advice) → Milestones, weeks 1–2
+
+## 02 · The problem — agreed (copy: draft)
+
+Mockup: `drafts/problem.html`
+
+**Headline**
+- (grey) Not a back-office problem. Not a UX problem.
+- (black) A collaboration problem.
+
+**Paragraph**
+Reviewers know what a claim needs. Members have most of the documents; some, like proof of medical necessity, only the clinic can provide. **The goal: help the member understand what's needed from them, as seamlessly as possible, before they submit.**
+
+**Diagram** (steps coloured by party: Member / Progyny / Clinic)
+- Today: Member submits (M) → [loop, "repeats for 40% of claims": Reviewer finds what's missing (A) → Request sent to member (A) → Member asks clinic (M) → Clinic sends document (C) → Member re-uploads (M)] → Decision (A)
+- Proposed: Member sees exactly what's needed (M) → Member gathers it, asking the clinic early (M) → Clinic sends document (C) → Member submits a complete claim (M) → Reviewed once (A) → Decision (A)
+
+**Space steps:** headline → paragraph → Today → Proposed
+
+**Layout notes:** paragraph fixed width (960px) at 1em so it sits on three lines; generous space above the diagram.
+
+**Moved elsewhere:** the old hypothesis conditions and assumptions (see Research).
 
 ## 03 · Proposal — agreed (copy: draft)
 
@@ -181,4 +181,4 @@ Mockup: `drafts/ai-usage.html`
 
 ## Order
 
-Title · 01 Problem · 02 Context · 03 Proposal · 04 Metrics · 05 Prototype · 06 Milestones · 07 Risks and scoping · 08 AI usage — rendered in the deck
+Title · 01 Context · 02 Problem · 03 Proposal · 04 Metrics · 05 Prototype · 06 Milestones · 07 Risks and scoping · 08 AI usage — rendered in the deck

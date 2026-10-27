@@ -11,4 +11,4 @@ import milestones from './milestones.js';
 import risks from './risks.js';
 import aiUsage from './ai-usage.js';
 
-export const slides = [title, problem, context, proposal, metrics, prototype, milestones, risks, aiUsage];
+export const slides = [title, context, problem, proposal, metrics, prototype, milestones, risks, aiUsage];
