@@ -110,7 +110,7 @@ Already built (full-window slide). Lead-in bar: **05 · Prototype** · Data extr
 
 Mockup: `drafts/milestones.html` (week 1 is in January)
 
-- **Weeks 1–2:** Sit with reviewers for a day each · Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations · Set up metric capture and dashboards · Legal confirmation
+- **Weeks 1–2:** Sit with reviewers and understand their workflows · Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations · Set up metric capture and dashboards · Legal confirmation
 - **Weeks 3–6:** Build it, test against historical claims
 - **February:** Feature goes live
 - **March–June:** Follow the dashboard periodically, and intervene with further effort if needed · Otherwise, move focus to a different product area
