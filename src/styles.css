@@ -42,8 +42,8 @@ html, body {
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 .slide h1, .slide h2 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 0.5em; }
-.slide h1 { font-size: 80px; }
-.slide h2 { font-size: 52px; }
+.slide h1 { font-size: 2.67em; }
+.slide h2 { font-size: 1.73em; }
 .slide p { line-height: 1.45; margin: 0 0 0.4em; }
 .slide ul, .slide ol { margin: 0; padding-left: 1.1em; line-height: 1.45; }
 .slide li + li { margin-top: 0.35em; }
@@ -56,17 +56,17 @@ html, body {
   color: var(--accent);
   margin-bottom: 20px;
 }
-.lede { font-size: 34px; color: var(--muted); }
+.lede { font-size: 1.13em; color: var(--muted); }
 
 /* Content slides */
 .slide h3 { font-size: 0.8em; font-weight: 600; color: var(--accent); margin: 0 0 0.5em; }
-.slide .statement { font-size: 38px; max-width: 30ch; }
+.slide .statement { font-size: 1.6em; max-width: 30ch; }
 .slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
 .slide .cols.wide-right { grid-template-columns: 2fr 3fr; }
 .slide .aside { margin-top: 1em; color: var(--muted); }
 .slide .aside strong { color: var(--ink); }
-.slide.is-dense { font-size: 24px; }
-.slide.is-dense h2 { font-size: 44px; }
+.slide.is-dense { font-size: 22px; }
+.slide.is-dense h2 { font-size: 1.9em; }
 .timeline { list-style: none; padding: 0 !important; display: grid; gap: 0; }
 .timeline li { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 18px 0; border-top: 1px solid var(--rule); margin: 0 !important; }
 .timeline li:last-child { border-bottom: 1px solid var(--rule); }

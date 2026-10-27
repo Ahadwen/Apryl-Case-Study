@@ -28,6 +28,7 @@ const next = app.querySelector('.nav-btn.next');
 
 let current = -1;
 let cleanup = null;
+let currentEl = null;
 
 function fit() {
   const scale = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
@@ -49,6 +50,8 @@ function show(index) {
   app.classList.toggle('is-full', Boolean(slide.fullBleed));
   // A slide's render() may return a cleanup function (timers, listeners, etc).
   cleanup = slide.render(el);
+  if (!slide.fullBleed) shrinkToFit(el);
+  currentEl = slide.fullBleed ? null : el;
 
   count.textContent = `${index + 1} / ${slides.length}`;
   bar.style.width = `${((index + 1) / slides.length) * 100}%`;
@@ -56,6 +59,16 @@ function show(index) {
   next.disabled = index === slides.length - 1;
   document.title = `${slide.title} · Apryl Case Study`;
   history.replaceState(null, '', `#${slide.id}`);
+}
+
+// Text has no reason to be big at the cost of fitting: if a slide's content overflows the stage,
+// step its font size down (headings are sized in em, so they scale with it) until it fits.
+function shrinkToFit(el) {
+  let size = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollHeight > el.clientHeight && size > 14) {
+    size -= 1;
+    el.style.fontSize = `${size}px`;
+  }
 }
 
 function indexFromHash() {
@@ -92,4 +105,6 @@ window.addEventListener('resize', fit);
 
 fit();
 show(indexFromHash());
+// The web font is a little wider than the fallback, so check the fit again once it has loaded.
+document.fonts?.ready.then(() => currentEl && shrinkToFit(currentEl));
 countVisit();
