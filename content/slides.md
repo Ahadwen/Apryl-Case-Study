@@ -51,4 +51,4 @@ Mockup: `drafts/context.html`
 
 ## Order
 
-01 Problem · 02 Context · 03 Proposal · 04 Metrics · then Prototype, Milestones, Risks, AI usage (prototype placement to confirm)
+01 Problem · 02 Context · 03 Proposal · 04 Metrics · 05 Prototype · then Milestones, Risks, AI usage
