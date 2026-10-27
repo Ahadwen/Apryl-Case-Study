@@ -60,8 +60,9 @@ html, body {
 
 /* Content slides */
 .slide h3 { font-size: 0.8em; font-weight: 600; color: var(--accent); margin: 0 0 0.5em; }
-.slide .statement { font-size: 40px; max-width: 26ch; }
+.slide .statement { font-size: 38px; max-width: 30ch; }
 .slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.slide .cols.wide-right { grid-template-columns: 2fr 3fr; }
 .slide .aside { margin-top: 1em; color: var(--muted); }
 .slide .aside strong { color: var(--ink); }
 .slide.is-dense { font-size: 24px; }

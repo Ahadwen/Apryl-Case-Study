@@ -8,7 +8,7 @@ export default {
       <h2>Metrics for Back Office to capture</h2>
       <div class="cols">
         <div>
-          <h3>Back office tracking</h3>
+          <h3>Operator tracking</h3>
           <ul>
             <li>Time between claim creation and closure</li>
             <li>Time between claim submission and last document upload before closure</li>
