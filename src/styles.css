@@ -66,16 +66,9 @@ html, body {
 .muted { color: var(--muted); }
 
 /* Base sizes per slide; shrinkToFit (app.js) steps down from these if a slide still overflows. */
-.slide.s-proposal { font-size: 17px; padding-top: 30px; padding-bottom: 30px; }
 .slide.s-metrics { font-size: 17px; padding-top: 40px; padding-bottom: 40px; }
-.slide.s-milestones { font-size: 20px; }
-.slide.s-risks, .slide.s-ai, .slide.s-context { font-size: 19px; }
 
-/* 01 The problem */
-.s-problem h2.reframe { font-size: 1.75em; line-height: 1.15; margin: 0 0 0.35em; }
-.s-problem .reframe .no { color: var(--muted); font-weight: 600; }
-.slide.s-problem .goal { font-size: 1em; margin-bottom: 3.2em; max-width: 960px; }
-.s-problem .goal strong { color: var(--accent); }
+/* 04 Identify a problem: the flow diagrams (today vs. if it works) */
 .s-problem .flows { display: grid; gap: 30px; }
 .s-problem .flow { display: grid; grid-template-columns: 100px minmax(0, 1fr); align-items: center; gap: 12px; }
 .s-problem .flow .lbl { font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -95,44 +88,7 @@ html, body {
 .s-problem .legend .la::before { background: #dfe9f6; border-color: #8fadd4; }
 .s-problem .legend .lc::before { background: #e5f2e3; border-color: #96c48f; }
 
-/* 02 Context */
-.s-context .cols2 { display: grid; grid-template-columns: 0.82fr 0.95fr 1.15fr; gap: 44px; margin-top: 1.2em; }
-.s-context .cols2 > .approach { border-color: var(--ink); }
-.s-context .approach ol { list-style: none; padding: 0; margin: 0; counter-reset: step; }
-.s-context .approach li { counter-increment: step; position: relative; padding-left: 1.7em; }
-/* The circle is centred on the first line (line-height 1.45): (1.45em - circle) / 2 from the top. */
-.s-context .approach li::before { content: counter(step); position: absolute; left: 0; top: calc((1.45 * 1em / 0.7 - 1.6em) / 2); width: 1.6em; height: 1.6em; line-height: 1.6em; text-align: center; border-radius: 50%; background: var(--ink); color: var(--bg); font-size: 0.7em; font-weight: 700; font-variant-numeric: tabular-nums; }
-.s-context .approach strong { display: block; }
-.s-context .approach span { display: block; color: var(--muted); font-size: 0.85em; }
-.s-context .cols2 > div { border-top: 3px solid; padding-top: 16px; }
-.s-context .cols2 > .known { border-color: #2f855a; }
-.s-context .cols2 > .assumed { border-color: var(--accent); }
-.s-context .known h3 { color: #2f855a; }
-.s-context .approach h3 { color: var(--ink); }
-.s-context .cols2 h3 { font-size: 1em; margin-bottom: 0.15em; }
-.s-context .sub { color: var(--muted); font-size: 0.8em; margin: 0 0 1em; }
-.s-context .cols2 li { font-size: 0.79em; }
-.s-context li + li { margin-top: 10px; }
-
-/* 03 Proposal */
-.slide.is-dense h2.ptitle { margin-bottom: 0.35em; font-size: 1.65em; }
-.s-proposal .ptitle span { color: var(--accent); }
-.slide.s-proposal .lead-in { font-size: 1.05em; line-height: 1.4; margin: -0.3em 0 1em; max-width: 1000px; }
-.s-proposal .lead-in strong { color: var(--accent); }
-.s-proposal .split { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; }
-.s-proposal .split > div { border-top: 3px solid; padding-top: 14px; }
-.s-proposal .split > .member { border-color: #e7b07a; }
-.s-proposal .split > .operator { border-color: #8fadd4; }
-.s-proposal .member h3 { color: #b4651f; }
-.s-proposal .operator h3 { color: #3d6496; }
-.s-proposal .split h3 { font-size: 1.05em; margin-bottom: 0.6em; }
-.s-proposal .split li + li { margin-top: 0.45em; }
-.s-proposal .split ol { padding-left: 1.3em; }
-.s-proposal .princ-strip { margin-top: 1.1em; padding-top: 12px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: auto 1fr 1fr; gap: 28px; align-items: baseline; }
-.s-proposal .plabel { font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-.slide.s-proposal .princ-strip p { margin: 0; line-height: 1.4; font-size: 0.9em; }
-
-/* 04 Metrics */
+/* 02 Metrics */
 .slide.is-dense.s-metrics h2 { margin-bottom: 0.25em; }
 .slide.s-metrics .subtitle { color: var(--muted); margin: 0 0 1.1em; }
 .s-metrics .mgrid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
@@ -142,50 +98,103 @@ html, body {
 .s-metrics table.all tr.group td { border-top: 0; padding-top: 14px; font-weight: 700; font-size: 0.85em; }
 .s-metrics tr.group.op td { color: #3d6496; }
 .s-metrics tr.group.mem td { color: #b4651f; }
-.s-metrics .box { border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; }
-.s-metrics .box h3 { font-size: 1em; margin: 0 0 0.15em; }
-.slide.s-metrics .box .why { color: var(--muted); font-size: 0.85em; margin: 0 0 0.7em; }
-.s-metrics .box ul { padding-left: 1.2em; margin: 0; }
-.s-metrics .box li { line-height: 1.3; }
-.s-metrics .box li + li { margin-top: 0.4em; }
-.s-metrics .box li.head { font-weight: 700; }
-.s-metrics .improve { background: #e3f2e7; }
-.s-metrics .improve h3 { color: #2f855a; }
-.s-metrics .guard { background: #fdecd9; }
-.s-metrics .guard h3 { color: #a8621f; }
 
-/* 06 Milestones */
-.timeline { list-style: none; padding: 0 !important; display: grid; gap: 0; }
-.timeline > li { display: grid; grid-template-columns: 170px 1fr; gap: 32px; padding: 14px 0; border-top: 1px solid var(--rule); margin: 0 !important; }
-.timeline > li:last-child { border-bottom: 1px solid var(--rule); }
-.timeline .when { font-weight: 600; color: var(--accent); }
-.timeline ul { margin: 0; padding-left: 1.1em; }
-.timeline ul li + li { margin-top: 0.25em; }
-.s-milestones .ms { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
-.s-milestones .timeline > li { grid-template-columns: 130px 1fr; gap: 20px; }
-.timeline > li.goahead .when { color: #2f855a; }
-.s-milestones .checklist { background: #e3f2e7; border-radius: 12px; padding: 16px 18px; }
-.s-milestones .checklist h3 { color: #2f855a; font-size: 1em; margin-bottom: 0.6em; }
-.s-milestones .checklist h4 { margin: 0 0 0.5em; font-size: 0.8em; font-weight: 600; color: var(--muted); }
-.s-milestones .checklist ul { list-style: none; padding: 0; margin: 0 0 1em; }
-.s-milestones .checklist ul:last-child { margin-bottom: 0; }
-.s-milestones .checklist li { position: relative; padding-left: 1.6em; line-height: 1.35; font-size: 0.9em; }
-.s-milestones .checklist li + li { margin-top: 0.6em; }
-.s-milestones .checklist li::before { content: ''; position: absolute; left: 0; top: 0.2em; width: 0.9em; height: 0.9em; border: 2px solid #2f855a; border-radius: 3px; }
+/* 01 Context: approach steps level with the milestones that deliver them */
+.slide.s-plan { font-size: 18px; }
+.s-plan .plan { display: grid; grid-template-columns: 0.9fr 1.1fr; column-gap: 56px; margin-top: 0.8em; }
+.s-plan .ph { font-weight: 700; padding: 0 0 10px; border-bottom: 3px solid var(--ink); }
+.s-plan .ph-m { border-color: var(--accent); color: var(--accent); }
+.s-plan .pa, .s-plan .pm { padding: 14px 0; border-bottom: 1px solid var(--rule); line-height: 1.35; }
+.s-plan .pa { display: grid; grid-template-columns: 30px 1fr; gap: 10px; }
+.s-plan .pa .num { width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: var(--bg); font-size: 13px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
+.s-plan .pa strong { display: block; }
+.s-plan .pa span:not(.num), .s-plan .pa div span { display: block; color: var(--muted); font-size: 0.82em; }
+.s-plan .pm { display: grid; grid-template-columns: 170px 1fr; gap: 16px; font-size: 0.92em; }
+.s-plan .pm .when { font-weight: 600; color: var(--accent); }
 
-/* 07 Risks and scoping */
-.s-risks .rs { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: start; }
-.s-risks .rs h3 { font-size: 1em; }
-.s-risks .rs li + li { margin-top: 0.45em; }
-.s-risks .scope h4 { margin: 0 0 0.3em; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.s-risks .scope ul { margin-bottom: 1em; }
-.s-risks .team { border-top: 1px solid var(--rule); padding-top: 10px; }
+/* 03 Assumptions */
+.slide.s-assumptions { font-size: 17px; }
+.s-assumptions .ut { width: 100%; border-collapse: collapse; margin-top: 0.4em; }
+.s-assumptions .ut th { text-align: left; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0 16px 8px 0; border-bottom: 2px solid var(--ink); }
+.s-assumptions .ut td { padding: 9px 24px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.35; width: 50%; }
+.s-assumptions .ut td:first-child { font-weight: 500; }
+.s-assumptions .ut td:last-child { color: #3d4a5c; }
 
-/* 08 AI usage */
-.s-ai .ai { display: grid; grid-template-columns: 1fr 1.5fr; gap: 56px; align-items: start; }
-.s-ai .ai h3 { font-size: 1em; }
-.s-ai .ai li + li { margin-top: 0.5em; }
-.s-ai .ai h3.gap { margin-top: 1.2em; }
+/* 02 Metrics: plain-language summary beside the table */
+.s-metrics .summary { display: grid; gap: 16px; }
+.s-metrics .sum { border-radius: 12px; padding: 16px 20px; }
+.s-metrics .sum h3 { font-size: 1.05em; margin: 0 0 0.6em; }
+.s-metrics .sum ul { padding-left: 1.2em; }
+.s-metrics .sum li { font-size: 1.05em; line-height: 1.35; }
+.s-metrics .sum li + li { margin-top: 0.4em; }
+.s-metrics .sum.mem { background: #fdecd9; }
+.s-metrics .sum.mem h3 { color: #b4651f; }
+.s-metrics .sum.op { background: #dfe9f6; }
+.s-metrics .sum.op h3 { color: #3d6496; }
+
+/* 04 Identify a problem: conditions on top, the question and small flows below */
+.slide.s-explore { font-size: 19px; }
+.s-explore h2 { margin-bottom: 0.5em; }
+.s-explore .cond h3, .s-explore .then h3 { font-size: 0.9em; margin-bottom: 0.5em; }
+.s-explore .cond ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; row-gap: 6px; font-size: 0.95em; }
+.s-explore .cond li + li { margin-top: 0; }
+.s-explore .then { margin-top: 1.1em; padding-top: 0.9em; border-top: 1px solid var(--rule); }
+.slide.s-explore .then .q { font-size: 1.15em; font-weight: 700; margin: 0 0 0.15em; }
+.slide.s-explore .then .if { color: var(--muted); margin: 0 0 1em; }
+.s-explore .flows { gap: 22px; font-size: 0.85em; }
+.s-explore .flow { grid-template-columns: 80px minmax(0, 1fr); }
+.s-explore .legend { padding-left: 92px; margin-top: 4px; }
+
+/* 05 Investigation: defining success */
+.slide.s-success { font-size: 19px; }
+.s-success .three { display: grid; grid-template-columns: 1.15fr 0.8fr 1.15fr; gap: 20px; margin-top: 0.4em; }
+.s-success .target { background: var(--surface); border: 1.5px solid var(--rule); }
+.s-success .target h3 { color: var(--ink); }
+.slide.s-success .box .lbl { margin: 0 0 0.4em; color: var(--muted); font-size: 0.9em; }
+.s-success .box { border-radius: 14px; padding: 20px 24px; }
+.s-success .box h3 { font-size: 1em; margin-bottom: 0.7em; }
+.s-success .box li + li { margin-top: 0.55em; }
+.s-success .ready { background: #e3f2e7; }
+.s-success .ready h3 { color: #2f855a; }
+.s-success .pilot { background: #dfe9f6; }
+.s-success .pilot h3 { color: #3d6496; }
+
+/* 06 Prototyping: thin context column, then the prototype. All three columns share one 64px gap:
+   this grid's gap, and the prototype's own (it's loaded with ?inline, which uses the same gap). */
+.slide.s-proto { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 64px; max-width: 1240px; margin: 0 auto; }
+.s-proto .pctx { padding: 24px 0; font-size: 14px; line-height: 1.45; color: #3d3d42; overflow: auto; }
+.s-proto .pctx .eyebrow { font-size: 12px; margin-bottom: 18px; }
+.s-proto .pctx ul { list-style: none; padding: 0; margin: 0; }
+.s-proto .pctx li + li { margin-top: 1.4em; padding-top: 1.4em; border-top: 1px solid var(--rule); }
+.s-proto .proto-frame { width: 100%; height: 100%; }
+
+/* 07 Next steps: a pilot */
+.slide.s-pilot { font-size: 22px; }
+.slide.s-pilot .lead { font-size: 1.1em; margin-bottom: 1.1em; }
+.s-pilot h3 { font-size: 0.85em; margin-bottom: 0.6em; }
+.s-pilot .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.s-pilot .opts div { border: 1.5px solid var(--rule); background: var(--surface); border-radius: 12px; padding: 16px 18px; line-height: 1.35; }
+.slide.s-pilot .check { margin-top: 1.2em; color: var(--muted); font-size: 0.9em; }
+.s-pilot .outcome { margin-top: 1em; padding-top: 0.8em; border-top: 1px solid var(--rule); }
+.slide.s-pilot .outcome p { margin: 0 0 0.2em; }
+.s-pilot .outcome strong { color: var(--accent); }
+
+/* 08 Risks and scope */
+.slide.s-risks { font-size: 17px; }
+.s-risks .rt { width: 100%; border-collapse: collapse; }
+.s-risks .rt th { text-align: left; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0 16px 8px 0; border-bottom: 2px solid var(--ink); }
+.s-risks .rt td { padding: 10px 28px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.38; }
+.s-risks .rt td:first-child { width: 42%; font-weight: 500; }
+.s-risks .two { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; margin-top: 1.4em; }
+.s-risks h3 { font-size: 1em; }
+.s-risks .two li + li { margin-top: 0.4em; }
+
+/* 09 A note on AI: one small block */
+.slide.s-ai { font-size: 17px; align-items: center; }
+.s-ai .note { max-width: 620px; border: 1px solid var(--rule); background: var(--surface); border-radius: 14px; padding: 26px 32px; }
+.s-ai .note h3 { font-size: 0.95em; margin: 1em 0 0.35em; }
+.s-ai .note .eyebrow + h3 { margin-top: 0; }
+.s-ai .note li + li { margin-top: 0.3em; }
 
 /* Focus mode (Space): the current section stays sharp, the rest blur and fade. */
 .slide [data-focus] { transition: filter 0.25s ease, opacity 0.25s ease; }
@@ -197,18 +206,6 @@ html, body {
 .is-full .stage { display: none; }
 .slide.is-prototype { padding: 0; }
 .proto-frame { flex: 1; width: 100%; border: 0; background: var(--bg); }
-.proto-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 16px;
-  padding: 14px 16px 10px;
-  border-bottom: 1px solid var(--rule);
-  font-size: 16px;
-}
-.proto-bar .eyebrow { margin: 0; font-size: 13px; }
-.proto-title { font-weight: 600; }
-.proto-key { margin-left: auto; color: var(--muted); font-size: 14px; }
 
 /* Previous / next: large buttons on the left and right edges */
 .nav-btn {

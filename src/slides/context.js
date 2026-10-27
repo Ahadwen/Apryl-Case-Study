@@ -1,43 +1,32 @@
+// 01: the approach, each step level with the milestone that delivers it.
+// Each approach step sits level with the milestone that delivers it.
+const PLAN = [
+  ['Confirm the priority', 'Is this the right target to work on first?',
+    'January, weeks 1–2', 'Start capturing metrics and tracking time; sit with operators'],
+  ['Identify a problem', 'Searching for high impact, scalability, and a good ROI',
+    'January, weeks 2–3', 'Agree the problem and define success, with operators and legal'],
+  ['Investigate and prototype', 'Iterate with stakeholders before engineering gets involved',
+    'Late January', 'Prototype quickly, iterating with design, legal and operators'],
+  ['Build a small, focused solution', 'Stay light, this is likely not the only priority',
+    'February', 'Build the pilot version (two engineers); the pilot starts late February'],
+  ['Qualify the result', 'Did this feature help, is more work needed?',
+    'March–June', 'Follow the dashboard and step in if needed; otherwise, move on to a different product area'],
+];
+
 export default {
   id: 'context',
   title: 'Context',
-  className: 'is-dense s-context',
+  className: 'is-dense s-plan',
   render(el) {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">01 · Context</div>
-      <h2 data-focus="head">Approach, what we know, and what we assume</h2>
-      <div class="cols2">
-        <div class="approach" data-focus>
-          <h3>Approach</h3><p class="sub">How I'd work</p>
-          <ol>
-            <li><strong>Confirm the priority</strong><span>Is this the right target to work on first?</span></li>
-            <li><strong>Identify a problem</strong><span>Searching for high impact, scalability, and a good ROI</span></li>
-            <li><strong>Investigate and prototype</strong><span>Iterate with stakeholders before engineering gets involved</span></li>
-            <li><strong>Build a small, focused solution</strong><span>Stay light, this is likely not the only priority</span></li>
-            <li><strong>Qualify the result</strong><span>Did this feature help, is more work needed?</span></li>
-          </ol>
-        </div>
-        <div class="known" data-focus>
-          <h3>What we know</h3><p class="sub">Confirmed</p>
-          <ul>
-            <li>2 FTE review claims (alongside digital card transactions); 2 more hires planned for 2026</li>
-            <li>Requirements are a matrix: country × treatment × employer</li>
-            <li>An invoice is always required; proof of payment usually</li>
-            <li>Proof of medical necessity drives back-and-forth between member, Progyny and clinic</li>
-            <li>Multi-document uploads are split by hand</li>
-          </ul>
-        </div>
-        <div class="assumed" data-focus>
-          <h3>What we assume</h3><p class="sub">To be tested</p>
-          <ul>
-            <li>Most of the 40% of information requests are preventable at upload</li>
-            <li>Most claims would be straightforward if all data and documents were already presented as required</li>
-            <li>Much of the delay comes from discussion between operators, members, and clinics, around missing documentation</li>
-            <li>Proof of medical necessity can be requested at step one</li>
-            <li>A claim can move between created, submitted, and closed states</li>
-            <li>There is no pressing need to redesign a larger portion of member-facing or back-office functionality</li>
-          </ul>
-        </div>
+      <h2 data-focus="head">How I'd work, and the plan for H1 2027</h2>
+      <div class="plan">
+        <div class="ph ph-a" data-focus="a">Approach</div>
+        <div class="ph ph-m" data-focus="m">Milestones</div>
+        ${PLAN.map(([s, sub, when, what], i) => `
+          <div class="pa" data-focus="a"><span class="num">${i + 1}</span><div><strong>${s}</strong><span>${sub}</span></div></div>
+          <div class="pm" data-focus="m"><span class="when">${when}</span><span>${what}</span></div>`).join('')}
       </div>
     `;
   },

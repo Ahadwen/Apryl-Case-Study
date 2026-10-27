@@ -1,38 +1,42 @@
+// 08: risks with their mitigations, then dependencies and scope.
+const list = (items) => items.map((i) => `<li>${i}</li>`).join('');
+
+const RISKS = [
+  ["Investing heavily in an idea that turns out not to work; stakeholders could flag at any point that it isn't wise",
+    "Include stakeholders early and often. Investigate in smart layers and build small, specific tools where possible. Don't spend 6 months of engineering effort before learning an idea isn't viable."],
+  ['GDPR and sensitive data: the data is high-stakes, and solutions may rely on third-party suppliers',
+    'Confirm the approach with legal before any member data is used, even in a trial'],
+  ["Iteration needs stakeholders' time, so they need to believe the solution will work",
+    "Frame the investigation early as working together on a real problem, and build trust that it's worth their time"],
+];
+
 export default {
   id: 'risks',
-  title: 'Risks and scoping',
+  title: 'Risks and scope',
   className: 'is-dense s-risks',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow" data-focus="head">07 · Risks and scoping</div>
-      <h2 data-focus="head">Risks and scoping</h2>
-      <div class="rs">
+      <div class="eyebrow" data-focus="head">08 · Risks and scope</div>
+      <h2 data-focus="head">Risks and scope</h2>
+      <table class="rt" data-focus>
+        <tr><th>Risk</th><th>Mitigation</th></tr>
+        ${RISKS.map(([r, m]) => `<tr><td>${r}</td><td>${m}</td></tr>`).join('')}
+      </table>
+      <div class="two">
         <div data-focus>
-          <h3>Risks</h3>
-          <ul>
-            <li>Legal confirmation is the critical path. No AI on real documents until it's done.</li>
-            <li>Needs the claims team's time: to write down rules, and for us to sit with them and understand their workflows.</li>
-            <li>OCR quality on bad photos.</li>
-            <li>Guardrail metrics may show need for further action.</li>
-            <li>Anonymised medical letters can still contain health details.</li>
-          </ul>
+          <h3>Dependencies</h3>
+          <ul>${list([
+            '<strong>Engineering:</strong> two engineers for a couple of months',
+            '<strong>Claims team:</strong> operator time for iteration and the pilot',
+            '<strong>Legal:</strong> sign-off before any member data is used',
+          ])}</ul>
         </div>
-        <div class="scope" data-focus>
-          <h3>Scoping</h3>
-          <h4>In scope</h4>
-          <ul>
-            <li>Metrics and dashboards</li>
-            <li>Claim type and checklist</li>
-            <li>Document reading, masking and extraction</li>
-            <li>Member confirmation and gated submit</li>
-            <li>Operator view with sources</li>
-          </ul>
-          <h4>Out of scope</h4>
-          <ul>
-            <li>Fraud, payout, employer configuration tooling</li>
-            <li>Changes to how operators make judgement calls</li>
-          </ul>
-          <p class="team"><strong>Team:</strong> about 2 engineers, plus time from the claims team.</p>
+        <div data-focus>
+          <h3>Scope</h3>
+          <ul>${list([
+            'Keep it small: a couple of engineers for a couple of months, leaving us free to invest further or move on. No 6-month blocks of work.',
+            "This example wouldn't touch operator tooling, employer configuration tooling, fraud prevention, or payments.",
+          ])}</ul>
         </div>
       </div>
     `;
