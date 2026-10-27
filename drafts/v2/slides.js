@@ -73,7 +73,7 @@ const unknowns = {
   className: 'is-dense v2-unknowns',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow" data-focus="head">02 · Assumptions</div>
+      <div class="eyebrow" data-focus="head">03 · Assumptions</div>
       <h2 data-focus="head">Unknowns, and how we'd test them</h2>
       <table class="ut" data-focus>
         <tr><th>Unknown</th><th>How we'd test it</th></tr>
@@ -97,8 +97,6 @@ const MEMBER = [
   'Time between opening a claim and submission (proof of medical necessity required)',
   'Time between opening a claim and submission (proof of medical necessity not required)',
   'Abandonment rate',
-  'Document rejection rate',
-  'Manual entry rate',
 ];
 const rows = (items) => items.map((m) => `<tr><td>${m}</td></tr>`).join('');
 
@@ -108,7 +106,7 @@ const metrics = {
   className: 'is-dense s-metrics v2-metrics',
   render(el) {
     el.innerHTML = `
-      <div class="eyebrow" data-focus="head">03 · Metrics</div>
+      <div class="eyebrow" data-focus="head">02 · Metrics</div>
       <h2 data-focus="head">Metrics</h2>
       <p class="subtitle" data-focus="head">Captured from week 1, before anything changes, so we can test our assumptions.</p>
       <div class="mgrid">
@@ -332,4 +330,4 @@ const ai = {
   },
 };
 
-export const slides = [title, context, unknowns, metrics, explore, investigation, prototype, pilot, risks, ai];
+export const slides = [title, context, metrics, unknowns, explore, investigation, prototype, pilot, risks, ai];
