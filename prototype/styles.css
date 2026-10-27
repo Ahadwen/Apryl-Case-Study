@@ -50,11 +50,11 @@ button { font: inherit; color: inherit; }
   font-size: 13px;
 }
 
-.layout { max-width: 1240px; margin: 0 auto; padding: 16px 16px 48px; display: grid; gap: 40px; }
+.layout { max-width: 1320px; margin: 0 auto; padding: 16px 16px 48px; display: grid; gap: 40px; }
 .patient { display: grid; gap: 16px; align-content: start; min-width: 0; }
 @media (min-width: 900px) {
   /* Patient's screen at phone width; the explainer takes the rest. */
-  .layout { grid-template-columns: 460px 1fr; align-items: start; column-gap: 56px; }
+  .layout { grid-template-columns: 460px 1fr; align-items: start; column-gap: 140px; }
   .backstage { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
 }
 
