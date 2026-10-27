@@ -94,6 +94,10 @@ Full-window: a thin context column, then the prototype's member screen and behin
 - At this stage, the goal is to prove that the UX can contain these steps and still feel intuitive, plus that the requirements are met.
 - Next iterations will likely include more edge cases, further design efforts, or fields that were missed on first draft.
 
+**Below a divider:**
+- The pitch suggested I add several solution screens and list the relative strengths between them.
+- Whilst occasionally such decisions are needed, this process often creates smaller more specific decisions between iterations.
+
 ## 07 · Next steps — agreed
 
 **Title:** A pilot
