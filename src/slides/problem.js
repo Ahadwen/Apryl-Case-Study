@@ -11,7 +11,7 @@ export default {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">01 · The problem</div>
       <h2 class="reframe" data-focus="head"><span class="no">Not a back-office problem. Not a UX problem.</span><br>A collaboration problem.</h2>
-      <p class="goal" data-focus>Reviewers know what a claim needs. Members hold the documents, and sometimes only the clinic can provide them. <strong>The goal: help the member understand what's needed from them, as seamlessly as possible, before they submit.</strong></p>
+      <p class="goal" data-focus>Reviewers know what a claim needs. Members have most of the documents; some, like proof of medical necessity, only the clinic can provide. <strong>The goal: help the member understand what's needed from them, as seamlessly as possible, before they submit.</strong></p>
       <div class="flows">
         <div class="flow today" data-focus><span class="lbl">Today</span>
           <div class="steps">

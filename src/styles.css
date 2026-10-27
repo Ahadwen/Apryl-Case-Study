@@ -74,7 +74,7 @@ html, body {
 /* 01 The problem */
 .s-problem h2.reframe { font-size: 1.75em; line-height: 1.15; margin: 0 0 0.35em; }
 .s-problem .reframe .no { color: var(--muted); font-weight: 600; }
-.slide.s-problem .goal { font-size: 1em; margin-bottom: 3.2em; max-width: 880px; }
+.slide.s-problem .goal { font-size: 1em; margin-bottom: 3.2em; max-width: 960px; }
 .s-problem .goal strong { color: var(--accent); }
 .s-problem .flows { display: grid; gap: 30px; }
 .s-problem .flow { display: grid; grid-template-columns: 100px minmax(0, 1fr); align-items: center; gap: 12px; }

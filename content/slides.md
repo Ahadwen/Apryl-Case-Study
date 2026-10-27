@@ -18,7 +18,7 @@ Mockup: `drafts/problem.html`
 - (black) A collaboration problem.
 
 **Paragraph**
-Reviewers know what a claim needs. Members hold the documents, and sometimes only the clinic can provide them. **The goal: help the member understand what's needed from them, as seamlessly as possible, before they submit.**
+Reviewers know what a claim needs. Members have most of the documents; some, like proof of medical necessity, only the clinic can provide. **The goal: help the member understand what's needed from them, as seamlessly as possible, before they submit.**
 
 **Diagram** (steps coloured by party: Member / Progyny / Clinic)
 - Today: Member submits (M) → [loop, "repeats for 40% of claims": Reviewer finds what's missing (A) → Request sent to member (A) → Member asks clinic (M) → Clinic sends document (C) → Member re-uploads (M)] → Decision (A)
@@ -26,7 +26,7 @@ Reviewers know what a claim needs. Members hold the documents, and sometimes onl
 
 **Space steps:** headline → paragraph → Today → Proposed
 
-**Layout notes:** paragraph fixed width (880px) at 1em so it sits on three lines; generous space above the diagram.
+**Layout notes:** paragraph fixed width (960px) at 1em so it sits on three lines; generous space above the diagram.
 
 **Moved elsewhere:** the old hypothesis conditions and assumptions (see Research).
 
