@@ -2,12 +2,12 @@
 const list = (items) => items.map((i) => `<li>${i}</li>`).join('');
 
 const RISKS = [
-  ["Investing heavily in an idea that turns out not to work; stakeholders could flag at any point that it isn't wise",
+  ["Investing heavily in an idea that turns out not to work; stakeholders with unconsidered perspectives could flag concrete issues at any point",
     "Include stakeholders early and often. Investigate in smart layers and build small, specific tools where possible. Don't spend 6 months of engineering effort before learning an idea isn't viable."],
   ['GDPR and sensitive data: the data is high-stakes, and solutions may rely on third-party suppliers',
     'Confirm the approach with legal before any member data is used, even in a trial'],
-  ["Iteration needs stakeholders' time, so they need to believe the solution will work",
-    "Frame the investigation early as working together on a real problem, and build trust that it's worth their time"],
+  ["Iteration needs stakeholders' time, so they need to believe the solution will bring meaningful value",
+    "Frame the investigation from day one as collaboration on a real problem. Share ownership, be grateful for help, be humble in the face of suggestions and ideas, and clearly communicate the target outcome"],
 ];
 
 export default {
