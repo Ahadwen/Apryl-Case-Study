@@ -53,7 +53,7 @@ Mockup: `drafts/context.html`
 
 Mockup: `drafts/proposal.html` (17px; it's dense, but read one section at a time)
 
-**Title:** One checklist, shared by member and operator
+**Title (two lines):** Claim creation document upload redesign: / *(accent)* Clear checklist before claim submission
 
 **Lead:** Today, only the operator knows what a claim needs. We put that knowledge at the start: each member sees exactly what their claim requires, gathers it with help, and can only submit once it's complete. **Operators receive complete, confirmed claims.**
 
