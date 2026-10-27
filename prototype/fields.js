@@ -28,8 +28,6 @@ export const FIELDS = [
     hint: 'Usually at the top of the clinic invoice.' },
 ];
 
-export const DOCUMENT_EXAMPLES = ['Clinic invoice', 'Receipt', 'Prescription', 'Drug label', 'Pharmacy receipt', 'Medical letter'];
-
 // A document requirement is met by a document of one of these types, or one the model says has
 // the flag (e.g. an invoice marked "paid" also proves payment).
 export const DOCUMENTS = {

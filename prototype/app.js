@@ -2,7 +2,7 @@
 // anonymised text to Claude → one list of details the patient confirms or edits → claim.
 
 import {
-  FIELDS, DOCUMENTS, DOCUMENT_EXAMPLES, DOCUMENT_TYPES, CLAIM_TYPES, COUNTRIES, RULES,
+  FIELDS, DOCUMENTS, DOCUMENT_TYPES, CLAIM_TYPES, COUNTRIES, RULES,
   ruleApplies, requirements, formatValue, formatDate,
 } from './fields.js';
 import { readDocument } from './ocr.js';
@@ -424,6 +424,16 @@ ${state.profile.name}`;
   return { subject, body };
 }
 
+// The few documents that are mandatory, then: everything else is information, from any document.
+function uploadIntro() {
+  const { documents } = reqs();
+  return `
+    <p>For this claim we need <strong>${documents.length} document${documents.length > 1 ? 's' : ''}</strong>:</p>
+    <ul class="must">${documents.map((k) => `<li><strong>${esc(DOCUMENTS[k].label)}</strong>: ${esc(DOCUMENTS[k].hint.charAt(0).toLowerCase() + DOCUMENTS[k].hint.slice(1).replace(/\.$/, ''))}</li>`).join('')}</ul>
+    <p class="small muted">One document can cover more than one of these, e.g. an invoice marked as paid.</p>
+    <p class="lead"><strong>After that, we just need a few details</strong> (listed under <em>What we need</em>). They can come from any of your documents: upload as many as you like, and we'll combine them into one claim.</p>`;
+}
+
 function necessityCallout() {
   if (!reqs().documents.includes('medical_necessity') || resolveDoc('medical_necessity')) return '';
   const { subject, body } = clinicLetter();
@@ -568,9 +578,7 @@ function render() {
         ${necessityCallout()}
         <section class="card">
           <h2>Upload your documents</h2>
-          <p class="lead">We need what's listed under <em>What we need</em>. <strong>It doesn't have to be on one document</strong>: upload as many as you need, and we'll combine them into one claim.</p>
-          <p class="small muted">For example:</p>
-          <div class="chips">${DOCUMENT_EXAMPLES.map((d) => `<span class="chip">${esc(d)}</span>`).join('')}</div>
+          ${uploadIntro()}
           <button class="drop" data-action="upload">
             <strong>${state.docs.length ? 'Add another document' : 'Choose photos or PDFs'}</strong>
             <span class="small muted">or drop them here</span>
