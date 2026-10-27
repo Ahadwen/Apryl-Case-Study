@@ -35,6 +35,7 @@ export default {
             <li>Much of the delay comes from discussion between operators, members, and clinics, around missing documentation</li>
             <li>Proof of medical necessity can be requested at step one</li>
             <li>A claim can move between created, submitted, and closed states</li>
+            <li>There is no pressing need to redesign a larger portion of member-facing or back-office functionality</li>
           </ul>
         </div>
       </div>

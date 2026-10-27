@@ -35,6 +35,7 @@ Mockup: `drafts/context.html`
 - Much of the delay comes from discussion between operators, members, and clinics, around missing documentation
 - Proof of medical necessity can be requested at step one
 - A claim can move between created, submitted, and closed states
+- There is no pressing need to redesign a larger portion of member-facing or back-office functionality
 
 **Space steps:** heading → Approach → What we know → What we assume
 
