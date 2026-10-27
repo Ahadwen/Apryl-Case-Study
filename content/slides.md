@@ -88,7 +88,7 @@ Three columns:
 Full-window: a thin context column, then the prototype's member screen and behind-the-scenes panel, all three evenly spaced.
 
 **Context column:**
-- Prototyping is a collaborative, iterative effort between me, design, legal and operators.
+- Prototyping is a collaborative, iterative effort between product, design, legal and operators.
 - We explore solutions, and settle on one to run as a pilot.
 - Here, the solution is improving the member's claim creation funnel. An early prototype might look and behave like this.
 - At this stage, the goal is to prove that the UX can contain these steps and still feel intuitive, plus that the requirements are met.
