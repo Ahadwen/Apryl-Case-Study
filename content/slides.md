@@ -46,8 +46,37 @@ Mockup: `drafts/context.html`
 **Space steps:** heading → What we know → What we assume
 
 **Carried forward:**
-- Four-eyes (two human sign-offs) → Proposal
+- Four-eyes (two human sign-offs) → was planned for Proposal; dropped there as out of scope
 - Research activities (sit with reviewers, inventory knowledge in people's heads, baseline metrics, legal/DPIA advice) → Milestones, weeks 1–2
+
+## 03 · Proposal — agreed (copy: draft)
+
+Mockup: `drafts/proposal.html` (17px; it's dense, but read one section at a time)
+
+**Title:** One checklist, shared by member and operator
+
+**Lead:** Today, only the operator knows what a claim needs. We put that knowledge at the start: each member sees exactly what their claim requires, gathers it with help, and can only submit once it's complete. **Operators receive complete, confirmed claims.**
+
+**What changes for the member** (numbered)
+1. They say what they're claiming for. With their country and employer, that defines the checklist.
+2. The checklist asks for a few mandatory documents, then information, which can come from any document on a provided shortlist. Documents only count if they identify the member.
+3. If proof of medical necessity is needed, they're told upfront, with a ready-made message for their clinic.
+4. The member doesn't need to type anything: information is pulled from the provided documents, and they only confirm the retrieved data.
+5. Anything the scan reads incorrectly, or any missing data: the member is prompted to upload another document, or type it manually, but flagged for the operator to confirm.
+6. Submit unlocks only when the checklist is complete.
+
+**What changes for the operator**
+- **Complete claims:** most claims arrive with complete and confirmed information and documents.
+- **Automation:** deterministic checks run automatically on the resulting data (e.g. employer date ranges).
+- **Sources:** each fact is shown with its source highlighted.
+
+**Principles** (strip along the bottom)
+- **Privacy and GDPR:** documents are read and masked on the member's device. The AI never learns who the member is.
+- **Machine vs. human:** we automate the data retrieval; the judgement still sits with the operators.
+
+**Space steps:** title + lead → member → operator → principles
+
+**Dropped:** two lanes (clean / judgement), four-eyes, "alternative considered".
 
 ## Order
 
