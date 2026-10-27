@@ -14,6 +14,8 @@ const SAMPLES = [
   { file: 'clinic-invoice.pdf', preview: 'clinic-invoice-preview.png', label: 'Clinic invoice', kind: 'PDF', type: 'application/pdf' },
   { file: 'pharmacy-label.jpg', preview: 'pharmacy-label.jpg', label: 'Prescription label', kind: 'Photo', type: 'image/jpeg' },
   { file: 'medical-letter.pdf', preview: 'medical-letter-preview.png', label: 'Medical necessity letter', kind: 'PDF', type: 'application/pdf' },
+  { file: 'pharmacy-label-no-id.jpg', preview: 'pharmacy-label-no-id.jpg', label: 'Label, no name', kind: 'Photo', type: 'image/jpeg',
+    note: 'No name or date of birth, so it won\'t count' },
 ];
 
 const DEFAULT_PROFILE = { name: 'Jane Smith', dob: '1990-02-03', country: 'GB', nationalId: '' };
@@ -332,7 +334,7 @@ function backstage() {
         <div class="samples">${SAMPLES.map((smp, i) => `
           <div class="sample">
             <button class="thumb" data-action="preview" data-i="${i}" title="View full size"><img src="samples/${smp.preview}" alt="${esc(smp.label)} sample"></button>
-            <div class="small"><strong>${esc(smp.label)}</strong> · ${smp.kind}</div>
+            <div class="small"><strong>${esc(smp.label)}</strong> · ${smp.kind}${smp.note ? `<br><span class="warn">${esc(smp.note)}</span>` : ''}</div>
             <button class="btn sm" data-action="sample" data-i="${i}">Use this sample</button>
           </div>`).join('')}
         </div>

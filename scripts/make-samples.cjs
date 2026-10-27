@@ -2,6 +2,7 @@
 //   prototype/samples/clinic-invoice.pdf  a digital PDF with a text layer
 //   prototype/samples/clinic-invoice-preview.png  an image of the invoice, for the sample thumbnail
 //   prototype/samples/pharmacy-label.jpg  a slightly rotated "photo" of a dispensing label, read by OCR
+//   prototype/samples/pharmacy-label-no-id.jpg  the same label with no name or date of birth: it can't be used
 //   prototype/samples/medical-letter.pdf (+ -preview.png)  a clinic letter confirming medical necessity
 // Run: node scripts/make-samples.cjs
 
@@ -95,5 +96,7 @@ const letter = `<!doctype html><html><head><style>
   await page.setViewportSize({ width: 900, height: 640 });
   await page.setContent(label);
   await page.screenshot({ path: out('pharmacy-label.jpg'), type: 'jpeg', quality: 82 });
+  await page.setContent(label.replace(/<div>SMITH, JANE[^<]*<\/div>/, ''));
+  await page.screenshot({ path: out('pharmacy-label-no-id.jpg'), type: 'jpeg', quality: 82 });
   await browser.close();
 })();
