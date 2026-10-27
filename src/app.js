@@ -23,8 +23,6 @@ const stage = app.querySelector('.stage');
 const full = app.querySelector('.full');
 const count = app.querySelector('.hud-count');
 const bar = app.querySelector('.progress-bar');
-const prev = app.querySelector('.nav-btn.prev');
-const next = app.querySelector('.nav-btn.next');
 
 let current = -1;
 let cleanup = null;
@@ -38,7 +36,8 @@ function fit() {
 }
 
 function show(index) {
-  index = Math.max(0, Math.min(slides.length - 1, index));
+  // Wraps around: next from the last slide goes to the title, previous from the title to the last.
+  index = (index + slides.length) % slides.length;
   if (index === current) return;
   current = index;
 
@@ -59,8 +58,6 @@ function show(index) {
 
   count.textContent = `${index + 1} / ${slides.length}`;
   bar.style.width = `${((index + 1) / slides.length) * 100}%`;
-  prev.disabled = index === 0;
-  next.disabled = index === slides.length - 1;
   document.title = `${slide.title} · Progyny Global Case Study`;
   history.replaceState(null, '', `#${slide.id}`);
 }
