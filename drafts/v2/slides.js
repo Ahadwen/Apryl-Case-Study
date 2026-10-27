@@ -64,7 +64,7 @@ const ASSUMPTIONS = [
   ['A claim can move between created, submitted and closed states',
     'Confirm with engineering that the back office records these states, with timestamps'],
   ['There is no pressing need to redesign a larger portion of member-facing or back-office functionality',
-    "Check against operators' and leadership's other priorities"],
+    'Check against other priorities from operators, engineering, design and leadership'],
 ];
 
 const assumptions = {
