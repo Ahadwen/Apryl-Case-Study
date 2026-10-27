@@ -5,7 +5,7 @@ export default {
   render(el) {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">03 · Proposal</div>
-      <h2 class="ptitle" data-focus="head">Claim creation document upload redesign:<br><span>Clear checklist before claim submission</span></h2>
+      <h2 class="ptitle" data-focus="head">Claim creation document upload redesign:<br><span>A clear checklist, before claim submission</span></h2>
       <p class="lead-in" data-focus="head">Today, only the operator knows what a claim needs. We put that knowledge at the start: each member sees exactly what their claim requires, gathers it with help, and can only submit once it's complete. <strong>Operators receive complete, confirmed claims.</strong></p>
       <div class="split">
         <div class="member" data-focus>
