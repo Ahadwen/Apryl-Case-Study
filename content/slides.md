@@ -106,6 +106,19 @@ Mockup: `drafts/metrics.html` (17px)
 
 Already built (full-window slide). Lead-in bar: **05 · Prototype** · Data extraction, information checklist, which gates claim submissions · *Left: what the member sees · Right: behind the scenes*
 
+## 06 · Milestones — agreed (copy: draft)
+
+Mockup: `drafts/milestones.html` (week 1 is in January)
+
+- **Weeks 1–2:** Sit with reviewers for a day each · Capture domain-specific operator knowledge: country exceptions, judgement calls, Slack escalations · Set up metric capture and dashboards · Legal confirmation
+- **Weeks 3–6:** Build it, test against historical claims
+- **February:** Feature goes live
+- **March–June:** Follow the dashboard periodically, and intervene with further effort if needed · Otherwise, move focus to a different product area
+
+**Space steps:** heading → each row
+
+**Note:** "legal confirmation", not "legal and DPIA" (also update Risks).
+
 ## Order
 
 01 Problem · 02 Context · 03 Proposal · 04 Metrics · 05 Prototype · then Milestones, Risks, AI usage
