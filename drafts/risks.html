@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+  body { overflow: auto; }
+  .stage { position: relative; top: 0; left: 0; transform: none; }
+  .slide.is-dense { font-size: 19px; }
+  .rs { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: start; }
+  .rs h3 { font-size: 1em !important; }
+  .rs li + li { margin-top: 0.45em; }
+  .scope h4 { margin: 0 0 0.3em; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .scope ul { margin-bottom: 1em; }
+  .team { border-top: 1px solid var(--rule); padding-top: 10px; }
+  .new { background: #fff3b0; border-radius: 3px; padding: 0 3px; }
+</style></head>
+<body><div class="stage"><section class="slide is-dense">
+  <div class="eyebrow">07 · Risks and scoping</div>
+  <h2>Risks and scoping</h2>
+  <div class="rs">
+    <div>
+      <h3>Risks</h3>
+      <ul>
+        <li>Legal confirmation is the critical path. No AI on real documents until it's done.</li>
+        <li>Needs the claims team's time: to write down rules, and for us to sit with them and understand their workflows.</li>
+        <li>OCR quality on bad photos.</li>
+        <li><span class="new">Captured requirements are incomplete: claims arrive "complete" but still need a request.</span></li>
+        <li><span class="new">A locked Submit button puts members off: watched through the abandonment rate.</span></li>
+        <li><span class="new">Clinics may be slow to send proof of medical necessity.</span></li>
+        <li><span class="new">Anonymised medical letters can still contain health details.</span></li>
+      </ul>
+    </div>
+    <div class="scope">
+      <h3>Scoping</h3>
+      <h4><span class="new">In scope</span></h4>
+      <ul>
+        <li><span class="new">Claim type and checklist</span></li>
+        <li><span class="new">Document reading, masking and extraction</span></li>
+        <li><span class="new">Member confirmation and gated submit</span></li>
+        <li><span class="new">Operator view with sources</span></li>
+        <li><span class="new">Metrics and dashboards</span></li>
+      </ul>
+      <h4>Out of scope</h4>
+      <ul>
+        <li>Fraud, payout, employer configuration tooling</li>
+        <li><span class="new">Changes to how operators make judgement calls</span></li>
+      </ul>
+      <p class="team"><strong>Team:</strong> about 2 engineers, plus time from the claims team.</p>
+    </div>
+  </div>
+</section></div></body></html>
