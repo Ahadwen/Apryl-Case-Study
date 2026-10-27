@@ -18,11 +18,11 @@
   .box h3 { font-size: 1em !important; margin: 0 0 0.15em !important; }
   .box .why { color: var(--muted); font-size: 0.85em; margin: 0 0 0.7em; }
   .box ul { list-style: none; padding: 0; margin: 0; }
-  .box li { display: grid; grid-template-columns: 28px 1fr; gap: 6px; line-height: 1.3; }
+  .box li { display: grid; grid-template-columns: 76px 1fr; gap: 10px; line-height: 1.3; align-items: baseline; }
   .box li + li { margin-top: 0.4em; }
-  .box .dir { font-weight: 700; text-align: center; }
-  .improve { background: #e3f2e7; } .improve h3 { color: #2f855a !important; } .improve .dir { color: #2f855a; }
-  .guard { background: #fdecd9; } .guard h3 { color: #a8621f !important; } .guard .dir { color: #a8621f; }
+  .box .dir { font-weight: 700; font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; border-radius: 999px; padding: 2px 0; color: #fff !important; }
+  .improve { background: #e3f2e7; } .improve h3 { color: #2f855a !important; } .improve .dir { background: #2f855a; }
+  .guard { background: #fdecd9; } .guard h3 { color: #a8621f !important; } .guard .dir { background: #a8621f; }
   .head { font-weight: 700; }
 </style></head>
 <body><div class="stage"><section class="slide is-dense">
@@ -31,7 +31,7 @@
   <p class="subtitle">Captured from week 1, before anything changes, so we can test our assumptions.</p>
   <div class="mgrid">
     <table class="all">
-      <tr><th>Everything we capture</th></tr>
+      <tr><th>Everything we should capture</th></tr>
       <tr class="group op"><td>Operator</td></tr>
       <tr><td>Time between claim creation and closure (granted, at least partially)</td></tr>
       <tr><td>Time between claim creation and closure (denied)</td></tr>
@@ -51,20 +51,20 @@
         <h3>Success: should improve</h3>
         <p class="why">What the redesign is for</p>
         <ul>
-          <li><span class="dir">↓</span><span class="head">Time between submission and last document upload: towards zero</span></li>
-          <li><span class="dir">↓</span><span>Number of document requests</span></li>
-          <li><span class="dir">↓</span><span>Operator minutes per claim (no judgement call required)</span></li>
-          <li><span class="dir">↓</span><span>Time between claim creation and closure (granted)</span></li>
+          <li><span class="dir">Down</span><span class="head">Time between submission and last document upload: towards zero</span></li>
+          <li><span class="dir">Down</span><span>Number of document requests</span></li>
+          <li><span class="dir">Down</span><span>Operator minutes per claim (no judgement call required)</span></li>
+          <li><span class="dir">Down</span><span>Time between claim creation and closure (granted)</span></li>
         </ul>
       </div>
       <div class="box guard">
         <h3>Guardrails: shouldn't get worse</h3>
         <p class="why">What the redesign could break</p>
         <ul>
-          <li><span class="dir">→</span><span>Abandonment rate: the checklist mustn't put members off</span></li>
-          <li><span class="dir">→</span><span>% of claims rejected: complete doesn't mean eligible</span></li>
-          <li><span class="dir">→</span><span>Operator minutes per claim (judgement call required): judgement stays with people</span></li>
-          <li><span class="dir">↓</span><span>Manual entry and document rejection rates: low, or extraction isn't working</span></li>
+          <li><span class="dir">Steady</span><span>Abandonment rate: the checklist mustn't put members off</span></li>
+          <li><span class="dir">Steady</span><span>% of claims rejected: complete doesn't mean eligible</span></li>
+          <li><span class="dir">Steady</span><span>Operator minutes per claim (judgement call required): judgement stays with people</span></li>
+          <li><span class="dir">Stay low</span><span>Manual entry and document rejection rates: low, or extraction isn't working</span></li>
         </ul>
       </div>
     </div>
