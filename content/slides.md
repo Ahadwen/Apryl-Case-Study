@@ -175,7 +175,7 @@ Mockup: `drafts/ai-usage.html`
 **Where I overruled it**
 - It pitched a standard slide deck. I wanted a browser app where the prototype is a slide.
 - The prototype's "behind the scenes" panel was broadly visible in the main screen. I split it off.
-- It spoke on my perspective, for example it invented an "alternative considered and dismissed" with inviable options I had never considered. I removed such cases.
+- It spoke on my perspective, for example it invented an "alternatives that I considered and dismissed" with inviable options I had never considered. I removed such cases.
 - I consistently overruled it on language: it reached for jargon and corporate speak; I insisted on readability.
 
 **Space steps:** heading → what it did → what it didn't do → where I overruled it
