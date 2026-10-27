@@ -2,6 +2,7 @@ export default {
   id: 'title',
   title: 'Progyny Global',
   className: 'is-title',
+  counter: false,
   render(el) {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">Case study</div>

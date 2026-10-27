@@ -5,6 +5,7 @@ export default {
   id: 'ai-usage',
   title: 'A note on AI',
   className: 'is-dense s-ai',
+  counter: 'X',
   render(el) {
     el.innerHTML = `
       <div class="note" data-focus>

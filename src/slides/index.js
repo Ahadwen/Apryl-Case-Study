@@ -1,4 +1,5 @@
 // Slide order. Each slide module exports { id, title, render(el) }.
+// Optional `counter`: false hides the slide counter; a string replaces the number (e.g. 'X').
 // render() builds the slide's DOM inside `el` and may return a cleanup function.
 // The agreed copy for each slide is recorded in content/slides.md.
 import title from './title.js';

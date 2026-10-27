@@ -56,7 +56,10 @@ function show(index) {
   sections = sectionsOf(el);
   step = -1;
 
-  count.textContent = `${index + 1} / ${slides.length}`;
+  // The counter covers the numbered slides only: none on the title, and the AI note shows its own label.
+  const numbered = slides.filter((s) => s.counter === undefined);
+  count.textContent = slide.counter === false ? ''
+    : `${slide.counter ?? numbered.indexOf(slide) + 1} / ${numbered.length}`;
   bar.style.width = `${((index + 1) / slides.length) * 100}%`;
   document.title = `${slide.title} · Progyny Global Case Study`;
   history.replaceState(null, '', `#${slide.id}`);

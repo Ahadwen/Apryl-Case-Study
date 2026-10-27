@@ -136,4 +136,6 @@ One small card.
 
 ## Order
 
+Counter: none on the title, 1 / 8 to 8 / 8 for 01–08, X / 8 on the AI note.
+
 Title · 01 Context · 02 Metrics · 03 Assumptions · 04 Identify a problem · 05 Investigation · 06 Prototyping · 07 Next steps · 08 Risks and scope · A note on AI — rendered in the deck
