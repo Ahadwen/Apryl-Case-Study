@@ -137,25 +137,27 @@ Mockup: `drafts/risks.html`
 
 **Space steps:** heading → risks → scoping
 
-## 08 · AI usage reflection — agreed (copy: draft)
+## 08 · AI usage reflection — agreed (copy: final)
 
 Mockup: `drafts/ai-usage.html`
 
 **Title:** How I used AI
 
 **What it did**
-- A sparring partner: challenging the brief and stress-testing assumptions
-- Research
-- Built the prototype and this deck, to my direction
+- Brainstorming, dissecting the brief, and stress-testing assumptions
+- Built the prototype and this deck, iterating on my instruction
+
+**What it didn't do**
+- Case study approach and strategy
+- Matters of taste and language
 
 **Where I overruled it**
 - It pitched a standard slide deck. I wanted a browser app where the prototype is a slide.
-- It showed the anonymisation step to the member. That belongs behind the scenes.
-- It invented an "alternative considered" I had never considered, and principles that were word salad.
-- It reached for jargon ("DPIA", "inventory the knowledge"). I replaced it with plain words.
-- It planned a January pilot without realising week 1 is January.
+- The prototype's "behind the scenes" panel was broadly visible in the main screen. I split it off.
+- It spoke on my perspective, for example it invented an "alternative considered and dismissed" with inviable options I had never considered. I removed such cases.
+- I consistently overruled it on language: it reached for jargon and corporate speak; I insisted on readability.
 
-**Space steps:** heading → what it did → where I overruled it
+**Space steps:** heading → what it did → what it didn't do → where I overruled it
 
 ## Order
 
