@@ -102,7 +102,7 @@ Mockup: `drafts/metrics.html` (17px)
 
 **Left — table "Everything we should capture"**
 - Operator: Time between claim creation and closure (granted, at least partially) · Time between claim creation and closure (denied) · Time between claim submission and last document upload before closure · Number of document requests · Operator minutes per claim (no judgement call required) · Operator minutes per claim (judgement call required) · Operator minutes per claim (on average, full sample) · % of claims rejected
-- Member: Abandonment rate · Document rejection rate · Manual entry rate
+- Member: Time between opening a claim and submission (proof of medical necessity required) · Time between opening a claim and submission (proof of medical necessity not required) · Abandonment rate · Document rejection rate · Manual entry rate
 
 **Right — "Success: should improve"** (*What the redesign is for*), plain bullets
 - **Time between submission and last document upload: towards zero** (bold)

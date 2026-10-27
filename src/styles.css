@@ -135,7 +135,7 @@ html, body {
 /* 04 Metrics */
 .slide.is-dense.s-metrics h2 { margin-bottom: 0.25em; }
 .slide.s-metrics .subtitle { color: var(--muted); margin: 0 0 1.1em; }
-.s-metrics .mgrid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; align-items: start; }
+.s-metrics .mgrid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
 .s-metrics table.all { width: 100%; border-collapse: collapse; font-size: 0.9em; }
 .s-metrics table.all th { text-align: left; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0 0 6px; }
 .s-metrics table.all td { padding: 6px 10px 6px 0; border-top: 1px solid var(--rule); vertical-align: top; line-height: 1.3; }

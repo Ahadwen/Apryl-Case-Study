@@ -8,7 +8,13 @@ const OPERATOR = [
   'Operator minutes per claim (on average, full sample)',
   '% of claims rejected',
 ];
-const MEMBER = ['Abandonment rate', 'Document rejection rate', 'Manual entry rate'];
+const MEMBER = [
+  'Time between opening a claim and submission (proof of medical necessity required)',
+  'Time between opening a claim and submission (proof of medical necessity not required)',
+  'Abandonment rate',
+  'Document rejection rate',
+  'Manual entry rate',
+];
 const rows = (items) => items.map((m) => `<tr><td>${m}</td></tr>`).join('');
 
 export default {
