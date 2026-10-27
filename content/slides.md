@@ -32,9 +32,9 @@ Mockup: `drafts/context.html`
 **What we assume** — *To be tested*
 - Most of the 40% of information requests are preventable at upload
 - Most claims would be straightforward if all data and documents were already presented as required
-- Most of the delay is the round trips between member, Progyny and clinic, not time spent reviewing
-- Proof of medical necessity can be anticipated and requested before submission
-- A claim is created when the member opens it, and moves to "submitted" when submitted
+- Much of the delay comes from discussion between Operators, members, and clinics, around missing documentation
+- Proof of medical necessity can be requested step one
+- A claim can move between created, submitted, and closed states
 
 **Space steps:** heading → Approach → What we know → What we assume
 
