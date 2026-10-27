@@ -96,14 +96,14 @@ Full-window: a thin context column, then the prototype's member screen and behin
 
 **Below a divider:**
 - The pitch suggested I add several solution screens and list the relative strengths between them.
-- Whilst occasionally such decisions are needed, this process often creates smaller more specific decisions between iterations.
+- Prototyping often creates smaller, more specific decisions between iterations.
 
 ## 07 · Next steps — agreed
 
 **Title:** A pilot
 - We run a pilot to confirm this does help move us towards our target.
 - **That could look like:** The new flow is used for one specific treatment type · A percentage of members use the new flow · All members use the new flow and the results are closely monitored
-- Pilot design leans on technical viability and so is decided in close discussion with engineering.
+- Pilot specifics are partially decided on technical viability and so in close discussion with engineering.
 - During the pilot, operators double-check a sample of extracted details against the documents.
 - The aim is to confirm that the idea holds water.
 - Then either **more work is needed**, or **we move on**.

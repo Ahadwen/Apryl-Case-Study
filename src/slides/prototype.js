@@ -21,7 +21,7 @@ export default {
         ])}</ul>
         <div class="pnote">
           <p>The pitch suggested I add several solution screens and list the relative strengths between them.</p>
-          <p>Whilst occasionally such decisions are needed, this process often creates smaller more specific decisions between iterations.</p>
+          <p>Prototyping often creates smaller, more specific decisions between iterations.</p>
         </div>
       </aside>
       <iframe class="proto-frame" src="prototype/?inline" title="Document upload prototype"></iframe>

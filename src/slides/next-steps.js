@@ -16,7 +16,7 @@ export default {
           <div>All members use the new flow and the results are closely monitored</div>
         </div>
       </div>
-      <p class="check" data-focus>Pilot design leans on technical viability and so is decided in close discussion with engineering.<br>During the pilot, operators double-check a sample of extracted details against the documents.</p>
+      <p class="check" data-focus>Pilot specifics are partially decided on technical viability and so in close discussion with engineering.<br>During the pilot, operators double-check a sample of extracted details against the documents.</p>
       <div class="outcome" data-focus>
         <p>The aim is to confirm that the idea holds water.</p>
         <p class="then">Then either <strong>more work is needed</strong>, or <strong>we move on</strong>.</p>

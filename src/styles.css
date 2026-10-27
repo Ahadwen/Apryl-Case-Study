@@ -164,16 +164,16 @@ html, body {
 
 /* 06 Prototyping: thin context column, then the prototype. All three columns share one 64px gap:
    this grid's gap, and the prototype's own (it's loaded with ?inline, which uses the same gap). */
-.slide.s-proto { display: grid; grid-template-columns: 250px minmax(0, 1fr); column-gap: 64px; max-width: 1280px; margin: 0 auto; }
-.s-proto .pctx { padding: 24px 0; font-size: 16px; line-height: 1.45; color: #3d3d42; overflow: auto; }
-.s-proto .pctx .eyebrow { font-size: 13px; margin-bottom: 18px; }
+.slide.s-proto { display: grid; grid-template-columns: 280px minmax(0, 1fr); column-gap: 64px; max-width: 1280px; margin: 0 auto; }
+.s-proto .pctx { padding: 24px 0; font-size: 17.5px; line-height: 1.4; color: #3d3d42; overflow: auto; }
+.s-proto .pctx .eyebrow { font-size: 13px; margin-bottom: 12px; }
 .s-proto .pctx ul { list-style: none; padding: 0; margin: 0; }
-.s-proto .pctx li + li { margin-top: 0.8em; padding-top: 0.8em; border-top: 1px solid var(--rule); }
+.s-proto .pctx li + li { margin-top: 0.6em; padding-top: 0.6em; border-top: 1px solid var(--rule); }
 .s-proto .proto-frame { width: 100%; height: 100%; }
-.s-proto .pnote { margin-top: 1.1em; padding-top: 1em; border-top: 2px solid var(--ink); color: var(--muted); font-size: 0.9em; }
-.slide.s-proto .pnote p { margin: 0 0 0.7em; }
+.s-proto .pnote { margin-top: 0.8em; padding-top: 0.7em; border-top: 2px solid var(--ink); color: var(--muted); }
+.slide.s-proto .pnote p { margin: 0 0 0.5em; }
 /* Short screens (e.g. 1280x720): a step smaller so the whole column fits without scrolling. */
-@media (max-height: 800px) { .s-proto .pctx { font-size: 14.5px; padding: 18px 0; } }
+@media (max-height: 800px) { .s-proto .pctx { font-size: 16px; padding: 14px 0; } }
 
 /* 07 Next steps: a pilot */
 .slide.s-pilot { font-size: 22px; }
