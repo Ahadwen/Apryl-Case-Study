@@ -21,7 +21,7 @@ export default {
         </div>
         <div class="box ready" data-focus>
           <h3>Ready to pilot when</h3>
-          <p class="lbl">Sign-off from:</p>
+          <p class="lbl">Prototype is signed off by:</p>
           <ul>${list(['Legal', 'Operators', 'Design', 'Engineering', 'Product'])}</ul>
         </div>
         <div class="box pilot" data-focus>
