@@ -13,7 +13,7 @@ export default {
         <div class="box target" data-focus>
           <h3>Target picture</h3>
           <ul>${list([
-            'Four eyes: humans make the decisions',
+            "AI doesn't make the decisions, it makes life easier for humans to evaluate a case. We maintain the principle of four eyes on a given outcome.",
             'Member UX remains simple and transparent',
             'GDPR compliance',
             'Operators can more often rely on the data they receive',
