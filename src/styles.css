@@ -63,6 +63,7 @@ html, body {
 .slide .statement { font-size: 1.6em; max-width: 30ch; }
 .slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
 .slide .cols.wide-right { grid-template-columns: 2fr 3fr; }
+.slide .cols.wide-left { grid-template-columns: 3fr 2fr; }
 .slide .aside { margin-top: 1em; color: var(--muted); }
 .slide .aside strong { color: var(--ink); }
 .slide.is-dense { font-size: 22px; }

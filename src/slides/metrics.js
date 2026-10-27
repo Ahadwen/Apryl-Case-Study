@@ -6,7 +6,7 @@ export default {
     el.innerHTML = `
       <div class="eyebrow">03 · Metrics</div>
       <h2>Metrics for Back Office to capture</h2>
-      <div class="cols">
+      <div class="cols wide-left">
         <div>
           <h3>Operator tracking</h3>
           <ul>
