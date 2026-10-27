@@ -35,7 +35,8 @@ html, body {
   padding: 72px 96px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* safe: content that doesn't fit overflows at the bottom (measurable) instead of both ends */
+  justify-content: safe center;
   font-size: 30px;
   animation: fade-in 0.25s ease-out;
 }
