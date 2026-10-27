@@ -96,7 +96,7 @@ html, body {
 .s-problem .legend .lc::before { background: #e5f2e3; border-color: #96c48f; }
 
 /* 02 Context */
-.s-context .cols2 { display: grid; grid-template-columns: 0.8fr 1fr 1fr; gap: 48px; margin-top: 1.2em; }
+.s-context .cols2 { display: grid; grid-template-columns: 0.82fr 0.95fr 1.15fr; gap: 44px; margin-top: 1.2em; }
 .s-context .cols2 > .approach { border-color: var(--ink); }
 .s-context .approach ol { list-style: none; padding: 0; margin: 0; counter-reset: step; }
 .s-context .approach li { counter-increment: step; position: relative; padding-left: 1.7em; }
@@ -104,15 +104,15 @@ html, body {
 .s-context .approach li::before { content: counter(step); position: absolute; left: 0; top: calc((1.45 * 1em / 0.7 - 1.6em) / 2); width: 1.6em; height: 1.6em; line-height: 1.6em; text-align: center; border-radius: 50%; background: var(--ink); color: var(--bg); font-size: 0.7em; font-weight: 700; font-variant-numeric: tabular-nums; }
 .s-context .approach strong { display: block; }
 .s-context .approach span { display: block; color: var(--muted); font-size: 0.85em; }
-.s-context .cols2 > div { border-top: 3px solid; padding-top: 20px; }
+.s-context .cols2 > div { border-top: 3px solid; padding-top: 16px; }
 .s-context .cols2 > .known { border-color: #2f855a; }
 .s-context .cols2 > .assumed { border-color: var(--accent); }
 .s-context .known h3 { color: #2f855a; }
 .s-context .approach h3 { color: var(--ink); }
 .s-context .cols2 h3 { font-size: 1em; margin-bottom: 0.15em; }
-.s-context .sub { color: var(--muted); font-size: 0.8em; margin: 0 0 1.3em; }
-.s-context .cols2 li { font-size: 0.84em; }
-.s-context li + li { margin-top: 13px; }
+.s-context .sub { color: var(--muted); font-size: 0.8em; margin: 0 0 1em; }
+.s-context .cols2 li { font-size: 0.79em; }
+.s-context li + li { margin-top: 10px; }
 
 /* 03 Proposal */
 .slide.is-dense h2.ptitle { margin-bottom: 0.35em; font-size: 1.65em; }
