@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+  body { overflow: auto; }
+  .stage { position: relative; top: 0; left: 0; transform: none; }
+  .slide.is-dense { font-size: 19px; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-top: 0.4em; }
+  .cols3 > div { border-top: 3px solid; padding-top: 14px; }
+  .cols3 > .known { border-color: #2f855a; } .known h3 { color: #2f855a !important; }
+  .cols3 > .assumed { border-color: #c2410c; }
+  .cols3 > .check { border-color: #3b4a5e; } .check h3 { color: #3b4a5e !important; }
+  .cols3 h3 { font-size: 1em !important; margin-bottom: 0.2em !important; }
+  .cols3 .sub { color: var(--muted); font-size: 0.85em; margin: 0 0 0.8em; }
+  .cols3 li + li { margin-top: 0.5em; }
+</style></head>
+<body><div class="stage"><section class="slide is-dense">
+  <div class="eyebrow">02 · Research</div>
+  <h2>What we know, what we assume, what we'll check</h2>
+  <div class="cols3">
+    <div class="known">
+      <h3>What we know</h3><p class="sub">From the claims team</p>
+      <ul>
+        <li>2 FTE review claims (alongside digital card transactions); 2 more hires planned for 2026</li>
+        <li>Requirements are a matrix: country × treatment × sub-treatment</li>
+        <li>An invoice is always required; proof of payment usually</li>
+        <li>Proof of medical necessity drives back-and-forth between member, Apryl and clinic</li>
+        <li>Multi-document uploads are split by hand</li>
+      </ul>
+    </div>
+    <div class="assumed">
+      <h3>What we assume</h3><p class="sub">To be tested</p>
+      <ul>
+        <li>Most of the 40% of information requests are preventable at upload</li>
+        <li>Most claims are straightforward</li>
+        <li>The delay is mostly members waiting, not reviewer effort</li>
+        <li>The four-eyes check stays: two human sign-offs</li>
+        <li>A claim is created when the member opens it, and moves to "submitted" when submitted</li>
+      </ul>
+    </div>
+    <div class="check">
+      <h3>What we'll check</h3><p class="sub">Weeks 1–2</p>
+      <ul>
+        <li>Sit with reviewers for a day each</li>
+        <li>Inventory the knowledge in people's heads: country exceptions, judgement calls, Slack escalations</li>
+        <li>Baseline the metrics</li>
+        <li>Legal and DPIA advice, started in week one</li>
+        <li>Proof of medical necessity: what counts, who issues it, and when it's required</li>
+      </ul>
+    </div>
+  </div>
+</section></div></body></html>
