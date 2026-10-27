@@ -190,14 +190,20 @@ const investigation = {
     el.innerHTML = `
       <div class="eyebrow" data-focus="head">05 · Investigation</div>
       <h2 data-focus="head">Defining success</h2>
-      <div class="two">
+      <div class="three">
+        <div class="box target" data-focus>
+          <h3>Target picture</h3>
+          <ul>${list([
+            'Four eyes: humans make the decisions',
+            'Member UX remains simple and transparent',
+            'GDPR compliance',
+            'Operators can more often rely on the data they receive',
+          ])}</ul>
+        </div>
         <div class="box ready" data-focus>
           <h3>Ready to pilot when</h3>
-          <ul>${list([
-            'Legal and operators approve the approach',
-            "It's GDPR compliant",
-            "The machine doesn't make decisions. Four eyes do; we just make that easier.",
-          ])}</ul>
+          <p class="lbl">Sign-off from:</p>
+          <ul>${list(['Legal', 'Operators', 'Design', 'Engineering', 'Product'])}</ul>
         </div>
         <div class="box pilot" data-focus>
           <h3>The pilot succeeds if</h3>
