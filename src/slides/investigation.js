@@ -14,9 +14,9 @@ export default {
           <h3>Target picture</h3>
           <ul>${list([
             "AI doesn't make the decisions, it makes life easier for humans to evaluate a case. We maintain the principle of four eyes on a given outcome.",
+            'Operators can more often rely on the data they receive',
             'Member UX remains simple and transparent',
             'GDPR compliance',
-            'Operators can more often rely on the data they receive',
           ])}</ul>
         </div>
         <div class="box ready" data-focus>

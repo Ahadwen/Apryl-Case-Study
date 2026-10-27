@@ -78,7 +78,7 @@ Manual entry rate and document rejection rate only exist once a solution is pilo
 **Title:** Defining success
 
 Three columns:
-- **Target picture:** AI doesn't make the decisions, it makes life easier for humans to evaluate a case. We maintain the principle of four eyes on a given outcome. · Member UX remains simple and transparent · GDPR compliance · Operators can more often rely on the data they receive
+- **Target picture:** AI doesn't make the decisions, it makes life easier for humans to evaluate a case. We maintain the principle of four eyes on a given outcome. · Operators can more often rely on the data they receive · Member UX remains simple and transparent · GDPR compliance
 - **Ready to pilot when** — Sign-off from: Legal · Operators · Design · Engineering · Product
 - **The pilot succeeds if:** Document upload quality meaningfully improves · Operator time spent meaningfully decreases · Guardrails don't raise red flags: abandonment rate, % of claims rejected, manual entry and document rejection rates
 
