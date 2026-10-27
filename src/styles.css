@@ -152,7 +152,8 @@ html, body {
 .timeline .when { font-weight: 600; color: var(--accent); }
 .timeline ul { margin: 0; padding-left: 1.1em; }
 .timeline ul li + li { margin-top: 0.25em; }
-.s-milestones .ms { display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: start; }
+.s-milestones .ms { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+.s-milestones .timeline > li { grid-template-columns: 130px 1fr; gap: 20px; }
 .timeline > li.goahead .when { color: #2f855a; }
 .s-milestones .checklist { background: #e3f2e7; border-radius: 12px; padding: 16px 18px; }
 .s-milestones .checklist h3 { color: #2f855a; font-size: 1em; margin-bottom: 0.6em; }
