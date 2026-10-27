@@ -124,10 +124,8 @@ Mockup: `drafts/milestones.html` (week 1 is in January)
 - **March–June:** Follow the dashboard periodically, and intervene with further effort if needed · Otherwise, move focus to a different product area
 
 **Go-ahead checklist** (green box, right; steps in with the Go ahead row)
-- Legal approval
-- Claims operator approval
-- Time based metrics prove that claims operator time is a problem worth prioritising
-- Investigation confirms that incomplete document submissions are a reasonable first focus, in order to improve claim processing time and operator input time
+- *Proposal approval from:* Claims operators · Legal
+- *Investigation and time tracking metrics confirm that:* Operator time spent on claims is a reasonable goal to prioritise · Incomplete document submissions are a reasonable problem to target
 
 **Space steps:** heading → each row (Go ahead row + checklist together)
 

@@ -1,8 +1,9 @@
 const CHECKLIST = [
-  'Legal approval',
-  'Claims operator approval',
-  'Time based metrics prove that claims operator time is a problem worth prioritising',
-  'Investigation confirms that incomplete document submissions are a reasonable first focus, in order to improve claim processing time and operator input time',
+  ['Proposal approval from', ['Claims operators', 'Legal']],
+  ['Investigation and time tracking metrics confirm that', [
+    'Operator time spent on claims is a reasonable goal to prioritise',
+    'Incomplete document submissions are a reasonable problem to target',
+  ]],
 ];
 
 const ROWS = [
@@ -35,7 +36,9 @@ export default {
         </ol>
         <div class="checklist" data-focus="goahead">
           <h3>Go-ahead checklist</h3>
-          <ul>${CHECKLIST.map((c) => `<li>${c}</li>`).join('')}</ul>
+          ${CHECKLIST.map(([group, items]) => `
+            <h4>${group}</h4>
+            <ul>${items.map((c) => `<li>${c}</li>`).join('')}</ul>`).join('')}
         </div>
       </div>
     `;

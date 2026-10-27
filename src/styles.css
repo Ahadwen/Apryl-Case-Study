@@ -157,7 +157,9 @@ html, body {
 .timeline > li.goahead .when { color: #2f855a; }
 .s-milestones .checklist { background: #e3f2e7; border-radius: 12px; padding: 16px 18px; }
 .s-milestones .checklist h3 { color: #2f855a; font-size: 1em; margin-bottom: 0.6em; }
-.s-milestones .checklist ul { list-style: none; padding: 0; margin: 0; }
+.s-milestones .checklist h4 { margin: 0 0 0.5em; font-size: 0.8em; font-weight: 600; color: var(--muted); }
+.s-milestones .checklist ul { list-style: none; padding: 0; margin: 0 0 1em; }
+.s-milestones .checklist ul:last-child { margin-bottom: 0; }
 .s-milestones .checklist li { position: relative; padding-left: 1.6em; line-height: 1.35; font-size: 0.9em; }
 .s-milestones .checklist li + li { margin-top: 0.6em; }
 .s-milestones .checklist li::before { content: ''; position: absolute; left: 0; top: 0.2em; width: 0.9em; height: 0.9em; border: 2px solid #2f855a; border-radius: 3px; }
