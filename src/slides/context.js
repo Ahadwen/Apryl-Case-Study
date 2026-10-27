@@ -32,8 +32,8 @@ export default {
           <ul>
             <li>Most of the 40% of information requests are preventable at upload</li>
             <li>Most claims would be straightforward if all data and documents were already presented as required</li>
-            <li>Much of the delay comes from discussion between Operators, members, and clinics, around missing documentation</li>
-            <li>Proof of medical necessity can be requested step one</li>
+            <li>Much of the delay comes from discussion between operators, members, and clinics, around missing documentation</li>
+            <li>Proof of medical necessity can be requested at step one</li>
             <li>A claim can move between created, submitted, and closed states</li>
           </ul>
         </div>

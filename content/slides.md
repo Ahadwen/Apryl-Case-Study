@@ -32,8 +32,8 @@ Mockup: `drafts/context.html`
 **What we assume** — *To be tested*
 - Most of the 40% of information requests are preventable at upload
 - Most claims would be straightforward if all data and documents were already presented as required
-- Much of the delay comes from discussion between Operators, members, and clinics, around missing documentation
-- Proof of medical necessity can be requested step one
+- Much of the delay comes from discussion between operators, members, and clinics, around missing documentation
+- Proof of medical necessity can be requested at step one
 - A claim can move between created, submitted, and closed states
 
 **Space steps:** heading → Approach → What we know → What we assume
