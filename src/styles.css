@@ -110,7 +110,8 @@ html, body {
 .s-context .approach h3 { color: var(--ink); }
 .s-context .cols2 h3 { font-size: 1em; margin-bottom: 0.15em; }
 .s-context .sub { color: var(--muted); font-size: 0.8em; margin: 0 0 1.3em; }
-.s-context li + li { margin-top: 0.7em; }
+.s-context .cols2 li { font-size: 0.84em; }
+.s-context li + li { margin-top: 13px; }
 
 /* 03 Proposal */
 .slide.is-dense h2.ptitle { margin-bottom: 0.35em; font-size: 1.65em; }
