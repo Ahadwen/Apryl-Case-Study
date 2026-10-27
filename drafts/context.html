@@ -5,20 +5,19 @@
 <style>
   body { overflow: auto; }
   .stage { position: relative; top: 0; left: 0; transform: none; }
-  .slide.is-dense { font-size: 19px; }
-  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-top: 0.4em; }
-  .cols3 > div { border-top: 3px solid; padding-top: 14px; }
-  .cols3 > .known { border-color: #2f855a; } .known h3 { color: #2f855a !important; }
-  .cols3 > .assumed { border-color: #c2410c; }
-  .cols3 > .check { border-color: #3b4a5e; } .check h3 { color: #3b4a5e !important; }
-  .cols3 h3 { font-size: 1em !important; margin-bottom: 0.2em !important; }
-  .cols3 .sub { color: var(--muted); font-size: 0.85em; margin: 0 0 0.8em; }
-  .cols3 li + li { margin-top: 0.5em; }
+  .slide.is-dense { font-size: 22px; }
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 0.4em; }
+  .cols2 > div { border-top: 3px solid; padding-top: 16px; }
+  .cols2 > .known { border-color: #2f855a; } .known h3 { color: #2f855a !important; }
+  .cols2 > .assumed { border-color: #c2410c; }
+  .cols2 h3 { font-size: 1em !important; margin-bottom: 0.15em !important; }
+  .cols2 .sub { color: var(--muted); font-size: 0.8em; margin: 0 0 0.9em; }
+  .cols2 li + li { margin-top: 0.55em; }
 </style></head>
 <body><div class="stage"><section class="slide is-dense">
-  <div class="eyebrow">02 · Research</div>
-  <h2>What we know, what we assume, what we'll check</h2>
-  <div class="cols3">
+  <div class="eyebrow">02 · Context</div>
+  <h2>What we know, and what we assume</h2>
+  <div class="cols2">
     <div class="known">
       <h3>What we know</h3><p class="sub">From the claims team</p>
       <ul>
@@ -35,17 +34,8 @@
         <li>Most of the 40% of information requests are preventable at upload</li>
         <li>Most claims would be straightforward if everything needed was there when the operator first opens them</li>
         <li>Most of the delay is the round trips between member, Apryl and clinic, not time spent reviewing</li>
+        <li>Proof of medical necessity can be anticipated and requested before submission</li>
         <li>A claim is created when the member opens it, and moves to "submitted" when submitted</li>
-      </ul>
-    </div>
-    <div class="check">
-      <h3>What we'll check</h3><p class="sub">Weeks 1–2</p>
-      <ul>
-        <li>Sit with reviewers for a day each</li>
-        <li>Inventory the knowledge in people's heads: country exceptions, judgement calls, Slack escalations</li>
-        <li>Baseline the metrics</li>
-        <li>Legal and DPIA advice, started in week one</li>
-        <li>Proof of medical necessity: what counts, who issues it, and when it's required</li>
       </ul>
     </div>
   </div>
