@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../src/styles.css">
+<style>
+  body { overflow: auto; }
+  .stage { position: relative; top: 0; left: 0; transform: none; }
+  .slide.is-dense { font-size: 19px; }
+  .ai { display: grid; grid-template-columns: 1fr 1.5fr; gap: 56px; align-items: start; }
+  .ai h3 { font-size: 1em !important; }
+  .ai li + li { margin-top: 0.5em; }
+  .learned { margin-top: 1.4em; padding-top: 14px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: baseline; }
+  .learned .lbl { font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+  .slide .learned p { margin: 0; font-size: 1.05em; }
+</style></head>
+<body><div class="stage"><section class="slide is-dense">
+  <div class="eyebrow">08 · AI usage reflection</div>
+  <h2>How I used AI</h2>
+  <div class="ai">
+    <div>
+      <h3>What it did</h3>
+      <ul>
+        <li>A sparring partner: challenging the brief and stress-testing assumptions</li>
+        <li>Research</li>
+        <li>Built the prototype and this deck, to my direction</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Where I overruled it</h3>
+      <ul>
+        <li>It pitched a standard slide deck. I wanted a browser app where the prototype is a slide.</li>
+        <li>It showed the anonymisation step to the member. That belongs behind the scenes.</li>
+        <li>It invented an "alternative considered" I had never considered, and principles that were word salad.</li>
+        <li>It reached for jargon ("DPIA", "inventory the knowledge"). I replaced it with plain words.</li>
+        <li>It planned a January pilot without realising week 1 is January.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="learned">
+    <span class="lbl">What I learned</span>
+    <p>It fills gaps with plausible, invented reasoning. It's fast when I decide and it executes, but every claim needs checking against what I actually know.</p>
+  </div>
+</section></div></body></html>
