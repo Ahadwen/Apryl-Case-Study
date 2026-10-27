@@ -16,11 +16,11 @@ Mockup: `drafts/context.html`
 **Title:** Approach, what we know, and what we assume
 
 **Approach** — *How I'd work* (numbered, narrower first column)
-1. Confirm the priority — Is this the metric to focus on?
-2. Identify a problem — Is there a sensible way to move it?
-3. Investigate and prototype
-4. Build a small, focused solution
-5. Qualify the result — Did it move?
+1. Confirm the priority — Is this the right target to work on first?
+2. Identify a problem — Searching for high impact, scalability, and a good ROI
+3. Investigate and prototype — Iterate with stakeholders before engineering gets involved
+4. Build a small, focused solution — Stay light, this is likely not the only priority
+5. Qualify the result — Did this feature help, is more work needed?
 
 **What we know** — *Confirmed*
 - 2 FTE review claims (alongside digital card transactions); 2 more hires planned for 2026

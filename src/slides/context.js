@@ -10,11 +10,11 @@ export default {
         <div class="approach" data-focus>
           <h3>Approach</h3><p class="sub">How I'd work</p>
           <ol>
-            <li><strong>Confirm the priority</strong><span>Is this the metric to focus on?</span></li>
-            <li><strong>Identify a problem</strong><span>Is there a sensible way to move it?</span></li>
-            <li><strong>Investigate and prototype</strong></li>
-            <li><strong>Build a small, focused solution</strong></li>
-            <li><strong>Qualify the result</strong><span>Did it move?</span></li>
+            <li><strong>Confirm the priority</strong><span>Is this the right target to work on first?</span></li>
+            <li><strong>Identify a problem</strong><span>Searching for high impact, scalability, and a good ROI</span></li>
+            <li><strong>Investigate and prototype</strong><span>Iterate with stakeholders before engineering gets involved</span></li>
+            <li><strong>Build a small, focused solution</strong><span>Stay light, this is likely not the only priority</span></li>
+            <li><strong>Qualify the result</strong><span>Did this feature help, is more work needed?</span></li>
           </ol>
         </div>
         <div class="known" data-focus>
