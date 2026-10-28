@@ -24,6 +24,10 @@ const full = app.querySelector('.full');
 const count = app.querySelector('.hud-count');
 const bar = app.querySelector('.progress-bar');
 
+// The numbered slides (01–08): the counter covers only these, and keys 1–8 jump to them.
+// None on the title, and the AI note shows its own label.
+const numbered = slides.filter((s) => s.counter === undefined);
+
 let current = -1;
 let cleanup = null;
 let currentEl = null;
@@ -56,8 +60,6 @@ function show(index) {
   sections = sectionsOf(el);
   step = -1;
 
-  // The counter covers the numbered slides only: none on the title, and the AI note shows its own label.
-  const numbered = slides.filter((s) => s.counter === undefined);
   count.textContent = slide.counter === false ? ''
     : `${slide.counter ?? numbered.indexOf(slide) + 1} / ${numbered.length}`;
   bar.style.width = `${((index + 1) / slides.length) * 100}%`;
@@ -119,15 +121,22 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') setFocus(-1);
   if (['ArrowRight', 'PageDown'].includes(e.key)) { e.preventDefault(); show(current + 1); }
   if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(current - 1); }
+  if (/^[1-9]$/.test(e.key)) jumpTo(Number(e.key));
   if (e.key === 'Home') show(0);
   if (e.key === 'End') show(slides.length - 1);
   if (e.key === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
 });
 
-// An embedded prototype (iframe) has the keyboard while it's focused, so it forwards ← / → here.
+// Keys 1–8: jump to that numbered slide.
+function jumpTo(n) {
+  if (n <= numbered.length) show(slides.indexOf(numbered[n - 1]));
+}
+
+// An embedded prototype (iframe) has the keyboard while it's focused, so it forwards ← / → and 1–8 here.
 window.addEventListener('message', (e) => {
-  if (e.origin !== location.origin || typeof e.data?.deckNav !== 'number') return;
-  show(current + e.data.deckNav);
+  if (e.origin !== location.origin) return;
+  if (typeof e.data?.deckNav === 'number') show(current + e.data.deckNav);
+  if (typeof e.data?.deckSlide === 'number') jumpTo(e.data.deckSlide);
 });
 
 app.querySelectorAll('.nav-btn').forEach((btn) =>

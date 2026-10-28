@@ -732,11 +732,12 @@ app.addEventListener('toggle', (e) => {
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && state.preview != null) { state.preview = null; render(); }
-  // Embedded in the deck: hand ← / → back to it, unless the patient is typing or a dialog is open.
-  if (window.parent !== window && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')
-      && !e.target.closest('input, textarea, select') && !state.sheet && state.preview == null) {
+  // Embedded in the deck: hand ← / → and 1–8 back to it, unless the patient is typing or a dialog is open.
+  if (window.parent === window || e.target.closest('input, textarea, select') || state.sheet || state.preview != null) return;
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     window.parent.postMessage({ deckNav: e.key === 'ArrowRight' ? 1 : -1 }, location.origin);
   }
+  if (/^[1-9]$/.test(e.key)) window.parent.postMessage({ deckSlide: Number(e.key) }, location.origin);
 });
 
 app.addEventListener('change', (e) => {
